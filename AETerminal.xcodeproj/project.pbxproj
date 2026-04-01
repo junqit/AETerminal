@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		66AF13F2D4DCF7ECE3839D3F /* Pods_AETerminal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70321EF129E1628A7B32556 /* Pods_AETerminal.framework */; };
+		E7A049862F7D1C3E006457E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049802F7D1C3E006457E0 /* AppDelegate.swift */; };
+		E7A049872F7D1C3E006457E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049842F7D1C3E006457E0 /* ViewController.swift */; };
+		E7A049882F7D1C3E006457E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7A049832F7D1C3E006457E0 /* Main.storyboard */; };
+		E7A049892F7D1C3E006457E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7A049812F7D1C3E006457E0 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		E7A048FD2F7CE4AE006457E0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,34 +32,25 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		41B8926FFAF427E26DEC9576 /* Pods-AETerminal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AETerminal.release.xcconfig"; path = "Target Support Files/Pods-AETerminal/Pods-AETerminal.release.xcconfig"; sourceTree = "<group>"; };
+		C70321EF129E1628A7B32556 /* Pods_AETerminal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AETerminal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA3D9EAC554BA96026F83D09 /* Pods-AETerminal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AETerminal.debug.xcconfig"; path = "Target Support Files/Pods-AETerminal/Pods-AETerminal.debug.xcconfig"; sourceTree = "<group>"; };
 		E7A048EB2F7CE4AC006457E0 /* AETerminal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AETerminal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7A048FC2F7CE4AE006457E0 /* AETerminalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AETerminalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7A049062F7CE4AE006457E0 /* AETerminalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AETerminalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7A0497F2F7D1C3E006457E0 /* AETerminal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AETerminal.entitlements; sourceTree = "<group>"; };
+		E7A049802F7D1C3E006457E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E7A049812F7D1C3E006457E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7A049822F7D1C3E006457E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E7A049842F7D1C3E006457E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		E7A048ED2F7CE4AC006457E0 /* AETerminal */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AETerminal;
-			sourceTree = "<group>";
-		};
-		E7A048FF2F7CE4AE006457E0 /* AETerminalTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AETerminalTests;
-			sourceTree = "<group>";
-		};
-		E7A049092F7CE4AE006457E0 /* AETerminalUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AETerminalUITests;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		E7A048E82F7CE4AC006457E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66AF13F2D4DCF7ECE3839D3F /* Pods_AETerminal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,13 +71,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0423950E316718038F2ADC3F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C70321EF129E1628A7B32556 /* Pods_AETerminal.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		55628151A2FDA091B2CA04B6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CA3D9EAC554BA96026F83D09 /* Pods-AETerminal.debug.xcconfig */,
+				41B8926FFAF427E26DEC9576 /* Pods-AETerminal.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E7A048E22F7CE4AC006457E0 = {
 			isa = PBXGroup;
 			children = (
-				E7A048ED2F7CE4AC006457E0 /* AETerminal */,
-				E7A048FF2F7CE4AE006457E0 /* AETerminalTests */,
-				E7A049092F7CE4AE006457E0 /* AETerminalUITests */,
+				E7A049852F7D1C3E006457E0 /* AETerminal */,
 				E7A048EC2F7CE4AC006457E0 /* Products */,
+				55628151A2FDA091B2CA04B6 /* Pods */,
+				0423950E316718038F2ADC3F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,6 +108,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		E7A049852F7D1C3E006457E0 /* AETerminal */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0497F2F7D1C3E006457E0 /* AETerminal.entitlements */,
+				E7A049802F7D1C3E006457E0 /* AppDelegate.swift */,
+				E7A049812F7D1C3E006457E0 /* Assets.xcassets */,
+				E7A049832F7D1C3E006457E0 /* Main.storyboard */,
+				E7A049842F7D1C3E006457E0 /* ViewController.swift */,
+			);
+			path = AETerminal;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -99,20 +127,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E7A049102F7CE4AE006457E0 /* Build configuration list for PBXNativeTarget "AETerminal" */;
 			buildPhases = (
+				619AEF03AFDE878067BC1184 /* [CP] Check Pods Manifest.lock */,
 				E7A048E72F7CE4AC006457E0 /* Sources */,
 				E7A048E82F7CE4AC006457E0 /* Frameworks */,
 				E7A048E92F7CE4AC006457E0 /* Resources */,
+				B25C637E034BEE31E31CDBB3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				E7A048ED2F7CE4AC006457E0 /* AETerminal */,
-			);
 			name = AETerminal;
-			packageProductDependencies = (
-			);
 			productName = AETerminal;
 			productReference = E7A048EB2F7CE4AC006457E0 /* AETerminal.app */;
 			productType = "com.apple.product-type.application";
@@ -130,12 +155,7 @@
 			dependencies = (
 				E7A048FE2F7CE4AE006457E0 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				E7A048FF2F7CE4AE006457E0 /* AETerminalTests */,
-			);
 			name = AETerminalTests;
-			packageProductDependencies = (
-			);
 			productName = AETerminalTests;
 			productReference = E7A048FC2F7CE4AE006457E0 /* AETerminalTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -153,12 +173,7 @@
 			dependencies = (
 				E7A049082F7CE4AE006457E0 /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				E7A049092F7CE4AE006457E0 /* AETerminalUITests */,
-			);
 			name = AETerminalUITests;
-			packageProductDependencies = (
-			);
 			productName = AETerminalUITests;
 			productReference = E7A049062F7CE4AE006457E0 /* AETerminalUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -212,6 +227,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7A049882F7D1C3E006457E0 /* Main.storyboard in Resources */,
+				E7A049892F7D1C3E006457E0 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,11 +248,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		619AEF03AFDE878067BC1184 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AETerminal-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B25C637E034BEE31E31CDBB3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AETerminal/Pods-AETerminal-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AETerminal/Pods-AETerminal-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AETerminal/Pods-AETerminal-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E7A048E72F7CE4AC006457E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7A049862F7D1C3E006457E0 /* AppDelegate.swift in Sources */,
+				E7A049872F7D1C3E006457E0 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +328,17 @@
 			targetProxy = E7A049072F7CE4AE006457E0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E7A049832F7D1C3E006457E0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E7A049822F7D1C3E006457E0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		E7A0490E2F7CE4AE006457E0 /* Debug */ = {
@@ -389,15 +461,18 @@
 		};
 		E7A049112F7CE4AE006457E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA3D9EAC554BA96026F83D09 /* Pods-AETerminal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AETerminal/AETerminal.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BP67CX4DVV;
-				ENABLE_HARDENED_RUNTIME = YES;
+				DEVELOPMENT_TEAM = RTGF62CM72;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;
@@ -416,15 +491,18 @@
 		};
 		E7A049122F7CE4AE006457E0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41B8926FFAF427E26DEC9576 /* Pods-AETerminal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = AETerminal/AETerminal.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BP67CX4DVV;
-				ENABLE_HARDENED_RUNTIME = YES;
+				DEVELOPMENT_TEAM = RTGF62CM72;
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = Main;

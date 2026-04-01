@@ -1,0 +1,30 @@
+{
+  "name": "AENetworkEngine",
+  "version": "0.0.1",
+  "summary": "A short description of AENetworkEngine",
+  "description": "AENetworkEngine",
+  "homepage": "https://git.n.xiaomi.com/miwearbluetooth/miwbtcore",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianjunqi": "tianjunqi@xiaomi.com"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.15"
+  },
+  "source": {
+    "git": "git.",
+    "tag": "0.0.1"
+  },
+  "source_files": "*.swift",
+  "default_subspecs": "HTTP",
+  "subspecs": [
+    {
+      "name": "HTTP",
+      "source_files": "HTTP/**/*.swift"
+    }
+  ]
+}
