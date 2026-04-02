@@ -419,42 +419,6 @@
 			};
 			name = Release;
 		};
-		6290D59BBBFBFE875EB9C162865A0F01 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BB6922ED92975B7C79801F501E1D4C6A /* AENetworkEngine.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
-				PRODUCT_MODULE_NAME = AENetworkEngine;
-				PRODUCT_NAME = AENetworkEngine;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		7F927136514DE9A82058DC9817290DAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -521,6 +485,76 @@
 			};
 			name = Debug;
 		};
+		8FFD9388DFF3C62F7CB7279EC1CDED50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BB6922ED92975B7C79801F501E1D4C6A /* AENetworkEngine.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
+				PRODUCT_MODULE_NAME = AENetworkEngine;
+				PRODUCT_NAME = AENetworkEngine;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		B76AFF9E5118B43A1E95356E3564E3CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2549EDA031F8B3ECFAB63EFA59FE624 /* AENetworkEngine.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
+				PRODUCT_MODULE_NAME = AENetworkEngine;
+				PRODUCT_NAME = AENetworkEngine;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		D0A6EBA3A61B11363BA1CCE244CD325F /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7FCD56936706FE7A734056C897AE6C2F /* Pods-AETerminal.release.xcconfig */;
@@ -553,42 +587,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		DD32B4FF015DBC3A8C384D5147873340 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D2549EDA031F8B3ECFAB63EFA59FE624 /* AENetworkEngine.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
-				PRODUCT_MODULE_NAME = AENetworkEngine;
-				PRODUCT_NAME = AENetworkEngine;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -655,8 +653,8 @@
 		E8CD241FE495152B65AC9FD0AC28F9F1 /* Build configuration list for PBXNativeTarget "AENetworkEngine" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6290D59BBBFBFE875EB9C162865A0F01 /* Debug */,
-				DD32B4FF015DBC3A8C384D5147873340 /* Release */,
+				8FFD9388DFF3C62F7CB7279EC1CDED50 /* Debug */,
+				B76AFF9E5118B43A1E95356E3564E3CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

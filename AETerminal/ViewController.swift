@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import AENetworkEngine
 
 class ViewController: NSViewController {
 
@@ -20,6 +21,8 @@ class ViewController: NSViewController {
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
 
+        AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
+        
         // 设置 textView 的 delegate
         inputTextView.delegate = self
 
@@ -98,6 +101,13 @@ extension ViewController: NSTextViewDelegate {
         // 这里可以添加处理输入文本的逻辑
         // 例如：执行命令、发送消息等
         
+        let req = AENetHttpReq(post: "chat", parameters: ["user_input":text])
+        AENetHttpEngine.send(request: req) { rsp in
+            
+            
+            print("回车键按下，输入内容: \(rsp.response)")
+
+        }
     }
 }
 

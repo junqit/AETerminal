@@ -19,6 +19,9 @@
     "git": "git.",
     "tag": "0.0.1"
   },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
   "source_files": "*.swift",
   "default_subspecs": "HTTP",
   "subspecs": [
