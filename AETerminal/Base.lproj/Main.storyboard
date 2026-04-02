@@ -730,7 +730,7 @@
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="GvX-Im-yFS">
                                         <rect key="frame" x="0.0" y="122" width="944" height="42"/>
                                         <subviews>
-                                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J9X-Mj-MQh">
+                                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="J9X-Mj-MQh">
                                                 <rect key="frame" x="4" y="1" width="936" height="40"/>
                                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="9EU-7i-TYx">
                                                     <rect key="frame" x="0.0" y="0.0" width="936" height="40"/>
@@ -749,6 +749,7 @@
                                                             </connections>
                                                         </textView>
                                                     </subviews>
+                                                    <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </clipView>
                                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="JWf-it-uw0">
                                                     <rect key="frame" x="-100" y="-100" width="240" height="16"/>

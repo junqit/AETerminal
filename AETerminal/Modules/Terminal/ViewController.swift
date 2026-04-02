@@ -16,13 +16,19 @@ class ViewController: NSViewController {
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
 
+    // 命令历史记录管理器
+    private let historyManager = CommandHistoryManager.shared
+
+    // 暂存当前输入（用于在浏览历史时保存）
+    private var currentInput: String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
 
         AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
-        
+
         // 设置 textView 的 delegate
         inputTextView.delegate = self
 
@@ -63,16 +69,57 @@ class ViewController: NSViewController {
         // 更新约束
         scrollViewHeightConstraint.constant = newHeight
     }
+
+    // MARK: - History Navigation
+
+    /// 向上浏览历史记录（更旧的命令）
+    private func navigateHistoryUp() {
+        // 如果是第一次按上下键，保存当前输入
+        if historyManager.currentIndex == -1 {
+            currentInput = inputTextView.string
+        }
+
+        if let command = historyManager.navigateUp() {
+            inputTextView.string = command
+            updateTextViewHeight()
+            moveCursorToEnd()
+        }
+    }
+
+    /// 向下浏览历史记录（更新的命令）
+    private func navigateHistoryDown() {
+        if let command = historyManager.navigateDown() {
+            inputTextView.string = command
+        } else {
+            // 回到当前输入
+            inputTextView.string = currentInput
+        }
+
+        updateTextViewHeight()
+        moveCursorToEnd()
+    }
+
+    /// 将光标移到文本末尾
+    private func moveCursorToEnd() {
+        let textLength = inputTextView.string.count
+        inputTextView.setSelectedRange(NSRange(location: textLength, length: 0))
+    }
 }
 
 extension ViewController: NSTextViewDelegate {
 
-    // 响应回车键
+    // 响应回车键和上下键
     func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
             // 回车键被按下，获取 text 信息
             let text = textView.string
             print("回车键按下，输入内容: \(text)")
+
+            // 添加到历史记录
+            historyManager.addCommand(text)
+
+            // 重置导航和当前输入
+            currentInput = ""
 
             // 处理输入的文本
             handleInputText(text)
@@ -84,6 +131,14 @@ extension ViewController: NSTextViewDelegate {
             updateTextViewHeight()
 
             // 返回 true 表示我们已经处理了这个命令
+            return true
+        } else if commandSelector == #selector(NSResponder.moveUp(_:)) {
+            // 上键被按下，显示上一条历史记录
+            navigateHistoryUp()
+            return true
+        } else if commandSelector == #selector(NSResponder.moveDown(_:)) {
+            // 下键被按下，显示下一条历史记录
+            navigateHistoryDown()
             return true
         }
 

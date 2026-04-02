@@ -9,9 +9,14 @@
 /* Begin PBXBuildFile section */
 		66AF13F2D4DCF7ECE3839D3F /* Pods_AETerminal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70321EF129E1628A7B32556 /* Pods_AETerminal.framework */; };
 		E7A049862F7D1C3E006457E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049802F7D1C3E006457E0 /* AppDelegate.swift */; };
-		E7A049872F7D1C3E006457E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049842F7D1C3E006457E0 /* ViewController.swift */; };
 		E7A049882F7D1C3E006457E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7A049832F7D1C3E006457E0 /* Main.storyboard */; };
 		E7A049892F7D1C3E006457E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E7A049812F7D1C3E006457E0 /* Assets.xcassets */; };
+		E7A049A72F7E46EE006457E0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = E7A049A22F7E46EE006457E0 /* README.md */; };
+		E7A049A82F7E46EE006457E0 /* CommandHistoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0499D2F7E46EE006457E0 /* CommandHistoryManager.swift */; };
+		E7A049A92F7E46EE006457E0 /* CommandHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0499E2F7E46EE006457E0 /* CommandHistoryStorage.swift */; };
+		E7A049AA2F7E46EE006457E0 /* CommandHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0499B2F7E46EE006457E0 /* CommandHistoryItem.swift */; };
+		E7A049AB2F7E46EE006457E0 /* CommandHistoryDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049A02F7E46EE006457E0 /* CommandHistoryDebugger.swift */; };
+		E7A049AC2F7E46EE006457E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049A42F7E46EE006457E0 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +47,12 @@
 		E7A049802F7D1C3E006457E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E7A049812F7D1C3E006457E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E7A049822F7D1C3E006457E0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E7A049842F7D1C3E006457E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E7A0499B2F7E46EE006457E0 /* CommandHistoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandHistoryItem.swift; sourceTree = "<group>"; };
+		E7A0499D2F7E46EE006457E0 /* CommandHistoryManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandHistoryManager.swift; sourceTree = "<group>"; };
+		E7A0499E2F7E46EE006457E0 /* CommandHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandHistoryStorage.swift; sourceTree = "<group>"; };
+		E7A049A02F7E46EE006457E0 /* CommandHistoryDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandHistoryDebugger.swift; sourceTree = "<group>"; };
+		E7A049A22F7E46EE006457E0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		E7A049A42F7E46EE006457E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,9 +125,62 @@
 				E7A049802F7D1C3E006457E0 /* AppDelegate.swift */,
 				E7A049812F7D1C3E006457E0 /* Assets.xcassets */,
 				E7A049832F7D1C3E006457E0 /* Main.storyboard */,
-				E7A049842F7D1C3E006457E0 /* ViewController.swift */,
+				E7A049A32F7E46EE006457E0 /* Core */,
+				E7A049A62F7E46EE006457E0 /* Modules */,
 			);
 			path = AETerminal;
+			sourceTree = "<group>";
+		};
+		E7A0499C2F7E46EE006457E0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0499B2F7E46EE006457E0 /* CommandHistoryItem.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E7A0499F2F7E46EE006457E0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0499D2F7E46EE006457E0 /* CommandHistoryManager.swift */,
+				E7A0499E2F7E46EE006457E0 /* CommandHistoryStorage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E7A049A12F7E46EE006457E0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				E7A049A02F7E46EE006457E0 /* CommandHistoryDebugger.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		E7A049A32F7E46EE006457E0 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E7A0499C2F7E46EE006457E0 /* Models */,
+				E7A0499F2F7E46EE006457E0 /* Services */,
+				E7A049A12F7E46EE006457E0 /* Utils */,
+				E7A049A22F7E46EE006457E0 /* README.md */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E7A049A52F7E46EE006457E0 /* Terminal */ = {
+			isa = PBXGroup;
+			children = (
+				E7A049A42F7E46EE006457E0 /* ViewController.swift */,
+			);
+			path = Terminal;
+			sourceTree = "<group>";
+		};
+		E7A049A62F7E46EE006457E0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				E7A049A52F7E46EE006457E0 /* Terminal */,
+			);
+			path = Modules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +290,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7A049A72F7E46EE006457E0 /* README.md in Resources */,
 				E7A049882F7D1C3E006457E0 /* Main.storyboard in Resources */,
 				E7A049892F7D1C3E006457E0 /* Assets.xcassets in Resources */,
 			);
@@ -296,7 +360,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E7A049862F7D1C3E006457E0 /* AppDelegate.swift in Sources */,
-				E7A049872F7D1C3E006457E0 /* ViewController.swift in Sources */,
+				E7A049A82F7E46EE006457E0 /* CommandHistoryManager.swift in Sources */,
+				E7A049A92F7E46EE006457E0 /* CommandHistoryStorage.swift in Sources */,
+				E7A049AA2F7E46EE006457E0 /* CommandHistoryItem.swift in Sources */,
+				E7A049AB2F7E46EE006457E0 /* CommandHistoryDebugger.swift in Sources */,
+				E7A049AC2F7E46EE006457E0 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
