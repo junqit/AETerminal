@@ -18,6 +18,7 @@ class ViewController: NSViewController {
     private let maxHeight: CGFloat = 200
 
     @IBOutlet weak var leftView: AELeftView!
+    @IBOutlet weak var rightView: AERightView!
 
     // 命令历史记录管理器
     private let historyManager = CommandHistoryManager.shared
@@ -34,14 +35,6 @@ class ViewController: NSViewController {
 
         // 设置 AETextView 的 delegate
         inputTextView.delegate = self
-
-        // 设置文本高度变化回调
-        inputTextView.onTextHeightChanged = { [weak self] in
-            self?.updateTextViewHeight()
-        }
-
-        // 设置初始高度
-        updateTextViewHeight()
 
         // 设置左侧视图
         setupLeftView()
@@ -213,21 +206,10 @@ class ViewController: NSViewController {
         }
     }
 
-    // 根据内容更新 TextView 高度
-    private func updateTextViewHeight() {
-        let textView = inputTextView.innerTextView
-        guard let layoutManager = textView.layoutManager,
-              let textContainer = textView.textContainer else { return }
-
-        // 强制布局
-        layoutManager.ensureLayout(for: textContainer)
-
-        // 计算所需高度
-        let usedRect = layoutManager.usedRect(for: textContainer)
-        var newHeight = ceil(usedRect.height)
-
+    // 根据 AETextView 计算好的高度更新约束
+    private func updateTextViewHeight(_ calculatedHeight: CGFloat) {
         // 限制在最小和最大高度之间
-        newHeight = max(minHeight, min(newHeight, maxHeight))
+        let newHeight = max(minHeight, min(calculatedHeight, maxHeight))
 
         // 更新约束
         scrollViewHeightConstraint.constant = newHeight
@@ -244,7 +226,6 @@ class ViewController: NSViewController {
 
         if let command = historyManager.navigateUp() {
             inputTextView.text = command
-            updateTextViewHeight()
             moveCursorToEnd()
 
             // 确保焦点在输入框
@@ -261,7 +242,6 @@ class ViewController: NSViewController {
             inputTextView.text = currentInput
         }
 
-        updateTextViewHeight()
         moveCursorToEnd()
 
         // 确保焦点在输入框
@@ -306,6 +286,11 @@ extension ViewController: AETextViewDelegate {
         handleSubmittedText(text)
     }
 
+    /// 文本高度变化时调用（AETextView 已计算好高度）
+    func aeTextView(_ textView: AETextView, didChangeHeight height: CGFloat) {
+        updateTextViewHeight(height)
+    }
+
     // MARK: - Helper Methods
 
     /// 处理提交的文本（回车提交）
@@ -321,10 +306,7 @@ extension ViewController: AETextViewDelegate {
         // 处理输入的文本
         handleInputText(text)
 
-        // 更新高度（输入框已被 AETextView 自动清空）
-        updateTextViewHeight()
-
-        // 确保焦点仍在输入框
+        // 确保焦点仍在输入框（输入框已被 AETextView 自动清空并回调高度）
         inputTextView.focus()
     }
 
