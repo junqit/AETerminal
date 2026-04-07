@@ -16,6 +16,158 @@ protocol AELeftViewDelegate: AnyObject {
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String)
 }
 
+/// 自定义目录 Cell
+class DirectoryTableCellView: NSTableCellView {
+
+    /// 展开/收起按钮
+    let expandButton: NSButton = {
+        let button = NSButton()
+        button.isBordered = false
+        button.setButtonType(.momentaryChange)
+        button.bezelStyle = .regularSquare
+        button.imagePosition = .imageOnly
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    /// 目录名称标签
+    let nameLabel: NSTextField = {
+        let label = NSTextField()
+        label.isBezeled = false
+        label.drawsBackground = false
+        label.isEditable = false
+        label.isSelectable = false
+        label.isBordered = false
+        label.backgroundColor = .clear
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    /// 点击响应回调
+    var onExpandButtonClicked: (() -> Void)?
+    var onNameClicked: (() -> Void)?
+
+    /// 缩进约束（用于动态调整）
+    private var expandButtonLeadingConstraint: NSLayoutConstraint!
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setupViews()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupViews()
+    }
+
+    private func setupViews() {
+        wantsLayer = true
+
+        addSubview(expandButton)
+        addSubview(nameLabel)
+
+        // 创建并保存缩进约束
+        expandButtonLeadingConstraint = expandButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4)
+
+        NSLayoutConstraint.activate([
+            // 展开按钮约束
+            expandButtonLeadingConstraint,
+            expandButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            expandButton.widthAnchor.constraint(equalToConstant: 20),
+            expandButton.heightAnchor.constraint(equalToConstant: 20),
+
+            // 名称标签约束
+            nameLabel.leadingAnchor.constraint(equalTo: expandButton.trailingAnchor, constant: 4),
+            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            nameLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+
+        // 设置按钮动作
+        expandButton.target = self
+        expandButton.action = #selector(expandButtonAction)
+
+        // 添加点击手势到名称标签
+        let clickGesture = NSClickGestureRecognizer(target: self, action: #selector(nameLabelAction))
+        nameLabel.addGestureRecognizer(clickGesture)
+    }
+
+    @objc private func expandButtonAction() {
+        onExpandButtonClicked?()
+    }
+
+    @objc private func nameLabelAction() {
+        onNameClicked?()
+    }
+
+    /// 配置 Cell
+    func configure(with item: DirectoryItem, isSelected: Bool) {
+        // 根据层级添加缩进
+        let indentWidth: CGFloat = CGFloat(item.level) * 20
+        expandButtonLeadingConstraint.constant = 4 + indentWidth
+
+        // 设置展开按钮标题
+        let expandIcon = item.isExpanded ? "▼" : "▶︎"
+
+        // 设置选中状态的背景色和文字色
+        if isSelected {
+            layer?.backgroundColor = NSColor.selectedContentBackgroundColor.cgColor
+
+            // 设置文字颜色为白色
+            let whiteColor = NSColor.white
+
+            // 使用 NSAttributedString 设置名称标签，确保颜色生效
+            let nameAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: whiteColor,
+                .font: NSFont.systemFont(ofSize: 13)
+            ]
+            nameLabel.attributedStringValue = NSAttributedString(string: "📁 \(item.name)", attributes: nameAttributes)
+
+            // 设置按钮文字颜色
+            let buttonAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: whiteColor,
+                .font: NSFont.systemFont(ofSize: 12)
+            ]
+            expandButton.attributedTitle = NSAttributedString(string: expandIcon, attributes: buttonAttributes)
+        } else {
+            layer?.backgroundColor = NSColor.clear.cgColor
+
+            // 恢复默认颜色
+            let defaultColor = NSColor.labelColor
+
+            // 使用 NSAttributedString 设置名称标签
+            let nameAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: defaultColor,
+                .font: NSFont.systemFont(ofSize: 13)
+            ]
+            nameLabel.attributedStringValue = NSAttributedString(string: "📁 \(item.name)", attributes: nameAttributes)
+
+            // 恢复按钮默认颜色
+            let buttonAttributes: [NSAttributedString.Key: Any] = [
+                .foregroundColor: defaultColor,
+                .font: NSFont.systemFont(ofSize: 12)
+            ]
+            expandButton.attributedTitle = NSAttributedString(string: expandIcon, attributes: buttonAttributes)
+        }
+    }
+}
+
+/// 目录项数据结构
+class DirectoryItem {
+    let name: String
+    let fullPath: String
+    let level: Int // 层级深度，从 0 开始
+    var isExpanded: Bool
+    var children: [DirectoryItem]?
+
+    init(name: String, fullPath: String, level: Int, isExpanded: Bool = false) {
+        self.name = name
+        self.fullPath = fullPath
+        self.level = level
+        self.isExpanded = isExpanded
+        self.children = nil
+    }
+}
+
 /// 左侧目录列表视图
 class AELeftView: NSView {
 
@@ -23,14 +175,20 @@ class AELeftView: NSView {
 
     weak var delegate: AELeftViewDelegate?
 
-    /// 当前显示的目录路径
+    /// 根目录路径
+    private(set) var rootPath: String = ""
+
+    /// 当前选中的目录路径
     private(set) var currentPath: String = ""
 
-    /// 路径浏览历史栈
-    private var pathStack: [String] = []
+    /// 根目录项列表
+    private var rootItems: [DirectoryItem] = []
 
-    /// 目录列表
-    private var directories: [String] = []
+    /// 展平后用于显示的目录项列表
+    private var displayItems: [DirectoryItem] = []
+
+    /// 当前选中的目录项
+    private var selectedItem: DirectoryItem?
 
     /// TableView
     private let tableView: NSTableView = {
@@ -64,15 +222,6 @@ class AELeftView: NSView {
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
         return view
-    }()
-
-    /// 返回上一级按钮
-    private let backButton: NSButton = {
-        let button = NSButton()
-        button.title = "← 返回"
-        button.bezelStyle = .rounded
-        button.setButtonType(.momentaryPushIn)
-        return button
     }()
 
     /// 确认选择按钮
@@ -109,13 +258,11 @@ class AELeftView: NSView {
         addSubview(bottomContainer)
 
         // 添加按钮到底部容器
-        bottomContainer.addSubview(backButton)
         bottomContainer.addSubview(confirmButton)
 
         // 设置约束
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         bottomContainer.translatesAutoresizingMaskIntoConstraints = false
-        backButton.translatesAutoresizingMaskIntoConstraints = false
         confirmButton.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -129,17 +276,11 @@ class AELeftView: NSView {
             bottomContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
             bottomContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
             bottomContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-            bottomContainer.heightAnchor.constraint(equalToConstant: 80),
-
-            // 返回按钮约束
-            backButton.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 12),
-            backButton.topAnchor.constraint(equalTo: bottomContainer.topAnchor, constant: 12),
-            backButton.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -12),
-            backButton.heightAnchor.constraint(equalToConstant: 28),
+            bottomContainer.heightAnchor.constraint(equalToConstant: 48),
 
             // 确认按钮约束
             confirmButton.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 12),
-            confirmButton.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 8),
+            confirmButton.topAnchor.constraint(equalTo: bottomContainer.topAnchor, constant: 10),
             confirmButton.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -12),
             confirmButton.heightAnchor.constraint(equalToConstant: 28)
         ])
@@ -149,76 +290,101 @@ class AELeftView: NSView {
         tableView.dataSource = self
 
         // 设置按钮事件
-        backButton.target = self
-        backButton.action = #selector(backButtonClicked)
         confirmButton.target = self
         confirmButton.action = #selector(confirmButtonClicked)
-
-        // 初始状态：返回按钮不可用
-        backButton.isEnabled = false
     }
 
     // MARK: - Public Methods
 
-    /// 加载指定路径的子目录（初始加载）
-    /// - Parameter path: 目录路径
+    /// 加载指定路径的子目录
+    /// - Parameter path: 根目录路径
     func loadDirectories(atPath path: String) {
-        pathStack = [path] // 重置路径栈
+        rootPath = path
         currentPath = path
-        directories = AEDirectory.subdirectories(atPath: path)
+
+        // 加载根目录的子目录
+        let subdirs = AEDirectory.subdirectories(atPath: path)
+        rootItems = subdirs.map { name in
+            let fullPath = (path as NSString).appendingPathComponent(name)
+            return DirectoryItem(name: name, fullPath: fullPath, level: 0)
+        }
+
+        // 重建显示列表
+        rebuildDisplayItems()
         tableView.reloadData()
-        updateBackButtonState()
     }
 
-    /// 刷新当前目录
+    /// 刷新当前显示
     func refresh() {
-        directories = AEDirectory.subdirectories(atPath: currentPath)
-        tableView.reloadData()
+        loadDirectories(atPath: rootPath)
     }
 
     // MARK: - Private Methods
 
-    /// 进入子目录
-    private func navigateToSubdirectory(named name: String) {
-        let fullPath = (currentPath as NSString).appendingPathComponent(name)
-
-        // 检查是否为目录
-        guard AEDirectory.isDirectory(atPath: fullPath) else {
-            return
+    /// 重建展平的显示列表
+    private func rebuildDisplayItems() {
+        displayItems = []
+        for item in rootItems {
+            appendItemToDisplay(item)
         }
-
-        // 将当前路径压入栈
-        pathStack.append(currentPath)
-
-        // 加载新目录
-        currentPath = fullPath
-        directories = AEDirectory.subdirectories(atPath: fullPath)
-        tableView.reloadData()
-        updateBackButtonState()
     }
 
-    /// 返回上一级目录
-    private func navigateBack() {
-        guard let previousPath = pathStack.popLast() else {
-            return
-        }
+    /// 递归追加目录项到显示列表
+    private func appendItemToDisplay(_ item: DirectoryItem) {
+        displayItems.append(item)
 
-        currentPath = previousPath
-        directories = AEDirectory.subdirectories(atPath: currentPath)
-        tableView.reloadData()
-        updateBackButtonState()
+        // 如果展开了，递归添加子项
+        if item.isExpanded, let children = item.children {
+            for child in children {
+                appendItemToDisplay(child)
+            }
+        }
     }
 
-    /// 更新返回按钮状态
-    private func updateBackButtonState() {
-        backButton.isEnabled = !pathStack.isEmpty
+    /// 切换目录的展开/收起状态
+    private func toggleDirectory(at index: Int) {
+        guard index < displayItems.count else { return }
+        let item = displayItems[index]
+
+        if item.isExpanded {
+            // 收起
+            item.isExpanded = false
+        } else {
+            // 展开：加载子目录
+            if item.children == nil {
+                loadChildren(for: item)
+            }
+            item.isExpanded = true
+        }
+
+        // 重建显示列表
+        rebuildDisplayItems()
+        tableView.reloadData()
+    }
+
+    /// 选中目录（不展开）
+    private func selectDirectory(at index: Int) {
+        guard index < displayItems.count else { return }
+        let item = displayItems[index]
+
+        // 更新选中项
+        selectedItem = item
+        currentPath = item.fullPath
+
+        // 刷新表格以更新选中状态
+        tableView.reloadData()
+    }
+
+    /// 加载目录的子目录
+    private func loadChildren(for item: DirectoryItem) {
+        let subdirs = AEDirectory.subdirectories(atPath: item.fullPath)
+        item.children = subdirs.map { name in
+            let fullPath = (item.fullPath as NSString).appendingPathComponent(name)
+            return DirectoryItem(name: name, fullPath: fullPath, level: item.level + 1)
+        }
     }
 
     // MARK: - Button Actions
-
-    @objc private func backButtonClicked() {
-        navigateBack()
-    }
 
     @objc private func confirmButtonClicked() {
         // 通过 delegate 返回当前选中的目录路径
@@ -231,7 +397,7 @@ class AELeftView: NSView {
 extension AELeftView: NSTableViewDataSource {
 
     func numberOfRows(in tableView: NSTableView) -> Int {
-        return directories.count
+        return displayItems.count
     }
 }
 
@@ -242,31 +408,34 @@ extension AELeftView: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let identifier = NSUserInterfaceItemIdentifier("DirectoryCell")
 
-        var cellView = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView
+        guard row < displayItems.count else { return nil }
+        let item = displayItems[row]
+
+        var cellView = tableView.makeView(withIdentifier: identifier, owner: self) as? DirectoryTableCellView
 
         if cellView == nil {
-            cellView = NSTableCellView()
+            cellView = DirectoryTableCellView()
             cellView?.identifier = identifier
-
-            let textField = NSTextField()
-            textField.isBezeled = false
-            textField.drawsBackground = false
-            textField.isEditable = false
-            textField.isSelectable = false
-            textField.translatesAutoresizingMaskIntoConstraints = false
-
-            cellView?.addSubview(textField)
-            cellView?.textField = textField
-
-            NSLayoutConstraint.activate([
-                textField.leadingAnchor.constraint(equalTo: cellView!.leadingAnchor, constant: 8),
-                textField.trailingAnchor.constraint(equalTo: cellView!.trailingAnchor, constant: -8),
-                textField.centerYAnchor.constraint(equalTo: cellView!.centerYAnchor)
-            ])
         }
 
-        let directoryName = directories[row]
-        cellView?.textField?.stringValue = "📁 \(directoryName)"
+        // 配置 cell
+        let isSelected = (selectedItem?.fullPath == item.fullPath)
+        cellView?.configure(with: item, isSelected: isSelected)
+
+        // 设置回调
+        cellView?.onExpandButtonClicked = { [weak self, weak item] in
+            guard let self = self, let item = item else { return }
+            if let index = self.displayItems.firstIndex(where: { $0.fullPath == item.fullPath }) {
+                self.toggleDirectory(at: index)
+            }
+        }
+
+        cellView?.onNameClicked = { [weak self, weak item] in
+            guard let self = self, let item = item else { return }
+            if let index = self.displayItems.firstIndex(where: { $0.fullPath == item.fullPath }) {
+                self.selectDirectory(at: index)
+            }
+        }
 
         return cellView
     }
@@ -275,16 +444,8 @@ extension AELeftView: NSTableViewDelegate {
         return 30
     }
 
-    func tableViewSelectionDidChange(_ notification: Notification) {
-        let selectedRow = tableView.selectedRow
-        guard selectedRow >= 0 && selectedRow < directories.count else { return }
-
-        let selectedDirectory = directories[selectedRow]
-
-        // 进入选中的子目录
-        navigateToSubdirectory(named: selectedDirectory)
-
-        // 清除选择状态
-        tableView.deselectAll(nil)
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        // 禁用 TableView 的默认选择行为，使用自定义的点击处理
+        return false
     }
 }
