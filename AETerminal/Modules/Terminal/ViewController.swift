@@ -7,6 +7,7 @@
 
 import Cocoa
 import AENetworkEngine
+import AEAIEngin
 
 class ViewController: NSViewController {
 
@@ -16,6 +17,8 @@ class ViewController: NSViewController {
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
 
+    @IBOutlet weak var leftView: AELeftView!
+    
     // 命令历史记录管理器
     private let historyManager = CommandHistoryManager.shared
 
@@ -35,7 +38,23 @@ class ViewController: NSViewController {
         // 设置初始高度
         updateTextViewHeight()
 
+        // 设置左侧视图
+        setupLeftView()
+
         // Do any additional setup after loading the view.
+    }
+
+    // MARK: - Left View Setup
+
+    /// 设置左侧目录视图
+    private func setupLeftView() {
+        guard let leftView = leftView else { return }
+
+        leftView.delegate = self
+
+        // 加载用户主目录
+        let homePath = AEDirectory.homeDirectory()
+        leftView.loadDirectories(atPath: homePath)
     }
 
     override func viewDidAppear() {
@@ -105,6 +124,27 @@ class ViewController: NSViewController {
         inputTextView.setSelectedRange(NSRange(location: textLength, length: 0))
     }
 }
+
+// MARK: - AELeftViewDelegate
+
+extension ViewController: AELeftViewDelegate {
+
+    /// 处理目录确认选择
+    func leftView(_ leftView: AELeftView, didConfirmDirectory path: String) {
+        print("确认选择目录: \(path)")
+
+        // 检查是否为目录
+        guard AEDirectory.isDirectory(atPath: path) else {
+            print("不是有效的目录: \(path)")
+            return
+        }
+
+        // TODO: 在这里处理用户选择的目录
+        // 例如：切换工作目录、显示目录内容等
+    }
+}
+
+// MARK: - NSTextViewDelegate
 
 extension ViewController: NSTextViewDelegate {
 

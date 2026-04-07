@@ -22,13 +22,23 @@
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES"
   },
-  "source_files": [
-    "*.swift",
-    "Context/**/*.swift"
+  "default_subspecs": [
+    "Context",
+    "Directory"
   ],
   "dependencies": {
     "AENetworkEngine": [
 
     ]
-  }
+  },
+  "subspecs": [
+    {
+      "name": "Context",
+      "source_files": "Context/**/*.swift"
+    },
+    {
+      "name": "Directory",
+      "source_files": "Directory/**/*.swift"
+    }
+  ]
 }

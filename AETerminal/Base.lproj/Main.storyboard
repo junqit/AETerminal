@@ -709,7 +709,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="1468" height="807"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="wGo-da-M7h">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="wGo-da-M7h" customClass="AELeftView" customModule="AETerminal" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="260" height="785"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="260" id="Sf3-Gh-ayL"/>
@@ -718,7 +718,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="xKL-zT-avU">
                                 <rect key="frame" x="262" y="0.0" width="944" height="787"/>
                                 <subviews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="dRz-j3-2sV">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="dRz-j3-2sV" customClass="AEChatView" customModule="AETerminal" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="166" width="944" height="619"/>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="fbM-9r-8K3">
@@ -783,7 +783,7 @@
                                     <constraint firstItem="dRz-j3-2sV" firstAttribute="leading" secondItem="xKL-zT-avU" secondAttribute="leading" id="zmg-4v-F7I"/>
                                 </constraints>
                             </customView>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="BZc-ws-6WT">
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="BZc-ws-6WT" customClass="AERightView" customModule="AETerminal" customModuleProvider="target">
                                 <rect key="frame" x="1208" y="0.0" width="260" height="785"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="260" id="wUw-nP-HXA"/>
@@ -814,6 +814,7 @@
                     </view>
                     <connections>
                         <outlet property="inputTextView" destination="DjN-og-m22" id="zXc-F9-vPR"/>
+                        <outlet property="leftView" destination="wGo-da-M7h" id="qAo-er-ixb"/>
                         <outlet property="scrollViewHeightConstraint" destination="4DT-es-Wr3" id="fTP-CX-VEg"/>
                     </connections>
                 </viewController>
