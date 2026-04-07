@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FD2A2EAECFA8A11DA898C93718B0EFB2"
-               BuildableName = "AENetworkEngine"
-               BlueprintName = "AENetworkEngine"
+               BlueprintIdentifier = "DEC1AEAD2EC1037F19A6F9C040E599F0"
+               BuildableName = "AEAIEngin.framework"
+               BlueprintName = "AEAIEngin"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

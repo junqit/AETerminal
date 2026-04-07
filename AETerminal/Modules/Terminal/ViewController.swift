@@ -153,6 +153,7 @@ extension ViewController: NSTextViewDelegate {
 
     // 处理输入文本的方法
     private func handleInputText(_ text: String) {
+        
         // 这里可以添加处理输入文本的逻辑
         // 例如：执行命令、发送消息等
         
