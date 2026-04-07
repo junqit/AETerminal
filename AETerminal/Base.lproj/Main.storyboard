@@ -727,46 +727,10 @@
                                             <constraint firstAttribute="height" constant="120" id="ue1-73-x9l"/>
                                         </constraints>
                                     </customView>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="GvX-Im-yFS">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="GvX-Im-yFS" customClass="AETextView" customModule="AEAIEngin">
                                         <rect key="frame" x="0.0" y="122" width="944" height="42"/>
-                                        <subviews>
-                                            <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" scrollerKnobStyle="light" translatesAutoresizingMaskIntoConstraints="NO" id="J9X-Mj-MQh">
-                                                <rect key="frame" x="4" y="1" width="936" height="40"/>
-                                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="9EU-7i-TYx">
-                                                    <rect key="frame" x="0.0" y="0.0" width="936" height="40"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <textView wantsLayer="YES" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="DjN-og-m22">
-                                                            <rect key="frame" x="0.0" y="0.0" width="936" height="40"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            <size key="minSize" width="936" height="40"/>
-                                                            <size key="maxSize" width="936" height="10000000"/>
-                                                            <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="XfG-lQ-9wD" id="tFy-cP-cZB"/>
-                                                            </connections>
-                                                        </textView>
-                                                    </subviews>
-                                                    <color key="backgroundColor" name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </clipView>
-                                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="JWf-it-uw0">
-                                                    <rect key="frame" x="-100" y="-100" width="240" height="16"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </scroller>
-                                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="jUx-gq-u0b">
-                                                    <rect key="frame" x="-100" y="-100" width="16" height="40"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                </scroller>
-                                            </scrollView>
-                                        </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="42" id="4DT-es-Wr3"/>
-                                            <constraint firstAttribute="trailing" secondItem="J9X-Mj-MQh" secondAttribute="trailing" constant="4" id="HyN-Ug-cgd"/>
-                                            <constraint firstItem="J9X-Mj-MQh" firstAttribute="leading" secondItem="GvX-Im-yFS" secondAttribute="leading" constant="4" id="eCY-2R-ghR"/>
-                                            <constraint firstAttribute="bottom" secondItem="J9X-Mj-MQh" secondAttribute="bottom" constant="1" id="pG1-3C-D6Q"/>
-                                            <constraint firstItem="J9X-Mj-MQh" firstAttribute="top" secondItem="GvX-Im-yFS" secondAttribute="top" constant="1" id="rJT-a0-cmI"/>
                                         </constraints>
                                     </customView>
                                 </subviews>
@@ -813,7 +777,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="inputTextView" destination="DjN-og-m22" id="zXc-F9-vPR"/>
+                        <outlet property="inputTextView" destination="GvX-Im-yFS" id="o5y-hz-l3w"/>
                         <outlet property="leftView" destination="wGo-da-M7h" id="qAo-er-ixb"/>
                         <outlet property="scrollViewHeightConstraint" destination="4DT-es-Wr3" id="fTP-CX-VEg"/>
                     </connections>
