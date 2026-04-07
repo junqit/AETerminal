@@ -19,6 +19,15 @@ protocol AELeftViewDelegate: AnyObject {
 /// 自定义目录 Cell
 class DirectoryTableCellView: NSTableCellView {
 
+    /// 背景视图（用于显示选中效果）
+    private let backgroundView: NSView = {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.cornerRadius = 4
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     /// 展开/收起按钮
     let expandButton: NSButton = {
         let button = NSButton()
@@ -61,15 +70,25 @@ class DirectoryTableCellView: NSTableCellView {
     }
 
     private func setupViews() {
-        wantsLayer = true
-
+        // 添加背景视图到最底层
+        addSubview(backgroundView, positioned: .below, relativeTo: nil)
         addSubview(expandButton)
         addSubview(nameLabel)
+
+        // 确保背景视图在最底层
+        backgroundView.wantsLayer = true
+        backgroundView.layer?.zPosition = -1
 
         // 创建并保存缩进约束
         expandButtonLeadingConstraint = expandButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 4)
 
         NSLayoutConstraint.activate([
+            // 背景视图约束 - 覆盖整个 cell
+            backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: 1),
+            backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 2),
+            backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -2),
+            backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
+
             // 展开按钮约束
             expandButtonLeadingConstraint,
             expandButton.centerYAnchor.constraint(equalTo: centerYAnchor),
@@ -110,7 +129,11 @@ class DirectoryTableCellView: NSTableCellView {
 
         // 设置选中状态的背景色和文字色
         if isSelected {
-            layer?.backgroundColor = NSColor.selectedContentBackgroundColor.cgColor
+            // 选中状态：使用系统蓝色背景 + 白色文字
+            let selectedColor = NSColor.selectedContentBackgroundColor
+            backgroundView.layer?.backgroundColor = selectedColor.cgColor
+            backgroundView.layer?.opacity = 1.0
+            backgroundView.isHidden = false
 
             // 设置文字颜色为白色
             let whiteColor = NSColor.white
@@ -128,8 +151,13 @@ class DirectoryTableCellView: NSTableCellView {
                 .font: NSFont.systemFont(ofSize: 12)
             ]
             expandButton.attributedTitle = NSAttributedString(string: expandIcon, attributes: buttonAttributes)
+
+            print("✅ 设置选中: \(item.name), 背景色: \(selectedColor), hidden: \(backgroundView.isHidden)")
         } else {
-            layer?.backgroundColor = NSColor.clear.cgColor
+            // 未选中状态：隐藏背景 + 默认文字颜色
+            backgroundView.layer?.backgroundColor = NSColor.clear.cgColor
+            backgroundView.layer?.opacity = 0.0
+            backgroundView.isHidden = true
 
             // 恢复默认颜色
             let defaultColor = NSColor.labelColor
@@ -148,6 +176,11 @@ class DirectoryTableCellView: NSTableCellView {
             ]
             expandButton.attributedTitle = NSAttributedString(string: expandIcon, attributes: buttonAttributes)
         }
+
+        // 强制刷新显示
+        backgroundView.needsDisplay = true
+        backgroundView.needsLayout = true
+        needsLayout = true
     }
 }
 
@@ -195,8 +228,10 @@ class AELeftView: NSView {
         let table = NSTableView()
         table.headerView = nil
         table.backgroundColor = .clear
-        table.selectionHighlightStyle = .regular
+        table.selectionHighlightStyle = .none // 禁用默认选中高亮
         table.focusRingType = .none
+        table.allowsEmptySelection = true
+        table.allowsMultipleSelection = false
 
         let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(rawValue: "DirectoryColumn"))
         column.width = 200
@@ -301,6 +336,7 @@ class AELeftView: NSView {
     func loadDirectories(atPath path: String) {
         rootPath = path
         currentPath = path
+        selectedItem = nil // 清除选中项
 
         // 加载根目录的子目录
         let subdirs = AEDirectory.subdirectories(atPath: path)
@@ -346,19 +382,28 @@ class AELeftView: NSView {
         guard index < displayItems.count else { return }
         let item = displayItems[index]
 
+        // 点击三角形时，清除选中状态
+        selectedItem = nil
+        currentPath = rootPath
+        print("清除选中状态")
+
         if item.isExpanded {
             // 收起
             item.isExpanded = false
+            print("收起目录: \(item.name)")
         } else {
             // 展开：加载子目录
             if item.children == nil {
                 loadChildren(for: item)
             }
             item.isExpanded = true
+            print("展开目录: \(item.name), 子目录数: \(item.children?.count ?? 0)")
         }
 
         // 重建显示列表
         rebuildDisplayItems()
+
+        // 刷新表格
         tableView.reloadData()
     }
 
@@ -367,9 +412,17 @@ class AELeftView: NSView {
         guard index < displayItems.count else { return }
         let item = displayItems[index]
 
+        // 如果点击的是已经选中的目录，保持选中状态
+        if selectedItem?.fullPath == item.fullPath {
+            print("已选中目录: \(item.fullPath)")
+            return
+        }
+
         // 更新选中项
         selectedItem = item
         currentPath = item.fullPath
+
+        print("选中目录: \(item.name) - \(item.fullPath)")
 
         // 刷新表格以更新选中状态
         tableView.reloadData()
@@ -388,7 +441,11 @@ class AELeftView: NSView {
 
     @objc private func confirmButtonClicked() {
         // 通过 delegate 返回当前选中的目录路径
-        delegate?.leftView(self, didConfirmDirectory: currentPath)
+        // 如果有选中项，返回选中项的路径；否则返回根目录
+        let pathToConfirm = selectedItem?.fullPath ?? rootPath
+        delegate?.leftView(self, didConfirmDirectory: pathToConfirm)
+
+        print("确认选择目录: \(pathToConfirm)")
     }
 }
 
@@ -420,6 +477,11 @@ extension AELeftView: NSTableViewDelegate {
 
         // 配置 cell
         let isSelected = (selectedItem?.fullPath == item.fullPath)
+
+        if isSelected {
+            print("🔵 Row \(row) (\(item.name)) 应该显示为选中状态")
+        }
+
         cellView?.configure(with: item, isSelected: isSelected)
 
         // 设置回调
