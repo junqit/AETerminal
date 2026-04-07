@@ -157,7 +157,7 @@ extension ViewController: NSTextViewDelegate {
         // 这里可以添加处理输入文本的逻辑
         // 例如：执行命令、发送消息等
         
-        let req = AENetHttpReq(post: "chat", parameters: ["user_input":text])
+        let req = AENetHttpReq(post: "chat", parameters: ["user_input":text, "session_id":"session_id"])
         AENetHttpEngine.send(request: req) { rsp in
             
             

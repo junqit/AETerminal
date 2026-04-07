@@ -2,8 +2,8 @@ PODS:
   - AEAIEngin (0.0.1):
     - AENetworkEngine
   - AENetworkEngine (0.0.1):
-    - AENetworkEngine/Core (= 0.0.1)
-  - AENetworkEngine/Core (0.0.1)
+    - AENetworkEngine/HTTP (= 0.0.1)
+  - AENetworkEngine/HTTP (0.0.1)
 
 DEPENDENCIES:
   - AEAIEngin (from `../CocoaPods/AEAIEngin`)
@@ -17,7 +17,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AEAIEngin: 0c90e30cb08c980026cfda532b54f757a8f4047c
-  AENetworkEngine: d017c42718e1d419e5bbbbcaedd431214400aa8d
+  AENetworkEngine: 56a286b15418982499ede98076dd0d24adab6ed3
 
 PODFILE CHECKSUM: a1f9a2d9d10057e8e8366c69ad63d8dc79ce525a
 

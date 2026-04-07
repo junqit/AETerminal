@@ -19,11 +19,11 @@
     "git": "git.",
     "tag": "0.0.1"
   },
-  "default_subspecs": "Core",
+  "default_subspecs": "HTTP",
   "subspecs": [
     {
-      "name": "Core",
-      "source_files": "Core/**/*.swift"
+      "name": "HTTP",
+      "source_files": "HTTP/**/*.swift"
     }
   ]
 }

@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FD2A2EAECFA8A11DA898C93718B0EFB2"
-               BuildableName = "AENetworkEngine"
+               BuildableName = "AENetworkEngine.framework"
                BlueprintName = "AENetworkEngine"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>

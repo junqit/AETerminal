@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-AETerminal/Pods-AETerminal-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/AEAIEngin/AEAIEngin.framework
+${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework
