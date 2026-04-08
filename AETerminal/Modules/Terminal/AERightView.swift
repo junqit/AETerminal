@@ -9,6 +9,15 @@ import Foundation
 import AppKit
 import AEAIEngin
 
+/// 右侧视图委托协议
+protocol AERightViewDelegate: AnyObject {
+    /// 当用户选中某个 Context 时调用
+    /// - Parameters:
+    ///   - rightView: 右侧视图
+    ///   - context: 被选中的上下文
+    func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext)
+}
+
 /// 右侧视图 - 显示 Context 列表
 class AERightView: NSView {
 
@@ -17,10 +26,17 @@ class AERightView: NSView {
     private var tableView: NSTableView!
     private var scrollView: NSScrollView!
 
+    // MARK: - Delegate
+
+    weak var delegate: AERightViewDelegate?
+
     // MARK: - Data
 
     /// 当前显示的上下文列表
     private var contexts: [AEAIContext] = []
+
+    /// 当前选中的 Context
+    private var selectedContext: AEAIContext?
 
     // MARK: - Initialization
 
@@ -86,12 +102,40 @@ class AERightView: NSView {
     /// 加载上下文列表
     private func loadContexts() {
         contexts = AEAIContextManager.getAllContexts()
+        sortContextsByLastUsed()
         tableView.reloadData()
+    }
+
+    /// 按最近使用时间排序（最近使用的在最前面）
+    private func sortContextsByLastUsed() {
+        contexts.sort { context1, context2 in
+            // 如果有 lastUsedTime，按时间倒序排列
+            if let time1 = context1.lastUsedTime, let time2 = context2.lastUsedTime {
+                return time1 > time2
+            }
+            // 如果只有一个有 lastUsedTime，有的排在前面
+            if context1.lastUsedTime != nil {
+                return true
+            }
+            if context2.lastUsedTime != nil {
+                return false
+            }
+            // 都没有 lastUsedTime，保持原顺序
+            return false
+        }
     }
 
     /// 刷新界面
     public func reloadData() {
         loadContexts()
+    }
+
+    // MARK: - Selection
+
+    /// 设置当前选中的 Context
+    public func setSelectedContext(_ context: AEAIContext) {
+        selectedContext = context
+        tableView.reloadData()
     }
 }
 
@@ -123,14 +167,59 @@ extension AERightView: NSTableViewDelegate {
             cell?.isBordered = false
             cell?.isEditable = false
             cell?.backgroundColor = .clear
+            cell?.lineBreakMode = .byTruncatingMiddle
         }
 
+        // 显示目录路径
         cell?.stringValue = context.content
+
+        // 设置选中状态的样式
+        if selectedContext?.id == context.id {
+            cell?.textColor = .white
+        } else {
+            cell?.textColor = .labelColor
+        }
+
         return cell
     }
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 30
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return true
+    }
+
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        let selectedRow = tableView.selectedRow
+        guard selectedRow >= 0, selectedRow < contexts.count else { return }
+
+        let context = contexts[selectedRow]
+        selectedContext = context
+
+        // 通知代理
+        delegate?.rightView(self, didSelectContext: context)
+
+        // 刷新显示
+        tableView.reloadData()
+    }
+
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        let rowView = NSTableRowView()
+        return rowView
+    }
+
+    func tableView(_ tableView: NSTableView, didAdd rowView: NSTableRowView, forRow row: Int) {
+        guard row < contexts.count else { return }
+        let context = contexts[row]
+
+        // 设置选中行的背景色
+        if selectedContext?.id == context.id {
+            rowView.backgroundColor = .selectedContentBackgroundColor
+        } else {
+            rowView.backgroundColor = .clear
+        }
     }
 }
 

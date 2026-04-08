@@ -26,7 +26,14 @@ class ViewController: NSViewController {
     private var currentInput: String = ""
 
     // 当前活动的 AI Context（用于发送问题）
-    private var currentContext: AEAIContext?
+    private var currentContext: AEAIContext? {
+        didSet {
+            // 当 currentContext 变化时，通知 rightView 更新选中状态
+            if let context = currentContext {
+                rightView?.setSelectedContext(context)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +45,9 @@ class ViewController: NSViewController {
 
         // 设置左侧视图
         setupLeftView()
+
+        // 设置右侧视图
+        setupRightView()
 
         // 监听键盘事件（用于处理回车键和上下键）
         setupKeyboardMonitor()
@@ -193,6 +203,15 @@ class ViewController: NSViewController {
         leftView.loadDirectories(atPath: homePath)
     }
 
+    // MARK: - Right View Setup
+
+    /// 设置右侧 Context 列表视图
+    private func setupRightView() {
+        guard let rightView = rightView else { return }
+
+        rightView.delegate = self
+    }
+
     override func viewDidAppear() {
         super.viewDidAppear()
 
@@ -270,10 +289,7 @@ extension ViewController: AELeftViewDelegate {
             return
         }
 
-        // 创建第一个 AI Context（如果还没有）
-        if currentContext == nil {
-            createFirstContext(withDirectory: path)
-        }
+        createFirstContext(withDirectory: path)
     }
 
     // MARK: - Helper Methods
@@ -288,6 +304,23 @@ extension ViewController: AELeftViewDelegate {
 
         print("✅ 创建第一个 Context: \(currentContext?.content ?? "")")
         print("   Context ID: \(currentContext?.id ?? "")")
+
+        // 同时通知 rightView 刷新列表
+        rightView?.reloadData()
+    }
+}
+
+// MARK: - AERightViewDelegate
+
+extension ViewController: AERightViewDelegate {
+
+    /// 用户选中某个 Context
+    func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext) {
+        print("✅ 切换 Context: \(context.content)")
+        print("   Context ID: \(context.id)")
+
+        // 切换当前活动的 Context
+        currentContext = context
     }
 }
 
@@ -350,6 +383,11 @@ extension ViewController: AETextViewDelegate {
                 print("❌ AI 响应失败: \(error.localizedDescription)")
                 self?.handleAIError(error)
             }
+        }
+
+        // 发送问题后，刷新 rightView（因为 lastUsedTime 更新了）
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.rightView?.reloadData()
         }
     }
 
