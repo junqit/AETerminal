@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import AENetworkEngine
 import AEAIEngin
 
 class ViewController: NSViewController {
@@ -26,12 +25,13 @@ class ViewController: NSViewController {
     // 暂存当前输入（用于在浏览历史时保存）
     private var currentInput: String = ""
 
+    // 当前活动的 AI Context（用于发送问题）
+    private var currentContext: AEAIContext?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
-
-        AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
 
         // 设置 AETextView 的 delegate
         inputTextView.delegate = self
@@ -262,16 +262,32 @@ extension ViewController: AELeftViewDelegate {
 
     /// 处理目录确认选择
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String) {
-        print("确认选择目录: \(path)")
+        print("✅ 确认选择目录: \(path)")
 
         // 检查是否为目录
         guard AEDirectory.isDirectory(atPath: path) else {
-            print("不是有效的目录: \(path)")
+            print("❌ 不是有效的目录: \(path)")
             return
         }
 
-        // TODO: 在这里处理用户选择的目录
-        // 例如：切换工作目录、显示目录内容等
+        // 创建第一个 AI Context（如果还没有）
+        if currentContext == nil {
+            createFirstContext(withDirectory: path)
+        }
+    }
+
+    // MARK: - Helper Methods
+
+    /// 创建第一个 AI Context
+    private func createFirstContext(withDirectory path: String) {
+        // 创建配置
+        let config = AEContextConfig(content: path)
+
+        // 通过 Manager 创建并管理 Context
+        currentContext = AEAIContextManager.createContext(config)
+
+        print("✅ 创建第一个 Context: \(currentContext?.content ?? "")")
+        print("   Context ID: \(currentContext?.id ?? "")")
     }
 }
 
@@ -312,13 +328,43 @@ extension ViewController: AETextViewDelegate {
 
     /// 处理输入文本的方法
     private func handleInputText(_ text: String) {
-        // 这里可以添加处理输入文本的逻辑
-        // 例如：执行命令、发送消息等
-
-        let req = AENetHttpReq(post: "chat", parameters: ["user_input":text, "session_id":"session_id"])
-        AENetHttpEngine.send(request: req) { rsp in
-            print("服务器响应: \(rsp.response)")
+        // 检查是否有当前的 Context
+        guard let context = currentContext else {
+            print("⚠️ 没有活动的 Context，请先加载目录")
+            return
         }
+
+        // 创建 AI 问题
+        let question = AEAIQuestion.text(text)
+
+        print("📤 发送问题到 Context [\(context.id)]")
+        print("   问题内容: \(text)")
+
+        // 通过 Context 发送问题
+        context.sendQuestion(question) { [weak self] result in
+            switch result {
+            case .success(let response):
+                print("✅ AI 响应成功")
+                self?.handleAIResponse(response)
+            case .failure(let error):
+                print("❌ AI 响应失败: \(error.localizedDescription)")
+                self?.handleAIError(error)
+            }
+        }
+    }
+
+    /// 处理 AI 响应
+    private func handleAIResponse(_ response: AnyObject) {
+        // TODO: 在这里处理 AI 的响应
+        // 例如：显示在聊天界面、更新UI等
+        print("AI 响应内容: \(response)")
+    }
+
+    /// 处理 AI 错误
+    private func handleAIError(_ error: Error) {
+        // TODO: 在这里处理错误
+        // 例如：显示错误提示等
+        print("错误: \(error.localizedDescription)")
     }
 }
 
