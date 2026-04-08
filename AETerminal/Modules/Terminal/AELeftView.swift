@@ -615,45 +615,31 @@ extension AELeftView: AECombinationKeyHandler {
     }
 
     public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
-        // 由业务层自己判断是否需要处理（检查焦点状态）
+        // 检查焦点状态
         guard window?.firstResponder == tableView || isFocused else {
-            return false // 没有焦点，不处理
+            return false
         }
 
-        // 处理 Command 键组合
-        if modifiers.contains(.command) {
-            // 方向键通过 keyCode 判断
-            switch event.keyCode {
-            case AEKeyCode.upArrow:
-                selectPreviousDirectory()
-                return true
-            case AEKeyCode.downArrow:
-                selectNextDirectory()
-                return true
-            case AEKeyCode.leftArrow:
-                collapseSelectedDirectory()
-                return true
-            case AEKeyCode.rightArrow:
-                expandSelectedDirectory()
-                return true
-            default:
-                break
-            }
-
-            // 其他字母键
-            switch key.uppercased() {
-            default:
-                break
-            }
-        }
-
-        // 处理回车键（确认选择）
-        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
+        // 处理方向键和回车键
+        switch event.keyCode {
+        case AEKeyCode.upArrow:
+            selectPreviousDirectory()
+            return true
+        case AEKeyCode.downArrow:
+            selectNextDirectory()
+            return true
+        case AEKeyCode.leftArrow:
+            collapseSelectedDirectory()
+            return true
+        case AEKeyCode.rightArrow:
+            expandSelectedDirectory()
+            return true
+        case AEKeyCode.return, AEKeyCode.enter:
             confirmSelectedDirectory()
             return true
+        default:
+            return false
         }
-
-        return false
     }
 
     // MARK: - Focus Handling

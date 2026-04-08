@@ -433,33 +433,25 @@ extension AERightView: AECombinationKeyHandler {
     }
 
     public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
-        // 由业务层自己判断是否需要处理（检查焦点状态）
+        // 检查焦点状态
         guard window?.firstResponder == tableView || isFocused else {
-            return false // 没有焦点，不处理
+            return false
         }
 
-        // 处理 Command 键组合
-        if modifiers.contains(.command) {
-            // 方向键通过 keyCode 判断
-            switch event.keyCode {
-            case AEKeyCode.upArrow:
-                selectPreviousContext()
-                return true
-            case AEKeyCode.downArrow:
-                selectNextContext()
-                return true
-            default:
-                break
-            }
-        }
-
-        // 处理回车键（确认选择，不是组合键）
-        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
+        // 处理上下方向键
+        switch event.keyCode {
+        case AEKeyCode.upArrow:
+            selectPreviousContext()
+            return true
+        case AEKeyCode.downArrow:
+            selectNextContext()
+            return true
+        case AEKeyCode.return, AEKeyCode.enter:
             confirmSelectedContext()
             return true
+        default:
+            return false
         }
-
-        return false
     }
 
     // MARK: - Navigation Helpers
