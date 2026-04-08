@@ -193,7 +193,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
         // 通过 Manager 创建并管理 Context
         currentContext = AEAIContextManager.createContext(config)
 
-        print("✅ 创建第一个 Context: \(currentContext?.content ?? "")")
+        print("✅ 创建第一个 Context: \(currentContext?.dir ?? "")")
         print("   Context ID: \(currentContext?.id ?? "")")
 
         // 同时通知 rightView 刷新列表
@@ -207,7 +207,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
     /// 用户选中某个 Context
     func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext) {
-        print("✅ 切换 Context: \(context.content)")
+        print("✅ 切换 Context: \(context.dir)")
         print("   Context ID: \(context.id)")
 
         // 切换当前活动的 Context
@@ -233,7 +233,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
         // 创建显示 Context 目录的标签
         let label = NSTextField()
-        label.stringValue = "📁 \(context.content)"
+        label.stringValue = "📁 \(context.dir)"
         label.isBezeled = false
         label.drawsBackground = false
         label.isEditable = false
@@ -251,7 +251,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
             label.centerYAnchor.constraint(equalTo: statusView.centerYAnchor)
         ])
 
-        print("✅ 更新 statusView 显示: \(context.content)")
+        print("✅ 更新 statusView 显示: \(context.dir)")
     }
 }
 

@@ -8,6 +8,19 @@
 import Foundation
 import AppKit
 import AEAIEngin
+import AEFoundation
+
+/// 缓存的上下文信息（轻量级，用于持久化）
+struct CachedContext: Codable {
+
+    let dir: String
+    let lastUsedTime: Date?
+
+    init(from context: AEAIContext) {
+        self.dir = context.dir
+        self.lastUsedTime = context.lastUsedTime
+    }
+}
 
 /// 右侧视图委托协议
 protocol AERightViewDelegate: AnyObject {
@@ -49,6 +62,14 @@ class AERightView: NSView {
 
     /// 是否是焦点视图
     private var isFocused: Bool = false
+
+    // MARK: - Cache
+
+    /// 缓存引擎（用于存储 Context 列表）
+    private let cacheEngine = AECacheEngine(identifier: "AERightView", storageType: .file)
+
+    /// 缓存键
+    private let cacheKey = "contexts"
 
     // MARK: - Initialization
 
@@ -128,7 +149,26 @@ class AERightView: NSView {
 
     /// 加载上下文列表
     private func loadContexts() {
-        contexts = AEAIContextManager.getAllContexts()
+        // 1. 先尝试从缓存加载
+        if let cachedContexts = loadContextsFromCache(), !cachedContexts.isEmpty {
+            // 从缓存的信息创建 AEAIContext 对象
+            contexts = cachedContexts.compactMap { cached in
+                let context = AEAIContext(config: AEContextConfig(content: cached.dir))
+                context.lastUsedTime = cached.lastUsedTime
+                return context
+            }
+
+            // 应用重启后使用缓存中的第一个 context 作为默认选中
+            if selectedContext == nil, let firstContext = contexts.first {
+                selectedContext = firstContext
+                // 通知业务层默认选中的 context
+                notifySelectedContextToDelegate(firstContext)
+            }
+        } else {
+            // 2. 如果缓存为空，从 ContextManager 加载
+            contexts = AEAIContextManager.getAllContexts()
+        }
+
         sortContextsByLastUsed()
 
         // 验证 selectedIndex 是否还有效
@@ -137,6 +177,26 @@ class AERightView: NSView {
         }
 
         tableView.reloadData()
+    }
+
+    /// 通知业务层选中的 Context
+    private func notifySelectedContextToDelegate(_ context: AEAIContext) {
+        // 延迟通知，确保视图已经完全加载
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.rightView(self, didSelectContext: context)
+        }
+    }
+
+    /// 从缓存加载 Context 列表
+    private func loadContextsFromCache() -> [CachedContext]? {
+        return cacheEngine.get(cacheKey, as: [CachedContext].self)
+    }
+
+    /// 保存 Context 列表到缓存
+    private func saveContextsToCache() {
+        let cachedContexts = contexts.map { CachedContext(from: $0) }
+        cacheEngine.set(cachedContexts, forKey: cacheKey)
     }
 
     /// 按最近使用时间排序（最近使用的在最前面）
@@ -262,7 +322,7 @@ extension AERightView: NSTableViewDelegate {
         cell?.imageView?.image = NSImage(systemSymbolName: "folder.fill", accessibilityDescription: nil)
 
         // 显示目录路径
-        cell?.textField?.stringValue = context.content
+        cell?.textField?.stringValue = context.dir
 
         // 判断是否是当前激活的 context（已确认）
         let isActiveContext = selectedContext?.id == context.id
@@ -346,18 +406,21 @@ extension AERightView: AEAIContextManagerDelegate {
                 self.selectedIndex = contexts.isEmpty ? -1 : contexts.count - 1
             }
 
+            // 保存更新后的列表到缓存
+            self.saveContextsToCache()
+
             self.tableView.reloadData()
         }
     }
 
     /// 添加了新的 Context（可选实现）
     func contextManager(_ manager: AEAIContextManager.Type, didAddContext context: AEAIContext) {
-        print("✅ 新增 Context: \(context.content)")
+        print("✅ 新增 Context: \(context.dir)")
     }
 
     /// 删除了 Context（可选实现）
     func contextManager(_ manager: AEAIContextManager.Type, didRemoveContext context: AEAIContext) {
-        print("🗑️ 删除 Context: \(context.content)")
+        print("🗑️ 删除 Context: \(context.dir)")
     }
 }
 
@@ -454,7 +517,7 @@ extension AERightView: AECombinationKeyHandler {
         // 只有在回车时才真正更新 selectedContext
         selectedContext = context
 
-        print("✅ 确认选择 Context: \(context.content)")
+        print("✅ 确认选择 Context: \(context.dir)")
 
         // 更新最后使用时间，使其排到第一位
         context.lastUsedTime = Date()
@@ -462,8 +525,11 @@ extension AERightView: AECombinationKeyHandler {
         // 重新排序，将选中的 context 移到第一位
         sortContextsByLastUsed()
 
-        // 通知 delegate - 用户确认切换 Context
-        delegate?.rightView(self, didSelectContext: context)
+        // 保存更新后的 Context 列表到缓存
+        saveContextsToCache()
+
+        // 通知业务层 - 用户确认切换 Context
+        notifySelectedContextToDelegate(context)
 
         // 清除临时选中状态
         selectedIndex = -1
