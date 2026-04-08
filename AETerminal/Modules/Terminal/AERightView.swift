@@ -18,6 +18,12 @@ protocol AERightViewDelegate: AnyObject {
     func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext)
 }
 
+/// 右侧视图焦点委托协议
+protocol AERightViewFocusDelegate: AnyObject {
+    /// 当 rightView 获得焦点时调用
+    func rightViewDidBecomeFocused(_ rightView: AERightView)
+}
+
 /// 右侧视图 - 显示 Context 列表
 class AERightView: NSView {
 
@@ -37,6 +43,9 @@ class AERightView: NSView {
 
     /// 当前选中的 Context
     private var selectedContext: AEAIContext?
+
+    /// 当前选中的索引
+    private var selectedIndex: Int = -1
 
     /// 是否是焦点视图
     private var isFocused: Bool = false
@@ -86,6 +95,10 @@ class AERightView: NSView {
         tableView.intercellSpacing = NSSize(width: 0, height: 0)
         tableView.headerView = nil
 
+        // 配置选择模式
+        tableView.allowsEmptySelection = true
+        tableView.allowsMultipleSelection = false
+
         // 添加列
         let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier("ContextColumn"))
         column.width = 200
@@ -117,6 +130,12 @@ class AERightView: NSView {
     private func loadContexts() {
         contexts = AEAIContextManager.getAllContexts()
         sortContextsByLastUsed()
+
+        // 验证 selectedIndex 是否还有效
+        if selectedIndex >= contexts.count {
+            selectedIndex = contexts.isEmpty ? -1 : contexts.count - 1
+        }
+
         tableView.reloadData()
     }
 
@@ -149,7 +168,36 @@ class AERightView: NSView {
     /// 设置当前选中的 Context
     public func setSelectedContext(_ context: AEAIContext) {
         selectedContext = context
+        // 查找并更新 selectedIndex
+        if let index = contexts.firstIndex(where: { $0.id == context.id }) {
+            selectedIndex = index
+        }
         tableView.reloadData()
+    }
+
+    /// 清除选中状态
+    public func clearSelection() {
+        selectedContext = nil
+        selectedIndex = -1
+        tableView.deselectAll(nil)
+        tableView.reloadData()
+    }
+
+    /// 激活并选中当前使用的 Context
+    func focusAndSelectCurrent() {
+        // 成为第一响应者
+        window?.makeFirstResponder(tableView)
+
+        // 如果有选中的 Context，找到它在列表中的位置并选中
+        if let selected = selectedContext,
+           let index = contexts.firstIndex(where: { $0.id == selected.id }) {
+            selectedIndex = index
+        } else if !contexts.isEmpty {
+            // 如果没有选中的，选中第一个
+            selectedIndex = 0
+        }
+
+        updateSelection()
     }
 }
 
@@ -240,6 +288,8 @@ extension AERightView: NSTableViewDelegate {
         let selectedRow = tableView.selectedRow
         guard selectedRow >= 0, selectedRow < contexts.count else { return }
 
+        // 同步更新 selectedIndex
+        selectedIndex = selectedRow
         let context = contexts[selectedRow]
         selectedContext = context
 
@@ -275,8 +325,15 @@ extension AERightView: AEAIContextManagerDelegate {
     /// Context 列表发生变化时调用
     func contextManager(_ manager: AEAIContextManager.Type, didUpdateContexts contexts: [AEAIContext]) {
         DispatchQueue.main.async { [weak self] in
-            self?.contexts = contexts
-            self?.tableView.reloadData()
+            guard let self = self else { return }
+            self.contexts = contexts
+
+            // 验证 selectedIndex 是否还有效
+            if self.selectedIndex >= contexts.count {
+                self.selectedIndex = contexts.isEmpty ? -1 : contexts.count - 1
+            }
+
+            self.tableView.reloadData()
         }
     }
 
@@ -305,35 +362,19 @@ extension AERightView: AECombinationKeyHandler {
             return false // 没有焦点，不处理
         }
 
-        // 处理 Command 键组合
-        if modifiers.contains(.command) {
-            // 方向键通过 keyCode 判断
-            switch event.keyCode {
-            case AEKeyCode.upArrow:
-                selectPreviousContext()
-                return true
-            case AEKeyCode.downArrow:
-                selectNextContext()
-                return true
-            default:
-                break
-            }
-
-            // 其他字母键
-            switch key.uppercased() {
-            case "R":
-                print("⌘R: 刷新 Context 列表")
-                reloadData()
-                return true
-            default:
-                break
-            }
-        }
-
-        // 处理回车键（确认选择）
-        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
+        // 处理上下键
+        switch event.keyCode {
+        case AEKeyCode.upArrow:
+            selectPreviousContext()
+            return true
+        case AEKeyCode.downArrow:
+            selectNextContext()
+            return true
+        case AEKeyCode.return, AEKeyCode.enter:
             confirmSelectedContext()
             return true
+        default:
+            break
         }
 
         return false
@@ -343,29 +384,54 @@ extension AERightView: AECombinationKeyHandler {
 
     private func selectNextContext() {
         guard !contexts.isEmpty else { return }
-        let currentRow = tableView.selectedRow
-        let nextRow = (currentRow + 1) < contexts.count ? (currentRow + 1) : 0
-        tableView.selectRowIndexes(IndexSet(integer: nextRow), byExtendingSelection: false)
-        tableView.scrollRowToVisible(nextRow)
+
+        // 如果没有选中，从第一个开始
+        if selectedIndex == -1 {
+            selectedIndex = 0
+        } else {
+            // 向下移动，循环到顶部
+            selectedIndex = (selectedIndex + 1) % contexts.count
+        }
+
+        updateSelection()
     }
 
     private func selectPreviousContext() {
         guard !contexts.isEmpty else { return }
-        let currentRow = tableView.selectedRow
-        let prevRow = currentRow > 0 ? (currentRow - 1) : (contexts.count - 1)
-        tableView.selectRowIndexes(IndexSet(integer: prevRow), byExtendingSelection: false)
-        tableView.scrollRowToVisible(prevRow)
+
+        // 如果没有选中，从第一个开始
+        if selectedIndex == -1 {
+            selectedIndex = 0
+        } else if selectedIndex == 0 {
+            // 向上移动，循环到底部
+            selectedIndex = contexts.count - 1
+        } else {
+            selectedIndex = selectedIndex - 1
+        }
+
+        updateSelection()
+    }
+
+    /// 更新 TableView 的选中状态
+    private func updateSelection() {
+        guard selectedIndex >= 0, selectedIndex < contexts.count else { return }
+
+        tableView.selectRowIndexes(IndexSet(integer: selectedIndex), byExtendingSelection: false)
+        tableView.scrollRowToVisible(selectedIndex)
+
+        // 更新选中的 Context
+        selectedContext = contexts[selectedIndex]
+        tableView.reloadData()
     }
 
     /// 确认选择当前 Context
     private func confirmSelectedContext() {
-        let selectedRow = tableView.selectedRow
-        guard selectedRow >= 0, selectedRow < contexts.count else {
+        guard selectedIndex >= 0, selectedIndex < contexts.count else {
             print("⚠️ 没有选中的 Context")
             return
         }
 
-        let context = contexts[selectedRow]
+        let context = contexts[selectedIndex]
         selectedContext = context
 
         print("✅ 确认选择 Context: \(context.content)")
@@ -381,6 +447,10 @@ extension AERightView: AECombinationKeyHandler {
 
     public override func becomeFirstResponder() -> Bool {
         isFocused = true
+        // 通知代理，rightView 获得焦点
+        if let delegate = delegate as? AERightViewFocusDelegate {
+            delegate.rightViewDidBecomeFocused(self)
+        }
         return super.becomeFirstResponder()
     }
 

@@ -16,6 +16,12 @@ protocol AELeftViewDelegate: AnyObject {
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String)
 }
 
+/// 左侧视图焦点委托协议
+protocol AELeftViewFocusDelegate: AnyObject {
+    /// 当 leftView 获得焦点时调用
+    func leftViewDidBecomeFocused(_ leftView: AELeftView)
+}
+
 /// 自定义目录 Cell
 class DirectoryTableCellView: NSTableCellView {
 
@@ -369,6 +375,23 @@ class AELeftView: NSView {
         loadDirectories(atPath: rootPath)
     }
 
+    /// 激活并选中第一个目录
+    func focusAndSelectFirst() {
+        // 成为第一响应者
+        window?.makeFirstResponder(tableView)
+
+        // 选中第一个目录
+        if !displayItems.isEmpty {
+            selectDirectory(at: 0)
+        }
+    }
+
+    /// 清除选中状态
+    func clearSelection() {
+        selectedItem = nil
+        tableView.reloadData()
+    }
+
     // MARK: - Private Methods
 
     /// 重建展平的显示列表
@@ -618,10 +641,6 @@ extension AELeftView: AECombinationKeyHandler {
 
             // 其他字母键
             switch key.uppercased() {
-            case "L":
-                print("⌘L: 刷新目录列表")
-                refresh()
-                return true
             default:
                 break
             }
@@ -640,6 +659,10 @@ extension AELeftView: AECombinationKeyHandler {
 
     public override func becomeFirstResponder() -> Bool {
         isFocused = true
+        // 通知代理，leftView 获得焦点
+        if let delegate = delegate as? AELeftViewFocusDelegate {
+            delegate.leftViewDidBecomeFocused(self)
+        }
         return super.becomeFirstResponder()
     }
 

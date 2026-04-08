@@ -11,14 +11,14 @@ import AEAIEngin
 class ViewController: NSViewController {
 
     @IBOutlet weak var inputTextView: AETextView!
-    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
-
-    private let minHeight: CGFloat = 20
-    private let maxHeight: CGFloat = 200
-
     @IBOutlet weak var leftView: AELeftView!
     @IBOutlet weak var rightView: AERightView!
-
+    @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var statusView: NSView!
+    
+    private let minHeight: CGFloat = 20
+    private let maxHeight: CGFloat = 200
+    
     // 命令历史记录管理器
     private let historyManager = CommandHistoryManager.shared
 
@@ -161,7 +161,7 @@ class ViewController: NSViewController {
 
 // MARK: - AELeftViewDelegate
 
-extension ViewController: AELeftViewDelegate {
+extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
     /// 处理目录确认选择
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String) {
@@ -174,6 +174,13 @@ extension ViewController: AELeftViewDelegate {
         }
 
         createFirstContext(withDirectory: path)
+    }
+
+    /// 当 leftView 获得焦点时
+    func leftViewDidBecomeFocused(_ leftView: AELeftView) {
+        // 清除 rightView 的选中状态
+        rightView?.clearSelection()
+        print("⚠️ leftView 获得焦点，清除 rightView 选中状态")
     }
 
     // MARK: - Helper Methods
@@ -196,7 +203,7 @@ extension ViewController: AELeftViewDelegate {
 
 // MARK: - AERightViewDelegate
 
-extension ViewController: AERightViewDelegate {
+extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
     /// 用户选中某个 Context
     func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext) {
@@ -205,6 +212,46 @@ extension ViewController: AERightViewDelegate {
 
         // 切换当前活动的 Context
         currentContext = context
+
+        // 在 statusView 中显示当前 Context 的目录信息
+        updateStatusView(with: context)
+    }
+
+    /// 当 rightView 获得焦点时
+    func rightViewDidBecomeFocused(_ rightView: AERightView) {
+        // 清除 leftView 的选中状态
+        leftView?.clearSelection()
+        print("⚠️ rightView 获得焦点，清除 leftView 选中状态")
+    }
+
+    // MARK: - Status View Update
+
+    /// 更新 statusView 显示 Context 信息
+    private func updateStatusView(with context: AEAIContext) {
+        // 清除 statusView 中的所有子视图
+        statusView.subviews.forEach { $0.removeFromSuperview() }
+
+        // 创建显示 Context 目录的标签
+        let label = NSTextField()
+        label.stringValue = "📁 \(context.content)"
+        label.isBezeled = false
+        label.drawsBackground = false
+        label.isEditable = false
+        label.isSelectable = false
+        label.font = NSFont.systemFont(ofSize: 12)
+        label.textColor = .secondaryLabelColor
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        statusView.addSubview(label)
+
+        // 设置约束
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: statusView.leadingAnchor, constant: 12),
+            label.trailingAnchor.constraint(equalTo: statusView.trailingAnchor, constant: -12),
+            label.centerYAnchor.constraint(equalTo: statusView.centerYAnchor)
+        ])
+
+        print("✅ 更新 statusView 显示: \(context.content)")
     }
 }
 
@@ -299,13 +346,23 @@ extension ViewController: AECombinationKeyHandler {
     }
 
     public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
-        // 处理 Command + I 组合键
+        // 处理 Command 组合键
         if modifiers.contains(.command) {
             switch key.uppercased() {
             case "I":
                 // 让 AETextView 成为第一响应者
                 inputTextView.focus()
                 print("⌘I: 聚焦到输入框")
+                return true
+            case "L":
+                // 让 leftView 成为第一响应者，并选中第一个目录
+                leftView?.focusAndSelectFirst()
+                print("⌘L: 聚焦到左侧目录列表")
+                return true
+            case "R":
+                // 让 rightView 成为第一响应者，并选中当前使用的 Context
+                rightView?.focusAndSelectCurrent()
+                print("⌘R: 聚焦到右侧 Context 列表")
                 return true
             default:
                 break
