@@ -173,25 +173,56 @@ extension AERightView: NSTableViewDelegate {
 
         // 创建或复用 cell
         let identifier = NSUserInterfaceItemIdentifier("ContextCell")
-        var cell = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTextField
+        var cell = tableView.makeView(withIdentifier: identifier, owner: self) as? NSTableCellView
 
         if cell == nil {
-            cell = NSTextField()
+            cell = NSTableCellView()
             cell?.identifier = identifier
-            cell?.isBordered = false
-            cell?.isEditable = false
-            cell?.backgroundColor = .clear
-            cell?.lineBreakMode = .byTruncatingMiddle
+
+            // 创建图标 ImageView
+            let imageView = NSImageView()
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView.imageScaling = .scaleProportionallyDown
+            cell?.addSubview(imageView)
+            cell?.imageView = imageView
+
+            // 创建文本 TextField
+            let textField = NSTextField()
+            textField.translatesAutoresizingMaskIntoConstraints = false
+            textField.isBordered = false
+            textField.isEditable = false
+            textField.backgroundColor = .clear
+            textField.lineBreakMode = .byTruncatingMiddle
+            textField.font = NSFont.systemFont(ofSize: 13)
+            cell?.addSubview(textField)
+            cell?.textField = textField
+
+            // 设置约束
+            NSLayoutConstraint.activate([
+                imageView.leadingAnchor.constraint(equalTo: cell!.leadingAnchor, constant: 8),
+                imageView.centerYAnchor.constraint(equalTo: cell!.centerYAnchor),
+                imageView.widthAnchor.constraint(equalToConstant: 16),
+                imageView.heightAnchor.constraint(equalToConstant: 16),
+
+                textField.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 6),
+                textField.trailingAnchor.constraint(equalTo: cell!.trailingAnchor, constant: -8),
+                textField.centerYAnchor.constraint(equalTo: cell!.centerYAnchor)
+            ])
         }
 
+        // 设置文件夹图标
+        cell?.imageView?.image = NSImage(systemSymbolName: "folder.fill", accessibilityDescription: nil)
+
         // 显示目录路径
-        cell?.stringValue = context.content
+        cell?.textField?.stringValue = context.content
 
         // 设置选中状态的样式
         if selectedContext?.id == context.id {
-            cell?.textColor = .white
+            cell?.textField?.textColor = .white
+            cell?.imageView?.contentTintColor = .white
         } else {
-            cell?.textColor = .labelColor
+            cell?.textField?.textColor = .labelColor
+            cell?.imageView?.contentTintColor = .systemBlue
         }
 
         return cell
@@ -276,11 +307,20 @@ extension AERightView: AECombinationKeyHandler {
 
         // 处理 Command 键组合
         if modifiers.contains(.command) {
-            switch key.uppercased() {
-            case "N":
-                print("⌘N: 创建新 Context")
-                // TODO: 创建新 Context
+            // 方向键通过 keyCode 判断
+            switch event.keyCode {
+            case AEKeyCode.upArrow:
+                selectPreviousContext()
                 return true
+            case AEKeyCode.downArrow:
+                selectNextContext()
+                return true
+            default:
+                break
+            }
+
+            // 其他字母键
+            switch key.uppercased() {
             case "R":
                 print("⌘R: 刷新 Context 列表")
                 reloadData()
@@ -290,22 +330,10 @@ extension AERightView: AECombinationKeyHandler {
             }
         }
 
-        // 处理 Control 键组合
-        if modifiers.contains(.control) {
-            switch key.uppercased() {
-            case "N", "DOWN":
-                // 向下选择
-                print("⌃N: 向下选择 Context")
-                selectNextContext()
-                return true
-            case "P", "UP":
-                // 向上选择
-                print("⌃P: 向上选择 Context")
-                selectPreviousContext()
-                return true
-            default:
-                break
-            }
+        // 处理回车键（确认选择）
+        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
+            confirmSelectedContext()
+            return true
         }
 
         return false
@@ -327,6 +355,26 @@ extension AERightView: AECombinationKeyHandler {
         let prevRow = currentRow > 0 ? (currentRow - 1) : (contexts.count - 1)
         tableView.selectRowIndexes(IndexSet(integer: prevRow), byExtendingSelection: false)
         tableView.scrollRowToVisible(prevRow)
+    }
+
+    /// 确认选择当前 Context
+    private func confirmSelectedContext() {
+        let selectedRow = tableView.selectedRow
+        guard selectedRow >= 0, selectedRow < contexts.count else {
+            print("⚠️ 没有选中的 Context")
+            return
+        }
+
+        let context = contexts[selectedRow]
+        selectedContext = context
+
+        print("✅ 确认选择 Context: \(context.content)")
+
+        // 通过 delegate 返回当前选中的 Context
+        delegate?.rightView(self, didSelectContext: context)
+
+        // 刷新显示
+        tableView.reloadData()
     }
 
     // MARK: - Focus Handling

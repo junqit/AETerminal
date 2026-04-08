@@ -49,7 +49,19 @@ class ViewController: NSViewController {
         // 设置右侧视图
         setupRightView()
 
+        // 注册组合键处理器
+        registerCombinationKeyHandler()
+
         // Do any additional setup after loading the view.
+    }
+
+    deinit {
+        AECombinationKeyManager.shared.unregister(self)
+    }
+
+    /// 注册组合键处理器
+    private func registerCombinationKeyHandler() {
+        AECombinationKeyManager.shared.register(self)
     }
 
 
@@ -275,6 +287,32 @@ extension ViewController: AETextViewDelegate {
         // TODO: 在这里处理错误
         // 例如：显示错误提示等
         print("错误: \(error.localizedDescription)")
+    }
+}
+
+// MARK: - AECombinationKeyHandler
+
+extension ViewController: AECombinationKeyHandler {
+
+    public var combinationKeyHandlerID: String {
+        return "ViewController"
+    }
+
+    public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
+        // 处理 Command + I 组合键
+        if modifiers.contains(.command) {
+            switch key.uppercased() {
+            case "I":
+                // 让 AETextView 成为第一响应者
+                inputTextView.focus()
+                print("⌘I: 聚焦到输入框")
+                return true
+            default:
+                break
+            }
+        }
+
+        return false
     }
 }
 
