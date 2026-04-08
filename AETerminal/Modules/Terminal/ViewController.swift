@@ -49,11 +49,9 @@ class ViewController: NSViewController {
         // 设置右侧视图
         setupRightView()
 
-        // 监听键盘事件（用于处理回车键和上下键）
-        setupKeyboardMonitor()
-
         // Do any additional setup after loading the view.
     }
+
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -61,132 +59,6 @@ class ViewController: NSViewController {
         // 预先准备获取焦点
         DispatchQueue.main.async { [weak self] in
             self?.inputTextView.focus()
-        }
-    }
-
-    // MARK: - Keyboard Monitor
-
-    /// 设置键盘监听器
-    private func setupKeyboardMonitor() {
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            guard let self = self else { return event }
-
-            let key = event.characters ?? ""
-            let modifiers = event.modifierFlags
-            let cleanModifiers = modifiers.intersection([.command, .option, .shift, .control, .function])
-
-            // 检查是否为上下键（用于历史记录导航）
-            if event.keyCode == 0x7E { // 上箭头
-                self.navigateHistoryUp()
-                return nil
-            }
-
-            if event.keyCode == 0x7D { // 下箭头
-                self.navigateHistoryDown()
-                return nil
-            }
-
-            // 处理组合键
-            if cleanModifiers.contains(.command) {
-                self.handleCommandKey(key: key, event: event)
-                return nil
-            }
-
-            if cleanModifiers.contains(.control) {
-                self.handleControlKey(key: key, event: event)
-                return nil
-            }
-
-            if cleanModifiers.contains(.option) {
-                self.handleOptionKey(key: key, event: event)
-                return nil
-            }
-
-            if cleanModifiers == .shift {
-                self.handleShiftKey(key: key, event: event)
-                return nil
-            }
-
-            if cleanModifiers.contains(.function) {
-                self.handleFnKey(key: key, event: event)
-                return nil
-            }
-
-            return event
-        }
-    }
-
-    // MARK: - Key Handlers
-
-    private func handleCommandKey(key: String, event: NSEvent) {
-        let processedKey = AECommandKey.process(key: key, event: event)
-        print("⌘ Command + \(processedKey)")
-
-        switch processedKey.uppercased() {
-        case "S":
-            print("保存文档")
-            // TODO: 实现保存功能
-        default:
-            if let description = AECommandKey.getShortcutDescription(processedKey) {
-                print("系统快捷键: \(description)")
-            }
-        }
-    }
-
-    private func handleOptionKey(key: String, event: NSEvent) {
-        let processedKey = AEOptionKey.process(key: key, event: event)
-        print("⌥ Option + \(processedKey)")
-
-        if AEOptionKey.isTextEditingShortcut(processedKey) {
-            if let description = AEOptionKey.getShortcutDescription(processedKey) {
-                print("文本编辑: \(description)")
-            }
-        }
-    }
-
-    private func handleShiftKey(key: String, event: NSEvent) {
-        let processedKey = AEShiftKey.process(key: key, event: event)
-        print("⇧ Shift + \(processedKey)")
-
-        if AEShiftKey.isTextSelectionShortcut(processedKey) {
-            if let description = AEShiftKey.getShortcutDescription(processedKey) {
-                print("文本选择: \(description)")
-            }
-        }
-    }
-
-    private func handleControlKey(key: String, event: NSEvent) {
-        let processedKey = AEControlKey.process(key: key, event: event)
-        print("⌃ Control + \(processedKey)")
-
-        // 处理上下键：浏览历史记录
-        switch processedKey.uppercased() {
-        case "P", "UP":
-            navigateHistoryUp()
-            return
-        case "N", "DOWN":
-            navigateHistoryDown()
-            return
-        default:
-            break
-        }
-
-        // 处理 Emacs 风格快捷键
-        if AEControlKey.isEmacsShortcut(processedKey) {
-            if let description = AEControlKey.getEmacsDescription(processedKey) {
-                print("Emacs 快捷键: \(description)")
-            }
-        }
-    }
-
-    private func handleFnKey(key: String, event: NSEvent) {
-        let processedKey = AEFnKey.process(key: key, event: event)
-        print("Fn + \(processedKey)")
-
-        if AEFnKey.isFunctionKey(processedKey) {
-            if let usage = AEFnKey.getFunctionKeyUsage(processedKey) {
-                print("功能键: \(usage)")
-            }
         }
     }
 

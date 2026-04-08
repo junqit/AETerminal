@@ -38,6 +38,9 @@ class AERightView: NSView {
     /// 当前选中的 Context
     private var selectedContext: AEAIContext?
 
+    /// 是否是焦点视图
+    private var isFocused: Bool = false
+
     // MARK: - Initialization
 
     override init(frame frameRect: NSRect) {
@@ -45,6 +48,7 @@ class AERightView: NSView {
         setupUI()
         loadContexts()
         registerAsDelegate()
+        registerCombinationKeyHandler()
     }
 
     required init?(coder: NSCoder) {
@@ -52,6 +56,16 @@ class AERightView: NSView {
         setupUI()
         loadContexts()
         registerAsDelegate()
+        registerCombinationKeyHandler()
+    }
+
+    deinit {
+        AECombinationKeyManager.shared.unregister(self)
+    }
+
+    /// 注册组合键处理器
+    private func registerCombinationKeyHandler() {
+        AECombinationKeyManager.shared.register(self)
     }
 
     // MARK: - Setup
@@ -243,6 +257,88 @@ extension AERightView: AEAIContextManagerDelegate {
     /// 删除了 Context（可选实现）
     func contextManager(_ manager: AEAIContextManager.Type, didRemoveContext context: AEAIContext) {
         print("🗑️ 删除 Context: \(context.content)")
+    }
+}
+
+// MARK: - AECombinationKeyHandler
+
+extension AERightView: AECombinationKeyHandler {
+
+    public var combinationKeyHandlerID: String {
+        return "AERightView"
+    }
+
+    public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
+        // 由业务层自己判断是否需要处理（检查焦点状态）
+        guard window?.firstResponder == tableView || isFocused else {
+            return false // 没有焦点，不处理
+        }
+
+        // 处理 Command 键组合
+        if modifiers.contains(.command) {
+            switch key.uppercased() {
+            case "N":
+                print("⌘N: 创建新 Context")
+                // TODO: 创建新 Context
+                return true
+            case "R":
+                print("⌘R: 刷新 Context 列表")
+                reloadData()
+                return true
+            default:
+                break
+            }
+        }
+
+        // 处理 Control 键组合
+        if modifiers.contains(.control) {
+            switch key.uppercased() {
+            case "N", "DOWN":
+                // 向下选择
+                print("⌃N: 向下选择 Context")
+                selectNextContext()
+                return true
+            case "P", "UP":
+                // 向上选择
+                print("⌃P: 向上选择 Context")
+                selectPreviousContext()
+                return true
+            default:
+                break
+            }
+        }
+
+        return false
+    }
+
+    // MARK: - Navigation Helpers
+
+    private func selectNextContext() {
+        guard !contexts.isEmpty else { return }
+        let currentRow = tableView.selectedRow
+        let nextRow = (currentRow + 1) < contexts.count ? (currentRow + 1) : 0
+        tableView.selectRowIndexes(IndexSet(integer: nextRow), byExtendingSelection: false)
+        tableView.scrollRowToVisible(nextRow)
+    }
+
+    private func selectPreviousContext() {
+        guard !contexts.isEmpty else { return }
+        let currentRow = tableView.selectedRow
+        let prevRow = currentRow > 0 ? (currentRow - 1) : (contexts.count - 1)
+        tableView.selectRowIndexes(IndexSet(integer: prevRow), byExtendingSelection: false)
+        tableView.scrollRowToVisible(prevRow)
+    }
+
+    // MARK: - Focus Handling
+
+    public override func becomeFirstResponder() -> Bool {
+        isFocused = true
+        return super.becomeFirstResponder()
+    }
+
+    public override func resignFirstResponder() -> Bool {
+        isFocused = false
+        return super.resignFirstResponder()
     }
 }
 

@@ -208,6 +208,9 @@ class AELeftView: NSView {
 
     weak var delegate: AELeftViewDelegate?
 
+    /// 是否是焦点视图
+    private var isFocused: Bool = false
+
     /// 根目录路径
     private(set) var rootPath: String = ""
 
@@ -273,11 +276,22 @@ class AELeftView: NSView {
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupUI()
+        registerCombinationKeyHandler()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+        registerCombinationKeyHandler()
+    }
+
+    deinit {
+        AECombinationKeyManager.shared.unregister(self)
+    }
+
+    /// 注册组合键处理器
+    private func registerCombinationKeyHandler() {
+        AECombinationKeyManager.shared.register(self)
     }
 
     // MARK: - Setup
@@ -509,5 +523,63 @@ extension AELeftView: NSTableViewDelegate {
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         // 禁用 TableView 的默认选择行为，使用自定义的点击处理
         return false
+    }
+}
+
+// MARK: - AECombinationKeyHandler
+
+extension AELeftView: AECombinationKeyHandler {
+
+    public var combinationKeyHandlerID: String {
+        return "AELeftView"
+    }
+
+    public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
+        // 由业务层自己判断是否需要处理（检查焦点状态）
+        guard window?.firstResponder == tableView || isFocused else {
+            return false // 没有焦点，不处理
+        }
+
+        // 处理 Command 键组合
+        if modifiers.contains(.command) {
+            switch key.uppercased() {
+            case "L":
+                print("⌘L: 刷新目录列表")
+                refresh()
+                return true
+            default:
+                break
+            }
+        }
+
+        // 处理 Control 键组合
+        if modifiers.contains(.control) {
+            switch key.uppercased() {
+            case "N", "DOWN":
+                // 向下选择
+                print("⌃N: 向下选择目录")
+                return true
+            case "P", "UP":
+                // 向上选择
+                print("⌃P: 向上选择目录")
+                return true
+            default:
+                break
+            }
+        }
+
+        return false
+    }
+
+    // MARK: - Focus Handling
+
+    public override func becomeFirstResponder() -> Bool {
+        isFocused = true
+        return super.becomeFirstResponder()
+    }
+
+    public override func resignFirstResponder() -> Bool {
+        isFocused = false
+        return super.resignFirstResponder()
     }
 }
