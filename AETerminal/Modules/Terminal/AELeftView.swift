@@ -389,6 +389,7 @@ class AELeftView: NSView {
     /// 清除选中状态
     func clearSelection() {
         selectedItem = nil
+        tableView.deselectAll(nil)
         tableView.reloadData()
     }
 
@@ -668,6 +669,8 @@ extension AELeftView: AECombinationKeyHandler {
 
     public override func resignFirstResponder() -> Bool {
         isFocused = false
+        // 失去焦点时清空选中状态
+        clearSelection()
         return super.resignFirstResponder()
     }
 }

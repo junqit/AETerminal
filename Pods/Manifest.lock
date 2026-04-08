@@ -10,24 +10,29 @@ PODS:
     - AENetworkEngine
   - AEAIEngin/Keyboard (0.0.1):
     - AENetworkEngine
+  - AEFoundation (0.0.1)
   - AENetworkEngine (0.0.1):
     - AENetworkEngine/HTTP (= 0.0.1)
   - AENetworkEngine/HTTP (0.0.1)
 
 DEPENDENCIES:
   - AEAIEngin (from `../CocoaPods/AEAIEngin`)
+  - AEFoundation (from `../CocoaPods/AEFoundation`)
   - AENetworkEngine (from `../CocoaPods/AENetworkEngine`)
 
 EXTERNAL SOURCES:
   AEAIEngin:
     :path: "../CocoaPods/AEAIEngin"
+  AEFoundation:
+    :path: "../CocoaPods/AEFoundation"
   AENetworkEngine:
     :path: "../CocoaPods/AENetworkEngine"
 
 SPEC CHECKSUMS:
   AEAIEngin: bd4b09994d5ef04854c1219fedaf8a04d844cdd6
+  AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AENetworkEngine: 56a286b15418982499ede98076dd0d24adab6ed3
 
-PODFILE CHECKSUM: a1f9a2d9d10057e8e8366c69ad63d8dc79ce525a
+PODFILE CHECKSUM: 783e6499bd389ee0cd3704ba3962b020bef5e475
 
 COCOAPODS: 1.14.1

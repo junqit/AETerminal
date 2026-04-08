@@ -456,6 +456,12 @@ extension AERightView: AECombinationKeyHandler {
 
         print("✅ 确认选择 Context: \(context.content)")
 
+        // 更新最后使用时间，使其排到第一位
+        context.lastUsedTime = Date()
+
+        // 重新排序，将选中的 context 移到第一位
+        sortContextsByLastUsed()
+
         // 通知 delegate - 用户确认切换 Context
         delegate?.rightView(self, didSelectContext: context)
 
@@ -480,6 +486,8 @@ extension AERightView: AECombinationKeyHandler {
 
     public override func resignFirstResponder() -> Bool {
         isFocused = false
+        // 失去焦点时清空临时选中状态
+        clearSelection()
         return super.resignFirstResponder()
     }
 }
