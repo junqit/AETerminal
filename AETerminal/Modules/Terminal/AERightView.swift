@@ -264,13 +264,25 @@ extension AERightView: NSTableViewDelegate {
         // 显示目录路径
         cell?.textField?.stringValue = context.content
 
+        // 判断是否是当前激活的 context（已确认）
+        let isActiveContext = selectedContext?.id == context.id
+
+        // 判断是否是当前选中的项（临时高亮）
+        let isSelectedRow = row == selectedIndex
+
         // 设置选中状态的样式
-        if selectedContext?.id == context.id {
+        if isSelectedRow {
+            // 临时选中：白色文字
             cell?.textField?.textColor = .white
             cell?.imageView?.contentTintColor = .white
-        } else {
-            cell?.textField?.textColor = .labelColor
+        } else if isActiveContext {
+            // 已确认的 context：蓝色高亮
+            cell?.textField?.textColor = .systemBlue
             cell?.imageView?.contentTintColor = .systemBlue
+        } else {
+            // 普通状态
+            cell?.textField?.textColor = .labelColor
+            cell?.imageView?.contentTintColor = .systemGray
         }
 
         return cell
@@ -288,13 +300,14 @@ extension AERightView: NSTableViewDelegate {
         let selectedRow = tableView.selectedRow
         guard selectedRow >= 0, selectedRow < contexts.count else { return }
 
-        // 同步更新 selectedIndex
+        // 同步更新 selectedIndex（界面选中效果）
         selectedIndex = selectedRow
-        let context = contexts[selectedRow]
-        selectedContext = context
 
-        // 通知代理
-        delegate?.rightView(self, didSelectContext: context)
+        // 刷新所有行以更新视觉样式
+        tableView.reloadData()
+
+        // 注意：这里不更新 selectedContext，也不通知 delegate
+        // 只有按回车键确认时才真正切换 Context
 
         // 刷新显示
         tableView.reloadData()
@@ -362,19 +375,25 @@ extension AERightView: AECombinationKeyHandler {
             return false // 没有焦点，不处理
         }
 
-        // 处理上下键
-        switch event.keyCode {
-        case AEKeyCode.upArrow:
-            selectPreviousContext()
-            return true
-        case AEKeyCode.downArrow:
-            selectNextContext()
-            return true
-        case AEKeyCode.return, AEKeyCode.enter:
+        // 处理 Command 键组合
+        if modifiers.contains(.command) {
+            // 方向键通过 keyCode 判断
+            switch event.keyCode {
+            case AEKeyCode.upArrow:
+                selectPreviousContext()
+                return true
+            case AEKeyCode.downArrow:
+                selectNextContext()
+                return true
+            default:
+                break
+            }
+        }
+
+        // 处理回车键（确认选择，不是组合键）
+        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
             confirmSelectedContext()
             return true
-        default:
-            break
         }
 
         return false
@@ -412,19 +431,18 @@ extension AERightView: AECombinationKeyHandler {
         updateSelection()
     }
 
-    /// 更新 TableView 的选中状态
+    /// 更新 TableView 的选中状态（仅界面显示效果）
     private func updateSelection() {
         guard selectedIndex >= 0, selectedIndex < contexts.count else { return }
 
         tableView.selectRowIndexes(IndexSet(integer: selectedIndex), byExtendingSelection: false)
         tableView.scrollRowToVisible(selectedIndex)
 
-        // 更新选中的 Context
-        selectedContext = contexts[selectedIndex]
+        // 只刷新界面，不更新 selectedContext（selectedContext 只在回车确认时更新）
         tableView.reloadData()
     }
 
-    /// 确认选择当前 Context
+    /// 确认选择当前 Context（回车键触发）
     private func confirmSelectedContext() {
         guard selectedIndex >= 0, selectedIndex < contexts.count else {
             print("⚠️ 没有选中的 Context")
@@ -432,12 +450,18 @@ extension AERightView: AECombinationKeyHandler {
         }
 
         let context = contexts[selectedIndex]
+
+        // 只有在回车时才真正更新 selectedContext
         selectedContext = context
 
         print("✅ 确认选择 Context: \(context.content)")
 
-        // 通过 delegate 返回当前选中的 Context
+        // 通知 delegate - 用户确认切换 Context
         delegate?.rightView(self, didSelectContext: context)
+
+        // 清除临时选中状态
+        selectedIndex = -1
+        tableView.deselectAll(nil)
 
         // 刷新显示
         tableView.reloadData()
