@@ -396,11 +396,6 @@ class AELeftView: NSView {
         guard index < displayItems.count else { return }
         let item = displayItems[index]
 
-        // 点击三角形时，清除选中状态
-        selectedItem = nil
-        currentPath = rootPath
-        print("清除选中状态")
-
         if item.isExpanded {
             // 收起
             item.isExpanded = false
@@ -454,6 +449,67 @@ class AELeftView: NSView {
     // MARK: - Button Actions
 
     @objc private func confirmButtonClicked() {
+        confirmSelectedDirectory()
+    }
+
+    // MARK: - Keyboard Navigation
+
+    /// 向上选择目录
+    private func selectPreviousDirectory() {
+        guard !displayItems.isEmpty else { return }
+
+        if let currentItem = selectedItem,
+           let currentIndex = displayItems.firstIndex(where: { $0.fullPath == currentItem.fullPath }),
+           currentIndex > 0 {
+            selectDirectory(at: currentIndex - 1)
+        } else {
+            // 如果没有选中或已经是第一个，选中第一个
+            selectDirectory(at: 0)
+        }
+    }
+
+    /// 向下选择目录
+    private func selectNextDirectory() {
+        guard !displayItems.isEmpty else { return }
+
+        if let currentItem = selectedItem,
+           let currentIndex = displayItems.firstIndex(where: { $0.fullPath == currentItem.fullPath }),
+           currentIndex < displayItems.count - 1 {
+            selectDirectory(at: currentIndex + 1)
+        } else {
+            // 如果没有选中或已经是最后一个，选中最后一个
+            selectDirectory(at: displayItems.count - 1)
+        }
+    }
+
+    /// 展开当前选中的目录
+    private func expandSelectedDirectory() {
+        guard let currentItem = selectedItem,
+              let currentIndex = displayItems.firstIndex(where: { $0.fullPath == currentItem.fullPath }) else {
+            return
+        }
+
+        // 如果已经展开，不做处理
+        guard !currentItem.isExpanded else { return }
+
+        toggleDirectory(at: currentIndex)
+    }
+
+    /// 收起当前选中的目录
+    private func collapseSelectedDirectory() {
+        guard let currentItem = selectedItem,
+              let currentIndex = displayItems.firstIndex(where: { $0.fullPath == currentItem.fullPath }) else {
+            return
+        }
+
+        // 如果已经收起，不做处理
+        guard currentItem.isExpanded else { return }
+
+        toggleDirectory(at: currentIndex)
+    }
+
+    /// 确认选择当前目录
+    private func confirmSelectedDirectory() {
         // 通过 delegate 返回当前选中的目录路径
         // 如果有选中项，返回选中项的路径；否则返回根目录
         let pathToConfirm = selectedItem?.fullPath ?? rootPath
@@ -542,6 +598,25 @@ extension AELeftView: AECombinationKeyHandler {
 
         // 处理 Command 键组合
         if modifiers.contains(.command) {
+            // 方向键通过 keyCode 判断
+            switch event.keyCode {
+            case AEKeyCode.upArrow:
+                selectPreviousDirectory()
+                return true
+            case AEKeyCode.downArrow:
+                selectNextDirectory()
+                return true
+            case AEKeyCode.leftArrow:
+                collapseSelectedDirectory()
+                return true
+            case AEKeyCode.rightArrow:
+                expandSelectedDirectory()
+                return true
+            default:
+                break
+            }
+
+            // 其他字母键
             switch key.uppercased() {
             case "L":
                 print("⌘L: 刷新目录列表")
@@ -552,20 +627,10 @@ extension AELeftView: AECombinationKeyHandler {
             }
         }
 
-        // 处理 Control 键组合
-        if modifiers.contains(.control) {
-            switch key.uppercased() {
-            case "N", "DOWN":
-                // 向下选择
-                print("⌃N: 向下选择目录")
-                return true
-            case "P", "UP":
-                // 向上选择
-                print("⌃P: 向上选择目录")
-                return true
-            default:
-                break
-            }
+        // 处理回车键（确认选择）
+        if event.keyCode == AEKeyCode.return || event.keyCode == AEKeyCode.enter {
+            confirmSelectedDirectory()
+            return true
         }
 
         return false
