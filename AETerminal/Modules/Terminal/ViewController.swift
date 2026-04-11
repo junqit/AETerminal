@@ -15,6 +15,8 @@ class ViewController: NSViewController {
     @IBOutlet weak var rightView: AERightView!
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusView: NSView!
+    @IBOutlet weak var chatView: AEChatView!
+    
     
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
@@ -52,6 +54,13 @@ class ViewController: NSViewController {
         // 注册组合键处理器
         registerCombinationKeyHandler()
 
+        // 检查 chatView 是否正确连接
+        if chatView != nil {
+            print("✅ chatView 已连接")
+        } else {
+            print("❌ chatView 未连接！请检查 Storyboard/XIB 连接")
+        }
+
         // Do any additional setup after loading the view.
     }
 
@@ -72,6 +81,10 @@ class ViewController: NSViewController {
         DispatchQueue.main.async { [weak self] in
             self?.inputTextView.focus()
         }
+
+        // 在视图即将显示时测试 chatView
+        print("🔍 viewWillAppear - chatView frame: \(chatView?.frame ?? .zero)")
+        print("🔍 viewWillAppear - chatView superview: \(chatView?.superview != nil ? "有" : "无")")
     }
 
     // MARK: - Left View Setup
@@ -101,6 +114,17 @@ class ViewController: NSViewController {
 
         // 让 AETextView 成为第一响应者，可以直接接收键盘输入
         inputTextView.focus()
+
+        // 视图完全显示后，测试添加一条欢迎消息
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self = self, let chatView = self.chatView else {
+                print("❌ chatView 为 nil，无法添加欢迎消息")
+                return
+            }
+
+            print("🎯 添加欢迎消息到 chatView")
+            chatView.addWelcomeMessage()
+        }
     }
 
     override var representedObject: Any? {
@@ -215,6 +239,38 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
         // 在 statusView 中显示当前 Context 的目录信息
         updateStatusView(with: context)
+
+        // 切换 Context 后，加载新 Context 的历史消息
+        switchToContext(context)
+    }
+
+    // MARK: - Context Switching
+
+    /// 切换到指定的 Context
+    private func switchToContext(_ context: AEAIContext) {
+        // 1. 清空当前输入
+        inputTextView.text = ""
+
+        // 2. 清空 chatView 的消息记录
+        chatView?.clearMessages()
+
+        // 3. 显示系统消息：切换到新的 Context
+        chatView?.addSystemMessage("切换到新的 Context: \(context.dir)")
+
+        // 4. 加载新 Context 的当前消息（如果有）
+        if let currentMessage = context.getCurrentQuestion() {
+            inputTextView.text = currentMessage.content
+            print("✅ 加载 Context 的当前消息: \(currentMessage.content)")
+        } else {
+            print("⚠️ 新 Context 没有历史消息")
+        }
+
+        // 5. 重置历史导航状态
+        historyManager.resetNavigation()
+        currentInput = ""
+
+        // 6. 让输入框获得焦点
+        inputTextView.focus()
     }
 
     /// 当 rightView 获得焦点时
@@ -271,7 +327,61 @@ extension ViewController: AETextViewDelegate {
         updateTextViewHeight(height)
     }
 
-    // MARK: - Helper Methods
+    /// 加载历史消息到 AETextView
+    private func loadHistoryMessages() {
+        guard let context = currentContext else {
+            print("⚠️ 没有当前 Context，无法加载历史消息")
+            return
+        }
+
+        // 获取当前消息
+        if let currentMessage = context.getCurrentQuestion() {
+            inputTextView.text = currentMessage.content
+            print("✅ 加载当前消息: \(currentMessage.content)")
+        } else {
+            // 如果 currentIndex 为 nil，初始化到最后一条消息
+            let allMessages = context.getAllQuestions()
+            if !allMessages.isEmpty {
+                // 初始化索引到最后一条消息
+                context.resetToLatestQuestion()
+                // 再次获取当前消息
+                if let currentMessage = context.getCurrentQuestion() {
+                    inputTextView.text = currentMessage.content
+                    print("✅ 初始化并加载最后一条消息: \(currentMessage.content)")
+                }
+            } else {
+                print("⚠️ Context 没有任何消息")
+            }
+        }
+    }
+
+    /// 加载上一条历史消息
+    private func loadPreviousMessage() {
+        guard let context = currentContext else { return }
+
+        if let previousMessage = context.getPreviousQuestion() {
+            inputTextView.text = previousMessage.content
+            moveCursorToEnd()
+            print("⬆️ 加载上一条消息: \(previousMessage.content)")
+        } else {
+            print("⚠️ 没有更早的消息")
+        }
+    }
+
+    /// 加载下一条历史消息
+    private func loadNextMessage() {
+        guard let context = currentContext else { return }
+
+        if let nextMessage = context.getNextQuestion() {
+            inputTextView.text = nextMessage.content
+            moveCursorToEnd()
+            print("⬇️ 加载下一条消息: \(nextMessage.content)")
+        } else {
+            // 没有下一条，清空输入框
+            inputTextView.text = ""
+            print("⚠️ 没有更新的消息，清空输入框")
+        }
+    }
 
     /// 处理提交的文本（回车提交）
     private func handleSubmittedText(_ text: String) {
@@ -282,6 +392,9 @@ extension ViewController: AETextViewDelegate {
 
         // 重置导航和当前输入
         currentInput = ""
+
+        // 在 chatView 中显示用户消息
+        chatView?.addUserMessage(text)
 
         // 处理输入的文本
         handleInputText(text)
@@ -324,16 +437,51 @@ extension ViewController: AETextViewDelegate {
 
     /// 处理 AI 响应
     private func handleAIResponse(_ response: AnyObject) {
-        // TODO: 在这里处理 AI 的响应
-        // 例如：显示在聊天界面、更新UI等
         print("AI 响应内容: \(response)")
+
+        // 将响应转换为字符串并显示在 chatView 中
+        var responseText = ""
+
+        // 尝试多种方式解析响应
+        if let dict = response as? [String: Any] {
+            // 如果是字典，尝试提取常见的文本字段
+            if let content = dict["content"] as? String {
+                responseText = content
+            } else if let text = dict["text"] as? String {
+                responseText = text
+            } else if let message = dict["message"] as? String {
+                responseText = message
+            } else {
+                // 如果都没有，将整个字典格式化为 JSON 字符串
+                if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted),
+                   let jsonString = String(data: jsonData, encoding: .utf8) {
+                    responseText = jsonString
+                } else {
+                    responseText = "\(dict)"
+                }
+            }
+        } else if let string = response as? String {
+            // 如果已经是字符串
+            responseText = string
+        } else {
+            // 其他类型，直接转换为字符串描述
+            responseText = "\(response)"
+        }
+
+        // 显示在 chatView 中
+        DispatchQueue.main.async { [weak self] in
+            self?.chatView?.addAssistantMessage(responseText)
+        }
     }
 
     /// 处理 AI 错误
     private func handleAIError(_ error: Error) {
-        // TODO: 在这里处理错误
-        // 例如：显示错误提示等
         print("错误: \(error.localizedDescription)")
+
+        // 在 chatView 中显示错误消息
+        DispatchQueue.main.async { [weak self] in
+            self?.chatView?.addErrorMessage(error.localizedDescription)
+        }
     }
 }
 

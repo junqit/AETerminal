@@ -19,11 +19,19 @@
     "git": "git.",
     "tag": "0.0.1"
   },
-  "default_subspecs": "HTTP",
+  "default_subspecs": [
+    "HTTP",
+    "UDP"
+  ],
   "subspecs": [
     {
       "name": "HTTP",
       "source_files": "HTTP/**/*.swift"
+    },
+    {
+      "name": "UDP",
+      "source_files": "Socket/UDP/*.swift",
+      "frameworks": "Network"
     }
   ]
 }

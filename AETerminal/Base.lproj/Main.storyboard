@@ -777,6 +777,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="chatView" destination="dRz-j3-2sV" id="lGn-gK-sLe"/>
                         <outlet property="inputTextView" destination="GvX-Im-yFS" id="o5y-hz-l3w"/>
                         <outlet property="leftView" destination="wGo-da-M7h" id="qAo-er-ixb"/>
                         <outlet property="rightView" destination="BZc-ws-6WT" id="CC6-uG-j0o"/>
