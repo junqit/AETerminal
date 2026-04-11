@@ -437,40 +437,184 @@ extension ViewController: AETextViewDelegate {
 
     /// 处理 AI 响应
     private func handleAIResponse(_ response: AnyObject) {
-        print("AI 响应内容: \(response)")
+        print("🔍 AI 响应原始数据: \(response)")
 
-        // 将响应转换为字符串并显示在 chatView 中
         var responseText = ""
+        var isMarkdown = false
 
-        // 尝试多种方式解析响应
+        // 解析响应数据
         if let dict = response as? [String: Any] {
-            // 如果是字典，尝试提取常见的文本字段
-            if let content = dict["content"] as? String {
-                responseText = content
-            } else if let text = dict["text"] as? String {
-                responseText = text
-            } else if let message = dict["message"] as? String {
-                responseText = message
-            } else {
-                // 如果都没有，将整个字典格式化为 JSON 字符串
+            print("📦 响应是字典类型，键: \(dict.keys.sorted())")
+
+            // 调试：打印完整的数据结构
+            print("📊 完整数据结构：")
+            debugPrintDictStructure(dict)
+
+            // 优先查找 llm_responses（支持数组或字典格式）
+            if let llmResponsesArray = dict["llm_responses"] as? [[String: Any]], let firstResponse = llmResponsesArray.first {
+                // 格式 1: llm_responses 是数组
+                print("✅ 找到 llm_responses 数组，共 \(llmResponsesArray.count) 项")
+                print("📝 解析第一个响应: \(firstResponse.keys.sorted())")
+                (responseText, isMarkdown) = parseResponseContent(firstResponse)
+            }
+            else if let llmResponsesDict = dict["llm_responses"] as? [String: Any] {
+                // 格式 2: llm_responses 是字典（如 {"claude": {...}, "gpt": {...}}）
+                print("✅ 找到 llm_responses 字典，键: \(llmResponsesDict.keys.sorted())")
+
+                // 优先尝试 "claude" 键，如果没有则取第一个值
+                if let claudeResponse = llmResponsesDict["claude"] as? [String: Any] {
+                    print("📝 解析 claude 响应: \(claudeResponse.keys.sorted())")
+                    (responseText, isMarkdown) = parseResponseContent(claudeResponse)
+                } else if let firstValue = llmResponsesDict.values.first as? [String: Any] {
+                    print("📝 解析第一个响应: \(firstValue.keys.sorted())")
+                    (responseText, isMarkdown) = parseResponseContent(firstValue)
+                }
+            }
+            // 兼容其他可能的数据格式
+            else if let data = dict["data"] as? [String: Any] {
+                print("📝 找到 data 字段，尝试解析")
+                (responseText, isMarkdown) = parseResponseContent(data)
+            }
+            // 直接在根级别查找
+            else {
+                print("📝 在根级别查找内容")
+                (responseText, isMarkdown) = parseResponseContent(dict)
+            }
+
+            // 如果都没找到，格式化整个字典
+            if responseText.isEmpty {
+                print("⚠️ 未找到标准字段，格式化整个响应")
                 if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted),
                    let jsonString = String(data: jsonData, encoding: .utf8) {
-                    responseText = jsonString
+                    responseText = "```json\n\(jsonString)\n```"
+                    isMarkdown = true
                 } else {
                     responseText = "\(dict)"
+                    isMarkdown = false
                 }
             }
         } else if let string = response as? String {
             // 如果已经是字符串
             responseText = string
+            isMarkdown = detectMarkdown(string)
+            print("✅ 响应是字符串类型")
+        } else if let data = response as? Data, let string = String(data: data, encoding: .utf8) {
+            // 如果是 Data 类型
+            responseText = string
+            isMarkdown = detectMarkdown(string)
+            print("✅ 响应是 Data 类型")
         } else {
             // 其他类型，直接转换为字符串描述
             responseText = "\(response)"
+            isMarkdown = false
+            print("⚠️ 响应类型未知: \(type(of: response))")
         }
 
         // 显示在 chatView 中
         DispatchQueue.main.async { [weak self] in
-            self?.chatView?.addAssistantMessage(responseText)
+            if responseText.isEmpty {
+                self?.chatView?.addErrorMessage("AI 响应为空")
+            } else {
+                self?.chatView?.addAssistantMessage(responseText, isMarkdown: isMarkdown)
+            }
+        }
+    }
+
+    /// 解析响应内容（支持多种字段名和类型）
+    /// - Parameter dict: 响应字典
+    /// - Returns: (内容文本, 是否为 Markdown)
+    private func parseResponseContent(_ dict: [String: Any]) -> (String, Bool) {
+        // 优先级顺序尝试不同的字段名
+        let fieldNames = [
+            ("response", true),      // 通用字段，默认 markdown
+            ("markdown", true),      // 明确的 markdown 字段
+            ("content", true),       // 内容字段，默认 markdown
+            ("text", false),         // 普通文本
+            ("message", false),      // 消息字段
+            ("answer", true),        // 答案字段
+            ("result", true)         // 结果字段
+        ]
+
+        for (fieldName, defaultMarkdown) in fieldNames {
+            if let value = dict[fieldName] {
+                // 尝试多种类型
+                if let stringValue = value as? String {
+                    print("✅ 找到字段 '\(fieldName)' (String)")
+                    return (stringValue, detectMarkdown(stringValue, default: defaultMarkdown))
+                } else if let dictValue = value as? [String: Any] {
+                    print("✅ 找到字段 '\(fieldName)' (Dictionary), 递归解析")
+                    return parseResponseContent(dictValue)
+                } else if let arrayValue = value as? [[String: Any]], let first = arrayValue.first {
+                    print("✅ 找到字段 '\(fieldName)' (Array), 解析第一个元素")
+                    return parseResponseContent(first)
+                } else if let arrayValue = value as? [String], let first = arrayValue.first {
+                    print("✅ 找到字段 '\(fieldName)' (String Array), 取第一个")
+                    return (first, detectMarkdown(first, default: defaultMarkdown))
+                } else {
+                    // 其他类型，转为字符串
+                    let stringValue = "\(value)"
+                    print("✅ 找到字段 '\(fieldName)' (Other: \(type(of: value)))")
+                    return (stringValue, detectMarkdown(stringValue, default: defaultMarkdown))
+                }
+            }
+        }
+
+        print("⚠️ 未找到任何已知字段")
+        return ("", false)
+    }
+
+    /// 检测文本是否包含 Markdown 标记
+    /// - Parameters:
+    ///   - text: 待检测的文本
+    ///   - default: 默认值（如果无法判断）
+    /// - Returns: 是否为 Markdown
+    private func detectMarkdown(_ text: String, default defaultValue: Bool = true) -> Bool {
+        // 检查常见的 Markdown 标记
+        let markdownPatterns = [
+            "```",           // 代码块
+            "##",            // 标题
+            "**",            // 粗体
+            "- ",            // 列表
+            "* ",            // 列表
+            "> ",            // 引用
+            "[",             // 链接
+            "`"              // 行内代码
+        ]
+
+        for pattern in markdownPatterns {
+            if text.contains(pattern) {
+                return true
+            }
+        }
+
+        // 如果没有检测到 Markdown 标记，使用默认值
+        return defaultValue
+    }
+
+    /// 调试工具：打印字典的完整结构
+    /// - Parameter dict: 待打印的字典
+    /// - Parameter indent: 缩进级别
+    private func debugPrintDictStructure(_ dict: [String: Any], indent: Int = 0) {
+        let indentStr = String(repeating: "  ", count: indent)
+        for (key, value) in dict.sorted(by: { $0.key < $1.key }) {
+            if let dictValue = value as? [String: Any] {
+                print("\(indentStr)\(key): [Dictionary]")
+                debugPrintDictStructure(dictValue, indent: indent + 1)
+            } else if let arrayValue = value as? [[String: Any]] {
+                print("\(indentStr)\(key): [Array of Dictionary] (count: \(arrayValue.count))")
+                if let first = arrayValue.first {
+                    debugPrintDictStructure(first, indent: indent + 1)
+                }
+            } else if let arrayValue = value as? [String] {
+                print("\(indentStr)\(key): [Array of String] (count: \(arrayValue.count))")
+                if let first = arrayValue.first {
+                    print("\(indentStr)  [0]: \(first.prefix(50))...")
+                }
+            } else {
+                let valueStr = "\(value)"
+                let preview = valueStr.prefix(100)
+                print("\(indentStr)\(key): \(type(of: value)) = \(preview)...")
+            }
         }
     }
 
