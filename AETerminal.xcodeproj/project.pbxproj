@@ -16,9 +16,6 @@
 		E7A049A92F7E46EE006457E0 /* CommandHistoryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0499E2F7E46EE006457E0 /* CommandHistoryStorage.swift */; };
 		E7A049AA2F7E46EE006457E0 /* CommandHistoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A0499B2F7E46EE006457E0 /* CommandHistoryItem.swift */; };
 		E7A049AC2F7E46EE006457E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A049A42F7E46EE006457E0 /* ViewController.swift */; };
-		E7AF28F02F84D9FD006CC6F5 /* AELeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF28EF2F84D9FD006CC6F5 /* AELeftView.swift */; };
-		E7AF28F22F84DA29006CC6F5 /* AERightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF28F12F84DA29006CC6F5 /* AERightView.swift */; };
-		E7AF28F42F84DA53006CC6F5 /* AEChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7AF28F32F84DA53006CC6F5 /* AEChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,9 +51,6 @@
 		E7A0499E2F7E46EE006457E0 /* CommandHistoryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandHistoryStorage.swift; sourceTree = "<group>"; };
 		E7A049A22F7E46EE006457E0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		E7A049A42F7E46EE006457E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E7AF28EF2F84D9FD006CC6F5 /* AELeftView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AELeftView.swift; sourceTree = "<group>"; };
-		E7AF28F12F84DA29006CC6F5 /* AERightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AERightView.swift; sourceTree = "<group>"; };
-		E7AF28F32F84DA53006CC6F5 /* AEChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,9 +160,6 @@
 			isa = PBXGroup;
 			children = (
 				E7A049A42F7E46EE006457E0 /* ViewController.swift */,
-				E7AF28EF2F84D9FD006CC6F5 /* AELeftView.swift */,
-				E7AF28F12F84DA29006CC6F5 /* AERightView.swift */,
-				E7AF28F32F84DA53006CC6F5 /* AEChatView.swift */,
 			);
 			path = Terminal;
 			sourceTree = "<group>";
@@ -357,11 +348,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7AF28F42F84DA53006CC6F5 /* AEChatView.swift in Sources */,
 				E7A049862F7D1C3E006457E0 /* AppDelegate.swift in Sources */,
-				E7AF28F02F84D9FD006CC6F5 /* AELeftView.swift in Sources */,
 				E7A049A82F7E46EE006457E0 /* CommandHistoryManager.swift in Sources */,
-				E7AF28F22F84DA29006CC6F5 /* AERightView.swift in Sources */,
 				E7A049A92F7E46EE006457E0 /* CommandHistoryStorage.swift in Sources */,
 				E7A049AA2F7E46EE006457E0 /* CommandHistoryItem.swift in Sources */,
 				E7A049AC2F7E46EE006457E0 /* ViewController.swift in Sources */,

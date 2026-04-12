@@ -7,6 +7,7 @@
 
 import Cocoa
 import AEAIEngin
+import AEAIModule
 
 class ViewController: NSViewController {
 
@@ -16,7 +17,6 @@ class ViewController: NSViewController {
     @IBOutlet weak var scrollViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var statusView: NSView!
     @IBOutlet weak var chatView: AEChatView!
-    
     
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
@@ -51,9 +51,6 @@ class ViewController: NSViewController {
         // 设置右侧视图
         setupRightView()
 
-        // 注册组合键处理器
-        registerCombinationKeyHandler()
-
         // 检查 chatView 是否正确连接
         if chatView != nil {
             print("✅ chatView 已连接")
@@ -63,16 +60,6 @@ class ViewController: NSViewController {
 
         // Do any additional setup after loading the view.
     }
-
-    deinit {
-        AECombinationKeyManager.shared.unregister(self)
-    }
-
-    /// 注册组合键处理器
-    private func registerCombinationKeyHandler() {
-        AECombinationKeyManager.shared.register(self)
-    }
-
 
     override func viewWillAppear() {
         super.viewWillAppear()
@@ -153,7 +140,6 @@ class ViewController: NSViewController {
 
         if let command = historyManager.navigateUp() {
             inputTextView.text = command
-            moveCursorToEnd()
 
             // 确保焦点在输入框
             inputTextView.focus()
@@ -169,17 +155,8 @@ class ViewController: NSViewController {
             inputTextView.text = currentInput
         }
 
-        moveCursorToEnd()
-
         // 确保焦点在输入框
         inputTextView.focus()
-    }
-
-    /// 将光标移到文本末尾
-    private func moveCursorToEnd() {
-        let textView = inputTextView.innerTextView
-        let textLength = textView.string.count
-        textView.setSelectedRange(NSRange(location: textLength, length: 0))
     }
 }
 
@@ -327,59 +304,35 @@ extension ViewController: AETextViewDelegate {
         updateTextViewHeight(height)
     }
 
-    /// 加载历史消息到 AETextView
-    private func loadHistoryMessages() {
+    /// 请求上一条历史记录（当前 Context 的）
+    func aeTextViewRequestPreviousHistory(_ textView: AETextView) -> String? {
         guard let context = currentContext else {
-            print("⚠️ 没有当前 Context，无法加载历史消息")
-            return
+            print("⚠️ 没有当前 Context")
+            return nil
         }
-
-        // 获取当前消息
-        if let currentMessage = context.getCurrentQuestion() {
-            inputTextView.text = currentMessage.content
-            print("✅ 加载当前消息: \(currentMessage.content)")
-        } else {
-            // 如果 currentIndex 为 nil，初始化到最后一条消息
-            let allMessages = context.getAllQuestions()
-            if !allMessages.isEmpty {
-                // 初始化索引到最后一条消息
-                context.resetToLatestQuestion()
-                // 再次获取当前消息
-                if let currentMessage = context.getCurrentQuestion() {
-                    inputTextView.text = currentMessage.content
-                    print("✅ 初始化并加载最后一条消息: \(currentMessage.content)")
-                }
-            } else {
-                print("⚠️ Context 没有任何消息")
-            }
-        }
-    }
-
-    /// 加载上一条历史消息
-    private func loadPreviousMessage() {
-        guard let context = currentContext else { return }
 
         if let previousMessage = context.getPreviousQuestion() {
-            inputTextView.text = previousMessage.content
-            moveCursorToEnd()
             print("⬆️ 加载上一条消息: \(previousMessage.content)")
+            return previousMessage.content
         } else {
             print("⚠️ 没有更早的消息")
+            return nil
         }
     }
 
-    /// 加载下一条历史消息
-    private func loadNextMessage() {
-        guard let context = currentContext else { return }
+    /// 请求下一条历史记录（当前 Context 的）
+    func aeTextViewRequestNextHistory(_ textView: AETextView) -> String? {
+        guard let context = currentContext else {
+            print("⚠️ 没有当前 Context")
+            return nil
+        }
 
         if let nextMessage = context.getNextQuestion() {
-            inputTextView.text = nextMessage.content
-            moveCursorToEnd()
             print("⬇️ 加载下一条消息: \(nextMessage.content)")
+            return nextMessage.content
         } else {
-            // 没有下一条，清空输入框
-            inputTextView.text = ""
-            print("⚠️ 没有更新的消息，清空输入框")
+            print("⚠️ 没有更新的消息")
+            return nil
         }
     }
 
@@ -441,6 +394,7 @@ extension ViewController: AETextViewDelegate {
 
         var responseText = ""
         var isMarkdown = false
+        var assistantName = "AI"  // 默认名字
 
         // 解析响应数据
         if let dict = response as? [String: Any] {
@@ -464,9 +418,12 @@ extension ViewController: AETextViewDelegate {
                 // 优先尝试 "claude" 键，如果没有则取第一个值
                 if let claudeResponse = llmResponsesDict["claude"] as? [String: Any] {
                     print("📝 解析 claude 响应: \(claudeResponse.keys.sorted())")
+                    assistantName = "Claude"  // 使用键名作为 AI 名字
                     (responseText, isMarkdown) = parseResponseContent(claudeResponse)
-                } else if let firstValue = llmResponsesDict.values.first as? [String: Any] {
+                } else if let firstKey = llmResponsesDict.keys.first,
+                          let firstValue = llmResponsesDict[firstKey] as? [String: Any] {
                     print("📝 解析第一个响应: \(firstValue.keys.sorted())")
+                    assistantName = firstKey.capitalized  // 使用键名作为 AI 名字
                     (responseText, isMarkdown) = parseResponseContent(firstValue)
                 }
             }
@@ -515,7 +472,7 @@ extension ViewController: AETextViewDelegate {
             if responseText.isEmpty {
                 self?.chatView?.addErrorMessage("AI 响应为空")
             } else {
-                self?.chatView?.addAssistantMessage(responseText, isMarkdown: isMarkdown)
+                self?.chatView?.addAssistantMessage(responseText, isMarkdown: isMarkdown, assistantName: assistantName)
             }
         }
     }
@@ -628,40 +585,3 @@ extension ViewController: AETextViewDelegate {
         }
     }
 }
-
-// MARK: - AECombinationKeyHandler
-
-extension ViewController: AECombinationKeyHandler {
-
-    public var combinationKeyHandlerID: String {
-        return "ViewController"
-    }
-
-    public func handleCombinationKey(event: NSEvent, modifiers: NSEvent.ModifierFlags, key: String) -> Bool {
-        // 处理 Command 组合键
-        if modifiers.contains(.command) {
-            switch key.uppercased() {
-            case "I":
-                // 让 AETextView 成为第一响应者
-                inputTextView.focus()
-                print("⌘I: 聚焦到输入框")
-                return true
-            case "L":
-                // 让 leftView 成为第一响应者，并选中第一个目录
-                leftView?.focusAndSelectFirst()
-                print("⌘L: 聚焦到左侧目录列表")
-                return true
-            case "R":
-                // 让 rightView 成为第一响应者，并选中当前使用的 Context
-                rightView?.focusAndSelectCurrent()
-                print("⌘R: 聚焦到右侧 Context 列表")
-                return true
-            default:
-                break
-            }
-        }
-
-        return false
-    }
-}
-

@@ -24,8 +24,7 @@
   },
   "default_subspecs": [
     "Context",
-    "Directory",
-    "Keyboard"
+    "Directory"
   ],
   "dependencies": {
     "AENetworkEngine": [
@@ -40,10 +39,6 @@
     {
       "name": "Directory",
       "source_files": "Directory/**/*.swift"
-    },
-    {
-      "name": "Keyboard",
-      "source_files": "Keyboard/**/*.swift"
     }
   ]
 }
