@@ -19,7 +19,7 @@
     "osx": "10.15"
   },
   "swift_versions": "5.0",
-  "source_files": "AEAIModule/Classes/**/*",
+  "source_files": "AEAIModule/**/*",
   "dependencies": {
     "AEFoundation": [
 

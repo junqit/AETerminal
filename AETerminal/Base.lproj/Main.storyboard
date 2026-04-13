@@ -718,7 +718,7 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="xKL-zT-avU">
                                 <rect key="frame" x="262" y="0.0" width="944" height="787"/>
                                 <subviews>
-                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="dRz-j3-2sV" customClass="AEChatView" customModule="AEAIModule">
+                                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="dRz-j3-2sV" customClass="AEChatViewNew" customModule="AEAIModule">
                                         <rect key="frame" x="0.0" y="166" width="944" height="619"/>
                                     </customView>
                                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="fbM-9r-8K3">
