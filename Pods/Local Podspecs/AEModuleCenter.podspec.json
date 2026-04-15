@@ -1,0 +1,35 @@
+{
+  "name": "AEModuleCenter",
+  "version": "1.0.0",
+  "summary": "A thread-safe module management center for iOS applications.",
+  "description": "AEModuleCenter provides a centralized, thread-safe way to manage modules\nin your iOS application. It handles module registration, removal, and\nlifecycle event forwarding to all registered modules.\n\nFeatures:\n- Thread-safe module registration and removal\n- Automatic lifecycle event forwarding\n- Weak reference to modules to avoid memory leaks\n- Support for all major UIApplication lifecycle events",
+  "homepage": "https://github.com/junqit/aemodulecenter",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "junqit": "junqit@github.com"
+  },
+  "source": {
+    "git": "git@github.com:junqit/aemodulecenter.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.13"
+  },
+  "swift_versions": "5.0",
+  "source_files": "AEModuleCenter/Classes/**/*.swift",
+  "frameworks": "Foundation",
+  "ios": {
+    "frameworks": "UIKit"
+  },
+  "osx": {
+    "frameworks": "AppKit"
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "5.0"
+  },
+  "swift_version": "5.0"
+}

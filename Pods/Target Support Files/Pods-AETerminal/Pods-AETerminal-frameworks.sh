@@ -178,13 +178,17 @@ code_sign_if_enabled() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIEngin/AEAIEngin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIModule/AEAIModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEAINetworkModule/AEAINetworkModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIEngin/AEAIEngin.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIModule/AEAIModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEAINetworkModule/AEAINetworkModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

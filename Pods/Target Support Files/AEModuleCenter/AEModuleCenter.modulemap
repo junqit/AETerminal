@@ -1,0 +1,6 @@
+framework module AEModuleCenter {
+  umbrella header "AEModuleCenter-umbrella.h"
+
+  export *
+  module * { export * }
+}
