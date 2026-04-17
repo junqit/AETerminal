@@ -21,7 +21,7 @@
   },
   "default_subspecs": [
     "HTTP",
-    "UDP"
+    "Socket"
   ],
   "subspecs": [
     {
@@ -29,9 +29,8 @@
       "source_files": "HTTP/**/*.swift"
     },
     {
-      "name": "UDP",
-      "source_files": "Socket/UDP/*.swift",
-      "frameworks": "Network"
+      "name": "Socket",
+      "source_files": "Socket/**/*.swift"
     }
   ]
 }

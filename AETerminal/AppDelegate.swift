@@ -8,6 +8,7 @@
 import Cocoa
 import AEModuleCenter
 import AEAINetworkModule
+import AENetworkEngine
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -18,15 +19,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private let networkModule = AEAINetworkModule()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-
+        
+        // 2. 注册模块到 AEModuleCenter
+        registerModules()
     }
-    
+
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // 1. 配置网络模块
         configureNetworkModule()
-
-        // 2. 注册模块到 AEModuleCenter
-        registerModules()
 
         // 3. 转发生命周期事件到 AEModuleCenter
         AEModuleCenter.applicationDidFinishLaunching(aNotification)
@@ -55,6 +55,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 配置网络模块
     private func configureNetworkModule() {
+        
+        AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
+
         // 配置 UDP 网络参数
         // TODO: 根据实际需求修改服务器地址和端口
         networkModule.configure(
@@ -72,5 +75,4 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // AEModuleCenter.register(module: OtherModule())
     }
 }
-
 

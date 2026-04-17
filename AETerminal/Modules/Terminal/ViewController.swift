@@ -8,6 +8,9 @@
 import Cocoa
 import AEAIEngin
 import AEAIModule
+import AENetworkEngine
+import AEModuleCenter
+import AEAINetworkModule
 
 class ViewController: NSViewController {
 
@@ -20,12 +23,12 @@ class ViewController: NSViewController {
     
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
-    
-    // 命令历史记录管理器
-    private let historyManager = CommandHistoryManager.shared
 
     // 暂存当前输入（用于在浏览历史时保存）
     private var currentInput: String = ""
+
+    // 网络服务模块
+    private var networkService: AEAINetworkProtocol?
 
     // 当前活动的 AI Context（用于发送问题）
     private var currentContext: AEAIContext? {
@@ -41,6 +44,16 @@ class ViewController: NSViewController {
         super.viewDidLoad()
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
+
+        // 配置 AENetHttpEngine
+        let httpConfig = AENetHttpConfig(
+            baseURL: "http://localhost:8000",
+            timeout: 30
+        )
+        AENetHttpEngine.configure(config: httpConfig)
+
+        // 获取网络能力并注册监听
+        setupNetworkService()
 
         // 设置 AETextView 的 delegate
         inputTextView.delegate = self
@@ -96,6 +109,22 @@ class ViewController: NSViewController {
         rightView.delegate = self
     }
 
+    // MARK: - Network Service Setup
+
+    /// 设置网络服务并注册监听
+    private func setupNetworkService() {
+        // 通过协议获取网络能力
+        networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self)
+
+        // 注册网络消息监听
+        if let service = networkService {
+            service.addListener(self)
+            print("✅ 网络服务监听注册成功")
+        } else {
+            print("⚠️ 未找到网络服务模块")
+        }
+    }
+
     override func viewDidAppear() {
         super.viewDidAppear()
 
@@ -133,29 +162,36 @@ class ViewController: NSViewController {
 
     /// 向上浏览历史记录（更旧的命令）
     private func navigateHistoryUp() {
+        guard let context = currentContext else {
+            print("⚠️ 没有当前 Context")
+            return
+        }
+
         // 如果是第一次按上下键，保存当前输入
-        if historyManager.currentIndex == -1 {
+        if context.historyIndex == -1 {
             currentInput = inputTextView.text
         }
 
-        if let command = historyManager.navigateUp() {
+        if let command = context.navigateHistoryUp() {
             inputTextView.text = command
-
-            // 确保焦点在输入框
             inputTextView.focus()
         }
     }
 
     /// 向下浏览历史记录（更新的命令）
     private func navigateHistoryDown() {
-        if let command = historyManager.navigateDown() {
+        guard let context = currentContext else {
+            print("⚠️ 没有当前 Context")
+            return
+        }
+
+        if let command = context.navigateHistoryDown() {
             inputTextView.text = command
         } else {
             // 回到当前输入
             inputTextView.text = currentInput
         }
 
-        // 确保焦点在输入框
         inputTextView.focus()
     }
 }
@@ -188,17 +224,66 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
     /// 创建第一个 AI Context
     private func createFirstContext(withDirectory path: String) {
-        // 创建配置
-        let config = AEContextConfig(content: path)
+        // 1. 发送请求到云端创建 Context
+        sendCreateContextRequest(aedir: path) { [weak self] contextId in
+            guard let self = self, let contextId = contextId else {
+                print("❌ 云端 Context 创建失败")
+                return
+            }
 
-        // 通过 Manager 创建并管理 Context
-        currentContext = AEAIContextManager.createContext(config)
+            print("✅ 云端 Context 创建成功")
+            print("   Context ID: \(contextId)")
 
-        print("✅ 创建第一个 Context: \(currentContext?.dir ?? "")")
-        print("   Context ID: \(currentContext?.id ?? "")")
+            // 2. 使用云端返回的 contextId 创建本地 Context
+            let config = AEContextConfig(content: path)
 
-        // 同时通知 rightView 刷新列表
-        rightView?.reloadData()
+            // 使用云端返回的 contextId 作为本地 Context 的 ID
+            self.currentContext = AEAIContextManager.createContext(config, withId: contextId)
+
+            print("✅ 本地 Context 创建成功")
+            print("   Context ID: \(self.currentContext?.id ?? "")")
+            print("   Directory: \(self.currentContext?.dir ?? "")")
+
+            // 3. 刷新右侧视图
+            self.rightView?.reloadData()
+        }
+    }
+
+    // MARK: - Network Request
+
+    /// 发送创建 Context 请求到云端
+    private func sendCreateContextRequest(aedir: String, completion: @escaping (String?) -> Void) {
+        print("📤 发送创建 Context 请求")
+        print("   AE Dir: \(aedir)")
+
+        // 使用 AENetHttpReq 构建 POST 请求
+        
+        // {"aedir": aedir}
+        let request = AENetHttpReq(
+            post: "/ae/context/create",
+            parameters: ["aedir": aedir]
+        )
+
+        // 使用 AENetHttpEngine 发送请求
+        AENetHttpEngine.send(request: request) { response in
+            if response.isSuccess {
+                // 解析响应
+                if let contextId = response.response?["contextid"] as? String {
+                    print("✅ 收到云端响应")
+                    print("   Context ID: \(contextId)")
+                    completion(contextId)
+                } else {
+                    print("❌ 响应格式错误 - 缺少 contextid 字段")
+                    completion(nil)
+                }
+            } else {
+                print("❌ 网络请求失败")
+                if let error = response.error {
+                    print("   错误: \(error.localizedDescription)")
+                }
+                completion(nil)
+            }
+        }
     }
 }
 
@@ -238,7 +323,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
         context.messageManager.resetToLatest()
 
         // 5. 重置历史导航状态
-        historyManager.resetNavigation()
+        context.resetHistoryNavigation()
         currentInput = ""
 
         // 6. 让输入框获得焦点
@@ -335,10 +420,10 @@ extension ViewController: AETextViewDelegate {
     private func handleSubmittedText(_ text: String) {
         print("📤 处理提交: \(text)")
 
-        // 添加到历史记录
-        historyManager.addCommand(text)
+        // 添加到当前 Context 的历史记录
+        currentContext?.addCommandToHistory(text)
 
-        // 重置导航和当前输入
+        // 重置当前输入
         currentInput = ""
 
         // 在 chatView 中显示用户消息
@@ -401,6 +486,54 @@ extension ViewController: AETextViewDelegate {
         // 在 chatView 中显示错误消息
         DispatchQueue.main.async { [weak self] in
             self?.chatView?.addErrorMessage(error.localizedDescription)
+        }
+    }
+}
+
+// MARK: - AENetworkMessageListener
+
+extension ViewController: AENetworkMessageListener {
+
+    /// 接收到网络消息
+    /// - Parameter message: 反序列化后的消息字典
+    func didReceiveMessage(_ message: [String: Any]) {
+        print("📥 收到网络消息: \(message)")
+
+        // 解析 sessionid
+        guard let sessionId = message["sessionid"] as? String else {
+            print("⚠️ 消息中缺少 sessionid 字段")
+            return
+        }
+
+        // 通过 sessionid 获取对应的 Context
+        guard let context = AEAIContextManager.getContext(id: sessionId) else {
+            print("⚠️ 未找到 sessionid 对应的 Context: \(sessionId)")
+            return
+        }
+
+        print("✅ 找到对应的 Context: \(context.id)")
+
+        // 将数据交由 Context 处理
+        handleNetworkMessage(message, for: context)
+    }
+
+    /// 处理网络消息（由 Context 处理）
+    /// - Parameters:
+    ///   - message: 消息字典
+    ///   - context: 对应的 Context
+    private func handleNetworkMessage(_ message: [String: Any], for context: AEAIContext) {
+        // 在主线程更新 UI
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            // 如果是当前活动的 Context，在 chatView 中显示响应
+            if context.id == self.currentContext?.id {
+                // 将消息作为 AI 响应显示
+                self.chatView?.addAIResponse(message as AnyObject)
+                print("✅ 已显示网络消息到 chatView")
+            } else {
+                print("⚠️ 收到的消息不属于当前活动的 Context")
+            }
         }
     }
 }

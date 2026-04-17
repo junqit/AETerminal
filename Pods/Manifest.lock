@@ -18,9 +18,9 @@ PODS:
   - AEModuleCenter (1.0.0)
   - AENetworkEngine (0.0.1):
     - AENetworkEngine/HTTP (= 0.0.1)
-    - AENetworkEngine/UDP (= 0.0.1)
+    - AENetworkEngine/Socket (= 0.0.1)
   - AENetworkEngine/HTTP (0.0.1)
-  - AENetworkEngine/UDP (0.0.1)
+  - AENetworkEngine/Socket (0.0.1)
 
 DEPENDENCIES:
   - AEAIEngin (from `../CocoaPods/AEAIEngin`)
@@ -50,7 +50,7 @@ SPEC CHECKSUMS:
   AEAINetworkModule: e9cefc14136863f24dbd557fa954549ff852b4ad
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
-  AENetworkEngine: 2c78e028de0d5bc0929b8c3bd9f60be5baa82c7b
+  AENetworkEngine: d737a39eca05e2d7c5fc95b44c36ad79268a8952
 
 PODFILE CHECKSUM: c4805bdbe1407a4b07bf8091355ebf93b0500e8d
 
