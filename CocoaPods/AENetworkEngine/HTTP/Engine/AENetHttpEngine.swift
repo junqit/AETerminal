@@ -7,26 +7,6 @@
 
 import Foundation
 
-/// HTTP 引擎配置
-public struct AENetHttpConfig {
-    /// 基础 URL（主域名或 IP）
-    public var baseURL: String
-
-    /// 默认超时时间
-    public var timeout: TimeInterval
-
-    /// 默认请求头
-    public var defaultHeaders: [String: String]
-
-    public init(baseURL: String,
-                timeout: TimeInterval = 30,
-                defaultHeaders: [String: String] = [:]) {
-        self.baseURL = baseURL
-        self.timeout = timeout
-        self.defaultHeaders = defaultHeaders
-    }
-}
-
 /// HTTP 请求引擎
 public class AENetHttpEngine {
 
@@ -34,7 +14,13 @@ public class AENetHttpEngine {
     static private let shared = AENetHttpEngine()
 
     /// 引擎配置
-    private var config: AENetHttpConfig?
+    private var config: AENetConfig?
+
+    /// 默认超时时间
+    private var timeout: TimeInterval = 30
+
+    /// 默认请求头
+    private var defaultHeaders: [String: String] = [:]
 
     /// URLSession
     private lazy var session: URLSession = {
@@ -44,13 +30,20 @@ public class AENetHttpEngine {
 
     private init() {}
 
-    
+
     /// 配置引擎
-    /// - Parameter config: 配置信息
-    static public func configure(config: AENetHttpConfig) {
-        
+    /// - Parameters:
+    ///   - config: 配置信息
+    ///   - timeout: 超时时间（默认30秒）
+    ///   - defaultHeaders: 默认请求头
+    static public func configure(config: AENetConfig,
+                                  timeout: TimeInterval = 30,
+                                  defaultHeaders: [String: String] = [:]) {
+
         let http = AENetHttpEngine.shared
         http.config = config
+        http.timeout = timeout
+        http.defaultHeaders = defaultHeaders
     }
 
     /// 发送 HTTP 请求
@@ -62,19 +55,24 @@ public class AENetHttpEngine {
         let http = AENetHttpEngine.shared
         
         guard let config = http.config else {
-            let rsp = AENetRsp(error: NSError(domain: "AENetHttpEngine",
-                                                   code: -1,
-                                                   userInfo: [NSLocalizedDescriptionKey: "Engine not configured"]))
+            let rsp = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
+                error: NSError(domain: "AENetHttpEngine", code: -1, userInfo: [NSLocalizedDescriptionKey: "Engine not configured"])
+            )
             completion(rsp)
             return
         }
 
         // 构建完整 URL
-        let urlString = config.baseURL + request.path
+        let baseURL = config.host.isEmpty ? "http://\(config.ip):\(config.port)" : "http://\(config.host):\(config.port)"
+        let urlString = baseURL + request.path
         guard var urlComponents = URLComponents(string: urlString) else {
-            let rsp = AENetRsp(error: NSError(domain: "AENetHttpEngine",
-                                                   code: -1,
-                                                   userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            let rsp = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
+                error: NSError(domain: "AENetHttpEngine", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            )
             completion(rsp)
             return
         }
@@ -85,9 +83,11 @@ public class AENetHttpEngine {
         }
 
         guard let url = urlComponents.url else {
-            let rsp = AENetRsp(error: NSError(domain: "AENetHttpEngine",
-                                                   code: -1,
-                                                   userInfo: [NSLocalizedDescriptionKey: "Invalid URL"]))
+            let rsp = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
+                error: NSError(domain: "AENetHttpEngine", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            )
             completion(rsp)
             return
         }
@@ -98,7 +98,7 @@ public class AENetHttpEngine {
         urlRequest.timeoutInterval = request.timeout
 
         // 设置默认请求头
-        config.defaultHeaders.forEach { urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
+        http.defaultHeaders.forEach { urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
 
         // 设置请求特定的请求头
         request.headers?.forEach { urlRequest.setValue($0.value, forHTTPHeaderField: $0.key) }
@@ -119,6 +119,8 @@ public class AENetHttpEngine {
         let task = http.session.dataTask(with: urlRequest) { data, response, error in
             let httpResponse = response as? HTTPURLResponse
             let rsp = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
                 statusCode: httpResponse?.statusCode ?? 0,
                 headers: httpResponse?.allHeaderFields,
                 data: data,

@@ -9,33 +9,6 @@ import Foundation
 import AEModuleCenter
 import AENetworkEngine
 
-/// Socket 配置
-public struct AEAISocketConfig {
-    /// 服务器 IP
-    public var serverIP: String
-
-    /// 服务器端口
-    public var serverPort: UInt16
-
-    /// 请求路径前缀
-    public var path: String
-
-    /// 协议类型（默认 UDP）
-    public var protocolType: AESocketProtocol
-
-    public init(
-        serverIP: String,
-        serverPort: UInt16,
-        path: String = "",
-        protocolType: AESocketProtocol = .udp
-    ) {
-        self.serverIP = serverIP
-        self.serverPort = serverPort
-        self.path = path
-        self.protocolType = protocolType
-    }
-}
-
 /// AEAI 网络模块 - 负责初始化和管理 UDP 网络连接
 public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol {
 
@@ -236,16 +209,22 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     /// 处理接收到的数据
     private func handleReceivedData(_ data: Data) {
-        // 尝试解析为 JSON
-        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-            log("⚠️ 无法解析接收到的数据为 JSON")
+        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+              let requestId = json["requestId"] as? String else {
+            log("⚠️ 无法解析接收到的数据或缺少 requestId")
             return
         }
 
         log("📨 收到消息: \(json["type"] ?? "unknown")")
 
-        // 通知所有监听者
-        listenerManager.notifyListeners(message: json)
+        let response = AENetRsp(
+            requestId: requestId,
+            protocolType: .socket,
+            statusCode: 200,
+            data: data,
+            error: nil
+        )
+        listenerManager.notifyListeners(response: response)
     }
 
     // MARK: - Public Methods
@@ -316,95 +295,41 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     // MARK: - Send Methods
 
-    /// 发送 AENetReq 请求（同步）
-    /// - Parameter request: 网络请求对象
-    /// - Throws: 发送失败时抛出错误
-    @discardableResult
-    public func send(_ request: AENetReq) throws -> Bool {
-        guard let socketManager = socketManager else {
-            throw NSError(
-                domain: "AEAINetworkModule",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "网络未初始化"]
-            )
-        }
-
-        guard isConnected else {
-            throw NSError(
-                domain: "AEAINetworkModule",
-                code: -2,
-                userInfo: [NSLocalizedDescriptionKey: "网络未连接"]
-            )
-        }
-
-        try socketManager.send(request)
-        return true
-    }
-
-    /// 发送字典数据（同步）
-    /// - Parameter data: 要发送的数据字典
-    /// - Throws: 发送失败时抛出错误
-    @discardableResult
-    public func send(data: [String: Any]) throws -> Bool {
-        guard let socketManager = socketManager else {
-            throw NSError(
-                domain: "AEAINetworkModule",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "网络未初始化"]
-            )
-        }
-
-        guard isConnected else {
-            throw NSError(
-                domain: "AEAINetworkModule",
-                code: -2,
-                userInfo: [NSLocalizedDescriptionKey: "网络未连接"]
-            )
-        }
-
-        // 将字典转换为 JSON 数据
-        let jsonData = try JSONSerialization.data(withJSONObject: data, options: [])
-
-        // 发送数据
-        try socketManager.send(jsonData)
-        return true
-    }
-
-    /// 异步发送 AENetReq 请求
-    /// - Parameters:
-    ///   - request: 网络请求对象
-    ///   - completion: 完成回调
-    public func sendAsync(_ request: AENetReq, completion: ((Result<Bool, Error>) -> Void)? = nil) {
-        sendQueue.async { [weak self] in
-            do {
-                let result = try self?.send(request) ?? false
-                DispatchQueue.main.async {
-                    completion?(.success(result))
+    /// 发送请求并返回响应
+    public func sendRequest(_ request: AENetReq, completion: @escaping (AENetRsp) -> Void) {
+        switch request.protocolType {
+        case .socket:
+            sendQueue.async { [weak self] in
+                guard let self = self else {
+                    let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "Module released"]))
+                    completion(response)
+                    return
                 }
-            } catch {
-                DispatchQueue.main.async {
-                    completion?(.failure(error))
+                
+                guard let socketManager = self.socketManager else {
+                    let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "网络未初始化"]))
+                    completion(response)
+                    return
+                }
+                
+                guard self.isConnected else {
+                    let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -2, userInfo: [NSLocalizedDescriptionKey: "网络未连接"]))
+                    completion(response)
+                    return
+                }
+                
+                do {
+                    try socketManager.send(request)
+                } catch {
+                    let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: error)
+                    DispatchQueue.main.async {
+                        completion(response)
+                    }
                 }
             }
-        }
-    }
-
-    /// 异步发送字典数据
-    /// - Parameters:
-    ///   - data: 要发送的数据字典
-    ///   - completion: 完成回调
-    public func sendAsync(data: [String: Any], completion: ((Result<Bool, Error>) -> Void)? = nil) {
-        sendQueue.async { [weak self] in
-            do {
-                let result = try self?.send(data: data) ?? false
-                DispatchQueue.main.async {
-                    completion?(.success(result))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion?(.failure(error))
-                }
-            }
+            
+        case .http:
+            AENetHttpEngine.send(request: request, completion: completion)
         }
     }
 

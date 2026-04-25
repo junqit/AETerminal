@@ -35,7 +35,7 @@ Pod::Spec.new do |spec|
   spec.default_subspecs = 'HTTP', 'Socket'
 
   spec.subspec 'Core' do |ss|
-    ss.source_files = 'AEReq/**/*.swift', 'AERsp/**/*.swift'
+    ss.source_files = 'Core/**/*.swift'
   end
 
   spec.subspec 'HTTP' do |ss|

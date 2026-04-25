@@ -6,16 +6,11 @@
 //
 
 import Foundation
+import AENetworkEngine
 
 /// 网络消息监听器协议
 public protocol AENetworkMessageListener: AnyObject {
     /// 接收到消息
-    /// - Parameter message: 反序列化后的消息字典
-    func didReceiveMessage(_ message: [String: Any])
-}
-
-/// 网络发送结果
-public enum AENetworkSendResult {
-    case success
-    case failure(Error)
+    /// - Parameter response: 网络响应对象
+    func didReceiveMessage(_ response: AENetRsp)
 }

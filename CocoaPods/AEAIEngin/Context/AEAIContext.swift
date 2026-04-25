@@ -1,5 +1,8 @@
 import Foundation
 import CommonCrypto
+import AEModuleCenter
+import AEAINetworkModule
+import AENetworkEngine
 
 /// 命令历史记录项
 internal struct CommandHistoryItem: Codable {
@@ -25,9 +28,6 @@ public class AEAIContext {
 
     /// 消息管理器
     public let messageManager: AEAIMessageManager
-
-    /// AI 服务
-    private let aiService: AEAIService
 
     /// 配置信息
     public let config: AEContextConfig
@@ -61,7 +61,6 @@ public class AEAIContext {
         self.config = config
         self.dir = config.dir
         self.id = Self.generateID(from: config.dir)
-        self.aiService = AEAIService(config: AEAIServiceConfig(headers: ["session_id": self.id])) // 内部创建 AI 服务
         self.messageManager = AEAIMessageManager(contextID: self.id)
 
         // 加载命令历史记录
@@ -75,8 +74,7 @@ public class AEAIContext {
     public init(config: AEContextConfig, customId: String) {
         self.config = config
         self.dir = config.dir
-        self.id = customId  // 使用云端返回的 ID
-        self.aiService = AEAIService(config: AEAIServiceConfig(headers: ["session_id": self.id]))
+        self.id = customId
         self.messageManager = AEAIMessageManager(contextID: self.id)
 
         // 加载命令历史记录
@@ -93,16 +91,42 @@ public class AEAIContext {
         _ question: AEAIQuestion,
         completion: @escaping (Result<AnyObject, Error>) -> Void
     ) {
-        // 更新最后使用时间
         lastUsedTime = Date()
 
-        // 1. 创建并保存消息
         let message = messageManager.addMessage(question.content)
 
-        // 2. 通过 AI 服务发送消息
-        aiService.sendMessage(message) { [weak self] result in
-            // 3. 将响应结果不修改地返回
-            completion(result)
+        guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
+            completion(.failure(NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network service not available"])))
+            return
+        }
+
+        let parameters: [String: Any] = [
+            "contextId": message.contextID,
+            "session_id": message.id,
+            "user_input": message.content,
+            "llm_types": ["gemini", "claude"],
+            "timestamp": message.timestamp.timeIntervalSince1970
+        ]
+
+        let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: parameters, protocolType: .http)
+        request.timeout = 60
+
+        networkService.sendRequest(request) { response in
+            if let error = response.error {
+                completion(.failure(error))
+                return
+            }
+
+            guard response.isSuccess else {
+                completion(.failure(NSError(domain: "AEAIContext", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: "HTTP request failed"])))
+                return
+            }
+
+            if let responseData = response.response {
+                completion(.success(responseData as AnyObject))
+            } else {
+                completion(.failure(NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
+            }
         }
     }
 

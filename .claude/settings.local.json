@@ -10,7 +10,11 @@
       "Bash(cp -r /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIEngin/Keyboard/*.swift /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/Classes/Keyboard/)",
       "Bash(cp /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIEngin/Keyboard/NSTextView/*.swift /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/Classes/Keyboard/NSTextView/)",
       "Bash(cp /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIEngin/Keyboard/Combination/*.swift /Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/Classes/Keyboard/Combination/)",
-      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -configuration Debug clean build CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO)"
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -configuration Debug clean build CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO)",
+      "Bash(head -289 CocoaPods/AEAINetworkModule/AEAINetworkModule/Classes/AEAINetworkModule.swift)",
+      "Bash(tail -n +441 CocoaPods/AEAINetworkModule/AEAINetworkModule/Classes/AEAINetworkModule.swift)",
+      "Bash(cat /tmp/part1.txt /tmp/new_send_section.txt /tmp/part2.txt)",
+      "Read(//tmp/**)"
     ]
   }
 }

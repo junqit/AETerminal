@@ -42,7 +42,7 @@ Pod::Spec.new do |spec|
     ss.source_files = 'Context/**/*.swift'
 
     # 依赖 AENetworkEngine
-    spec.dependency 'AENetworkEngine'
+    ss.dependency 'AENetworkEngine'
 
   end
 
@@ -51,5 +51,8 @@ Pod::Spec.new do |spec|
     ss.source_files = 'Directory/**/*.swift'
 
   end
+  
+  spec.dependency 'AEModuleCenter'
+  spec.dependency 'AEAINetworkModule'
 
 end

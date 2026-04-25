@@ -7,6 +7,12 @@
 
 import Foundation
 
+/// 网络请求协议类型
+public enum AENetProtocolType {
+    case socket   // Socket/UDP 请求
+    case http     // HTTP 请求
+}
+
 /// HTTP 请求方式枚举
 public enum AEHttpMethod: String {
     case GET = "GET"
@@ -20,6 +26,12 @@ public enum AEHttpMethod: String {
 
 /// HTTP 请求对象
 public class AENetReq {
+
+    /// 请求唯一标识
+    public let requestId: String
+
+    /// 网络请求协议类型（默认为 socket）
+    public var protocolType: AENetProtocolType = .socket
 
     /// 请求方式
     public var method: AEHttpMethod
@@ -46,11 +58,14 @@ public class AENetReq {
     ///   - parameters: 请求参数
     ///   - headers: 请求头
     ///   - body: 请求体
+    ///   - requestId: 请求唯一标识（默认自动生成）
     public init(method: AEHttpMethod,
                 path: String,
                 parameters: [String: Any]? = nil,
                 headers: [String: String]? = nil,
-                body: Data? = nil) {
+                body: Data? = nil,
+                requestId: String? = nil) {
+        self.requestId = requestId ?? UUID().uuidString
         self.method = method
         self.path = path
         self.parameters = parameters
@@ -59,26 +74,23 @@ public class AENetReq {
     }
 
     /// 便利初始化方法 - GET 请求
-    /// - Parameters:
-    ///   - path: 请求路径
-    ///   - parameters: 请求参数
-    ///   - headers: 请求头
     public convenience init(get path: String,
                            parameters: [String: Any]? = nil,
-                           headers: [String: String]? = nil) {
-        self.init(method: .GET, path: path, parameters: parameters, headers: headers)
+                           headers: [String: String]? = nil,
+                           protocolType: AENetProtocolType = .socket,
+                           requestId: String? = nil) {
+        self.init(method: .GET, path: path, parameters: parameters, headers: headers, requestId: requestId)
+        self.protocolType = protocolType
     }
 
     /// 便利初始化方法 - POST 请求
-    /// - Parameters:
-    ///   - path: 请求路径
-    ///   - parameters: 请求参数
-    ///   - headers: 请求头
-    ///   - body: 请求体
     public convenience init(post path: String,
                            parameters: [String: Any]? = nil,
                            headers: [String: String]? = nil,
-                           body: Data? = nil) {
-        self.init(method: .POST, path: path, parameters: parameters, headers: headers, body: body)
+                           body: Data? = nil,
+                           protocolType: AENetProtocolType = .socket,
+                           requestId: String? = nil) {
+        self.init(method: .POST, path: path, parameters: parameters, headers: headers, body: body, requestId: requestId)
+        self.protocolType = protocolType
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AENetworkEngine
 
 /// 网络监听者管理器
 internal class AENetworkListenerManager {
@@ -68,17 +69,14 @@ internal class AENetworkListenerManager {
     }
 
     /// 通知所有监听者
-    /// - Parameter message: 消息内容
-    func notifyListeners(message: [String: Any]) {
-        // 获取监听者快照（避免在通知过程中修改）
+    /// - Parameter response: 响应对象
+    func notifyListeners(response: AENetRsp) {
         let snapshot = getListenersSnapshot()
-
         log("📢 通知 \(snapshot.count) 个监听者")
 
-        // 在主线程通知监听者
         DispatchQueue.main.async {
             for listener in snapshot {
-                listener.didReceiveMessage(message)
+                listener.didReceiveMessage(response)
             }
         }
     }
