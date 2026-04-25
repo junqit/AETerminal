@@ -1,0 +1,37 @@
+{
+  "name": "AEAINetworkModule",
+  "version": "1.0.0",
+  "summary": "AEAI Network initialization module for managing UDP socket connections.",
+  "description": "AEAINetworkModule provides network initialization functionality for AEAI applications.\nIt implements AEModuleProtocol to initialize UDP socket connections during application\nstartup, making it available for AEAIEngin to use.\n\nFeatures:\n- Automatic UDP socket initialization on app launch\n- Integration with AEModuleCenter for lifecycle management\n- Configurable network settings\n- Thread-safe network manager access",
+  "homepage": "https://github.com/junqit/aeainetworkmodule",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "junqit": "junqit@github.com"
+  },
+  "source": {
+    "git": "git@github.com:junqit/aeainetworkmodule.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "13.0",
+    "osx": "10.15"
+  },
+  "swift_versions": "5.0",
+  "source_files": "AEAINetworkModule/Classes/**/*.swift",
+  "frameworks": "Foundation",
+  "dependencies": {
+    "AEModuleCenter": [
+
+    ],
+    "AENetworkEngine": [
+
+    ]
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "5.0"
+  },
+  "swift_version": "5.0"
+}

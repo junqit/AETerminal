@@ -1,0 +1,44 @@
+{
+  "name": "AEAIEngin",
+  "version": "0.0.1",
+  "summary": "A short description of AEAIEngin",
+  "description": "AEAIEngin - AI Engine for iOS and macOS",
+  "homepage": "https://github.com/yourusername/AEAIEngin",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianjunqi": "tianjunqi@xiaomi.com"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.15"
+  },
+  "source": {
+    "git": "git.",
+    "tag": "0.0.1"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "default_subspecs": [
+    "Context",
+    "Directory"
+  ],
+  "dependencies": {
+    "AENetworkEngine": [
+
+    ]
+  },
+  "subspecs": [
+    {
+      "name": "Context",
+      "source_files": "Context/**/*.swift"
+    },
+    {
+      "name": "Directory",
+      "source_files": "Directory/**/*.swift"
+    }
+  ]
+}

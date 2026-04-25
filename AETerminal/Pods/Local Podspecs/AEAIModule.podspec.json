@@ -1,0 +1,39 @@
+{
+  "name": "AEAIModule",
+  "version": "0.1.0",
+  "summary": "AI Terminal UI Module",
+  "description": "AI Terminal UI Module包含聊天视图、左侧目录视图、右侧输入视图、\n键盘处理、组合键管理和自定义文本输入框，用于构建AI终端界面。",
+  "homepage": "https://github.com/yourusername/AEAIModule",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianjunqi": "your.email@example.com"
+  },
+  "source": {
+    "git": "https://github.com/yourusername/AEAIModule.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "osx": "10.15"
+  },
+  "swift_versions": "5.0",
+  "source_files": "AEAIModule/**/*",
+  "dependencies": {
+    "AEFoundation": [
+
+    ],
+    "AEAIEngin": [
+
+    ],
+    "AENetworkEngine": [
+
+    ]
+  },
+  "frameworks": [
+    "Foundation",
+    "AppKit"
+  ],
+  "swift_version": "5.0"
+}

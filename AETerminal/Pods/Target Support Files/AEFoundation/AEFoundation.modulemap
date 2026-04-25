@@ -1,0 +1,6 @@
+framework module AEFoundation {
+  umbrella header "AEFoundation-umbrella.h"
+
+  export *
+  module * { export * }
+}

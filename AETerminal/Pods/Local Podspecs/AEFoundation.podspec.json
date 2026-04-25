@@ -1,0 +1,26 @@
+{
+  "name": "AEFoundation",
+  "version": "0.0.1",
+  "summary": "AEFoundation - Foundation utilities and extensions",
+  "description": "AEFoundation - Foundation utilities and extensions for iOS and macOS",
+  "homepage": "https://github.com/yourusername/AEFoundation",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianjunqi": "tianjunqi@xiaomi.com"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.15"
+  },
+  "source": {
+    "git": "git.",
+    "tag": "0.0.1"
+  },
+  "source_files": "**/*.swift",
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  }
+}

@@ -1,0 +1,6 @@
+framework module AENetworkEngine {
+  umbrella header "AENetworkEngine-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(swiftc -parse AEChatView.swift)",
+      "Bash(awk '/private func createResponsePanel/,/^    \\\\}$/ {print NR\": \"$0}' \"/Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/ChatView/AEChatView.swift\")",
+      "Bash(swiftc:*)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -sdk macosx clean build)",
+      "Bash(ls -lh \"/Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/ChatView/\"*.backup)",
+      "Bash(awk '/^    private func createComparisonContainer/,/^    \\\\}$/ {if \\(/^    private func/ && NR>1\\) exit; print NR}' \"/Users/tianjunqi/Project/Self/Agents/Client/CocoaPods/AEAIModule/AEAIModule/ChatView/AEChatView.swift\")",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -sdk macosx build)",
+      "Bash(grep -E \"\\\\.swift$\")",
+      "Bash(pod install:*)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -configuration Debug build)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -configuration Debug clean build)",
+      "Bash(xcodebuild -scheme AETerminal -configuration Debug clean build)",
+      "Bash(open:*)",
+      "Bash(killall AETerminal)"
+    ]
+  }
+}

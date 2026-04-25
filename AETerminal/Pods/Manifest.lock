@@ -1,0 +1,60 @@
+PODS:
+  - AEAIEngin (0.0.1):
+    - AEAIEngin/Context (= 0.0.1)
+    - AEAIEngin/Directory (= 0.0.1)
+    - AENetworkEngine
+  - AEAIEngin/Context (0.0.1):
+    - AENetworkEngine
+  - AEAIEngin/Directory (0.0.1):
+    - AENetworkEngine
+  - AEAIModule (0.1.0):
+    - AEAIEngin
+    - AEFoundation
+    - AENetworkEngine
+  - AEAINetworkModule (1.0.0):
+    - AEModuleCenter
+    - AENetworkEngine
+  - AEFoundation (0.0.1)
+  - AEModuleCenter (1.0.0)
+  - AENetworkEngine (0.0.1):
+    - AENetworkEngine/HTTP (= 0.0.1)
+    - AENetworkEngine/Socket (= 0.0.1)
+  - AENetworkEngine/Core (0.0.1)
+  - AENetworkEngine/HTTP (0.0.1):
+    - AENetworkEngine/Core
+  - AENetworkEngine/Socket (0.0.1):
+    - AENetworkEngine/Core
+
+DEPENDENCIES:
+  - AEAIEngin (from `../CocoaPods/AEAIEngin`)
+  - AEAIModule (from `../CocoaPods/AEAIModule`)
+  - AEAINetworkModule (from `../CocoaPods/AEAINetworkModule`)
+  - AEFoundation (from `../CocoaPods/AEFoundation`)
+  - AEModuleCenter (from `../CocoaPods/aemodulecenter`)
+  - AENetworkEngine (from `../CocoaPods/AENetworkEngine`)
+
+EXTERNAL SOURCES:
+  AEAIEngin:
+    :path: "../CocoaPods/AEAIEngin"
+  AEAIModule:
+    :path: "../CocoaPods/AEAIModule"
+  AEAINetworkModule:
+    :path: "../CocoaPods/AEAINetworkModule"
+  AEFoundation:
+    :path: "../CocoaPods/AEFoundation"
+  AEModuleCenter:
+    :path: "../CocoaPods/aemodulecenter"
+  AENetworkEngine:
+    :path: "../CocoaPods/AENetworkEngine"
+
+SPEC CHECKSUMS:
+  AEAIEngin: 93409d9e061827f94e94922101ffd88238c894b3
+  AEAIModule: 0a4a6276894c83c8aa6377588e28440cb1617d75
+  AEAINetworkModule: e9cefc14136863f24dbd557fa954549ff852b4ad
+  AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
+  AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
+  AENetworkEngine: f85a075dc2c9a9c8f8c2926089b45e6b888b7bbe
+
+PODFILE CHECKSUM: c4805bdbe1407a4b07bf8091355ebf93b0500e8d
+
+COCOAPODS: 1.14.1
