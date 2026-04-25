@@ -14,11 +14,9 @@ import AEFoundation
 public struct CachedContext: Codable {
 
     let dir: String
-    let lastUsedTime: Date?
 
     public init(from context: AEAIContext) {
         self.dir = context.dir
-        self.lastUsedTime = context.lastUsedTime
     }
 }
 
@@ -156,7 +154,6 @@ public class AERightView: NSView {
             // 从缓存的信息创建 AEAIContext 对象
             contexts = cachedContexts.compactMap { cached in
                 let context = AEAIContext(config: AEContextConfig(content: cached.dir))
-                context.lastUsedTime = cached.lastUsedTime
                 return context
             }
 

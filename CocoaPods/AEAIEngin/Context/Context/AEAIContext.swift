@@ -26,11 +26,11 @@ public class AEAIContext {
     /// 上下文目录
     public let dir: String
 
-    /// 消息管理器
-    public let messageManager: AEAIMessageManager
-
     /// 配置信息
-    public let config: AEContextConfig
+    internal let config: AEContextConfig
+
+    /// 问题管理器
+    private let questionManager: AEAIQuestionManager
 
     /// 最后使用时间（用于排序）
     public var lastUsedTime: Date?
@@ -61,9 +61,8 @@ public class AEAIContext {
         self.config = config
         self.dir = config.dir
         self.id = Self.generateID(from: config.dir)
-        self.messageManager = AEAIMessageManager(contextID: self.id)
+        self.questionManager = AEAIQuestionManager(contextID: self.id)
 
-        // 加载命令历史记录
         loadCommandHistory()
     }
 
@@ -75,9 +74,8 @@ public class AEAIContext {
         self.config = config
         self.dir = config.dir
         self.id = customId
-        self.messageManager = AEAIMessageManager(contextID: self.id)
+        self.questionManager = AEAIQuestionManager(contextID: self.id)
 
-        // 加载命令历史记录
         loadCommandHistory()
     }
 
@@ -92,24 +90,23 @@ public class AEAIContext {
         completion: @escaping (Result<AnyObject, Error>) -> Void
     ) {
         lastUsedTime = Date()
-
-        let message = messageManager.addMessage(question.content)
+        questionManager.addQuestion(question)
 
         guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
-            completion(.failure(NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network service not available"])))
+            let error = NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network service not available"])
+            print("❌ AEAIContext 获取网络服务失败")
+            completion(.failure(error))
             return
         }
 
-        let parameters: [String: Any] = [
-            "contextId": message.contextID,
-            "session_id": message.id,
-            "user_input": message.content,
-            "llm_types": ["gemini", "claude"],
-            "timestamp": message.timestamp.timeIntervalSince1970
-        ]
+        print("✅ AEAIContext 获取网络服务成功")
+
+        var parameters: [String: Any] = [:]
+        parameters.merge(toDictionary()) { (_, new) in new }
+        parameters.merge(question.toDictionary()) { (_, new) in new }
 
         let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: parameters, protocolType: .http)
-        request.timeout = 60
+        request.timeout = 1000
 
         networkService.sendRequest(request) { response in
             if let error = response.error {
@@ -130,77 +127,57 @@ public class AEAIContext {
         }
     }
 
-    /// 添加问题（不发送请求，仅记录）
-    /// - Parameter question: 问题对象
-    /// - Returns: 创建的消息对象
-    @discardableResult
-    public func addQuestion(_ question: AEAIQuestion) -> AEAIMessage {
-        return messageManager.addMessage(question.content)
+    // MARK: - Question History Methods
+
+    /// 导航到上一条历史问题
+    /// - Returns: 历史问题对象，如果没有则返回 nil
+    public func navigateQuestionUp() -> AEAIQuestion? {
+        return questionManager.navigateUp()
     }
 
-    // MARK: - 消息导航接口
-
-    /// 获取上一条问题
-    /// - Returns: 上一条消息，如果没有则返回 nil
-    public func getPreviousQuestion() -> AEAIMessage? {
-        return messageManager.getPreviousMessage()
-    }
-
-    /// 获取下一条问题
-    /// - Returns: 下一条消息，如果没有则返回 nil
-    public func getNextQuestion() -> AEAIMessage? {
-        return messageManager.getNextMessage()
+    /// 导航到下一条历史问题
+    /// - Returns: 历史问题对象，如果没有则返回 nil
+    public func navigateQuestionDown() -> AEAIQuestion? {
+        return questionManager.navigateDown()
     }
 
     /// 获取当前问题
-    /// - Returns: 当前消息，如果没有则返回 nil
-    public func getCurrentQuestion() -> AEAIMessage? {
-        return messageManager.getCurrentMessage()
+    /// - Returns: 当前问题对象，如果没有则返回 nil
+    public func getCurrentQuestion() -> AEAIQuestion? {
+        return questionManager.getCurrentQuestion()
     }
 
-    /// 获取所有问题
-    /// - Returns: 所有消息数组
-    public func getAllQuestions() -> [AEAIMessage] {
-        return messageManager.getAllMessages()
-    }
-
-    /// 重置消息导航索引到最新消息
-    public func resetToLatestQuestion() {
-        messageManager.resetToLatest()
+    /// 重置问题历史导航索引
+    public func resetQuestionNavigation() {
+        questionManager.resetNavigation()
     }
 
     // MARK: - Command History Methods
 
     /// 添加命令到历史记录
     /// - Parameter command: 命令内容
-    public func addCommandToHistory(_ command: String) {
+    internal func addCommandToHistory(_ command: String) {
         let trimmedCommand = command.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedCommand.isEmpty else { return }
 
-        // 如果和最近一条命令相同，不重复添加
         if let lastCommand = commandHistory.first, lastCommand.command == trimmedCommand {
             return
         }
 
-        // 创建新的历史记录项
         let item = CommandHistoryItem(command: trimmedCommand)
         commandHistory.insert(item, at: 0)
 
-        // 限制历史记录数量
         if commandHistory.count > maxHistoryCount {
             commandHistory.removeLast()
         }
 
-        // 重置索引
         currentHistoryIndex = -1
-
-        // 持久化
         saveCommandHistory()
     }
 
     /// 导航到上一条历史记录
     /// - Returns: 历史记录命令，如果没有则返回 nil
-    public func navigateHistoryUp() -> String? {
+    internal func navigateHistoryUp() -> String? {
         guard !commandHistory.isEmpty else { return nil }
 
         if currentHistoryIndex < commandHistory.count - 1 {
@@ -213,7 +190,7 @@ public class AEAIContext {
 
     /// 导航到下一条历史记录
     /// - Returns: 历史记录命令，如果到达最新则返回 nil
-    public func navigateHistoryDown() -> String? {
+    internal func navigateHistoryDown() -> String? {
         guard !commandHistory.isEmpty, currentHistoryIndex > 0 else {
             if currentHistoryIndex == 0 {
                 currentHistoryIndex = -1
@@ -226,17 +203,17 @@ public class AEAIContext {
     }
 
     /// 获取当前历史记录索引
-    public var historyIndex: Int {
+    internal var historyIndex: Int {
         return currentHistoryIndex
     }
 
     /// 重置历史记录导航索引
-    public func resetHistoryNavigation() {
+    internal func resetHistoryNavigation() {
         currentHistoryIndex = -1
     }
 
     /// 清除所有历史记录
-    public func clearCommandHistory() {
+    internal func clearCommandHistory() {
         commandHistory.removeAll()
         currentHistoryIndex = -1
         try? FileManager.default.removeItem(at: historyFileURL)
@@ -245,8 +222,15 @@ public class AEAIContext {
     /// 获取最近的 N 条历史记录
     /// - Parameter count: 数量
     /// - Returns: 历史记录命令列表
-    public func getRecentCommands(count: Int) -> [String] {
+    internal func getRecentCommands(count: Int) -> [String] {
         return Array(commandHistory.prefix(count)).map { $0.command }
+    }
+
+    /// 转换为字典
+    internal func toDictionary() -> [String: Any] {
+        return [
+            "id": id
+        ]
     }
 
     // MARK: - Private Command History Methods

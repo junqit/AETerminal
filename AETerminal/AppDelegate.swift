@@ -19,17 +19,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private let networkModule = AEAINetworkModule()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-        
-        // 2. 注册模块到 AEModuleCenter
+        // 1. 先配置网络模块
+        configureNetworkModule()
+
+        // 2. 再注册模块到 AEModuleCenter
         registerModules()
+
+        print("✅ 模块配置和注册完成")
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // 1. 配置网络模块
-        configureNetworkModule()
-
-        // 3. 转发生命周期事件到 AEModuleCenter
+        // 3. 转发生命周期事件到 AEModuleCenter，触发模块初始化
         AEModuleCenter.applicationDidFinishLaunching(aNotification)
+
+        print("✅ 生命周期事件已转发")
+
+        // 4. 验证模块是否可用
+        if let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) {
+            print("✅ AppDelegate 中可以获取到网络服务")
+        } else {
+            print("❌ AppDelegate 中获取不到网络服务")
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -55,14 +65,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 配置网络模块
     private func configureNetworkModule() {
-
         AENetHttpEngine.configure(config: AENetConfig(host: "127.0.0.1", port: 9000))
 
-        // 配置 UDP 网络参数
-        // TODO: 根据实际需求修改服务器地址和端口
         networkModule.configure(
-            serverHost: "127.0.0.1",  // 服务器地址
-            serverPort: 9000           // 服务器端口
+            serverIP: "127.0.0.1",
+            serverPort: 9000
         )
     }
 

@@ -18,15 +18,11 @@ public class AEAIQuestion {
     /// 附加参数（可选）
     public let parameters: [String: Any]?
 
-    /// 时间戳
-    public let timestamp: Date
-
     /// 问题类型
-    public enum QuestionType {
-        case text       // 纯文本问题
-        case command    // 命令类问题
-        case search     // 搜索类问题
-        case custom(String)  // 自定义类型
+    public enum QuestionType: String {
+        case text = "text"
+        case command = "command"
+        case search = "search"
     }
 
     /// 初始化问题
@@ -42,7 +38,6 @@ public class AEAIQuestion {
         self.content = content
         self.type = type
         self.parameters = parameters
-        self.timestamp = Date()
     }
 
     /// 便捷方法：创建文本问题
@@ -64,5 +59,19 @@ public class AEAIQuestion {
     /// - Returns: 搜索问题实例
     public static func search(_ content: String) -> AEAIQuestion {
         return AEAIQuestion(content: content, type: .search)
+    }
+
+    /// 转换为字典
+    public func toDictionary() -> [String: Any] {
+        var dict: [String: Any] = [
+            "content": content,
+            "type": type.rawValue
+        ]
+
+        if let parameters = parameters {
+            dict["parameters"] = parameters
+        }
+
+        return dict
     }
 }

@@ -59,8 +59,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /// 注册模块
     private func registerModules() {
         // 注册网络模块
-        AEModuleCenter.register(module: AEAINetworkModule()
-)
+        AEModuleCenter.register(module: AEAINetworkModule())
 
         // 可以在这里注册其他模块
         // AEModuleCenter.register(module: OtherModule())

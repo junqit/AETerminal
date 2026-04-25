@@ -24,11 +24,10 @@ class ViewController: NSViewController {
     private let minHeight: CGFloat = 20
     private let maxHeight: CGFloat = 200
 
-    // 暂存当前输入（用于在浏览历史时保存）
-    private var currentInput: String = ""
-
-    // 网络服务模块
-    private var networkService: AEAINetworkProtocol?
+    // 网络服务模块（计算属性，实时获取）
+    private var networkService: AEAINetworkProtocol? {
+        return AEModuleCenter.module(for: AEAINetworkProtocol.self)
+    }
 
     // 当前活动的 AI Context（用于发送问题）
     private var currentContext: AEAIContext? {
@@ -52,9 +51,6 @@ class ViewController: NSViewController {
         )
         AENetHttpEngine.configure(config: httpConfig, timeout: 30)
 
-        // 获取网络能力并注册监听
-        setupNetworkService()
-
         // 设置 AETextView 的 delegate
         inputTextView.delegate = self
 
@@ -63,28 +59,14 @@ class ViewController: NSViewController {
 
         // 设置右侧视图
         setupRightView()
-
-        // 检查 chatView 是否正确连接
-        if chatView != nil {
-            print("✅ chatView 已连接")
-        } else {
-            print("❌ chatView 未连接！请检查 Storyboard/XIB 连接")
-        }
-
-        // Do any additional setup after loading the view.
     }
 
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        // 预先准备获取焦点
         DispatchQueue.main.async { [weak self] in
             self?.inputTextView.focus()
         }
-
-        // 在视图即将显示时测试 chatView
-        print("🔍 viewWillAppear - chatView frame: \(chatView?.frame ?? .zero)")
-        print("🔍 viewWillAppear - chatView superview: \(chatView?.superview != nil ? "有" : "无")")
     }
 
     // MARK: - Left View Setup
@@ -109,36 +91,21 @@ class ViewController: NSViewController {
         rightView.delegate = self
     }
 
-    // MARK: - Network Service Setup
-
-    /// 设置网络服务并注册监听
-    private func setupNetworkService() {
-        // 通过协议获取网络能力
-        networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self)
-
-        // 注册网络消息监听
-        if let service = networkService {
-            service.addListener(self)
-            print("✅ 网络服务监听注册成功")
-        } else {
-            print("⚠️ 未找到网络服务模块")
-        }
-    }
-
     override func viewDidAppear() {
         super.viewDidAppear()
 
-        // 让 AETextView 成为第一响应者，可以直接接收键盘输入
         inputTextView.focus()
 
-        // 视图完全显示后，测试添加一条欢迎消息
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-            guard let self = self, let chatView = self.chatView else {
-                print("❌ chatView 为 nil，无法添加欢迎消息")
-                return
-            }
+        // 在视图显示后注册网络监听（此时模块已注册）
+        if let service = networkService {
+            service.addListener(self)
+            print("✅ ViewController 注册网络监听成功")
+        } else {
+            print("❌ ViewController 获取不到网络服务")
+        }
 
-            print("🎯 添加欢迎消息到 chatView")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            guard let self = self, let chatView = self.chatView else { return }
             chatView.addWelcomeMessage()
         }
     }
@@ -151,45 +118,28 @@ class ViewController: NSViewController {
 
     // 根据 AETextView 计算好的高度更新约束
     private func updateTextViewHeight(_ calculatedHeight: CGFloat) {
-        // 限制在最小和最大高度之间
         let newHeight = max(minHeight, min(calculatedHeight, maxHeight))
-
-        // 更新约束
         scrollViewHeightConstraint.constant = newHeight
     }
 
     // MARK: - History Navigation
 
-    /// 向上浏览历史记录（更旧的命令）
+    /// 向上浏览历史记录（更旧的问题）
     private func navigateHistoryUp() {
-        guard let context = currentContext else {
-            print("⚠️ 没有当前 Context")
-            return
-        }
+        guard let context = currentContext else { return }
 
-        // 如果是第一次按上下键，保存当前输入
-        if context.historyIndex == -1 {
-            currentInput = inputTextView.text
-        }
-
-        if let command = context.navigateHistoryUp() {
-            inputTextView.text = command
+        if let question = context.navigateQuestionUp() {
+            inputTextView.text = question.content
             inputTextView.focus()
         }
     }
 
-    /// 向下浏览历史记录（更新的命令）
+    /// 向下浏览历史记录（更新的问题）
     private func navigateHistoryDown() {
-        guard let context = currentContext else {
-            print("⚠️ 没有当前 Context")
-            return
-        }
+        guard let context = currentContext else { return }
 
-        if let command = context.navigateHistoryDown() {
-            inputTextView.text = command
-        } else {
-            // 回到当前输入
-            inputTextView.text = currentInput
+        if let question = context.navigateQuestionDown() {
+            inputTextView.text = question.content
         }
 
         inputTextView.focus()
@@ -202,9 +152,6 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
     /// 处理目录确认选择
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String) {
-        print("✅ 确认选择目录: \(path)")
-
-        // 检查是否为目录
         guard AEDirectory.isDirectory(atPath: path) else {
             print("❌ 不是有效的目录: \(path)")
             return
@@ -215,37 +162,23 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
     /// 当 leftView 获得焦点时
     func leftViewDidBecomeFocused(_ leftView: AELeftView) {
-        // 清除 rightView 的选中状态
         rightView?.clearSelection()
-        print("⚠️ leftView 获得焦点，清除 rightView 选中状态")
     }
 
     // MARK: - Helper Methods
 
     /// 创建第一个 AI Context
     private func createFirstContext(withDirectory path: String) {
-        // 1. 发送请求到云端创建 Context
         sendCreateContextRequest(aedir: path) { [weak self] contextId in
             guard let self = self, let contextId = contextId else {
-                print("❌ 云端 Context 创建失败")
+                print("❌ Context 创建失败")
                 return
             }
 
-            print("✅ 云端 Context 创建成功")
-            print("   Context ID: \(contextId)")
-
-            // 2. 使用云端返回的 contextId 创建本地 Context
             let config = AEContextConfig(content: path)
-
-            // 使用云端返回的 contextId 作为本地 Context 的 ID
             self.currentContext = AEAIContextManager.createContext(config, withId: contextId)
-
-            print("✅ 本地 Context 创建成功")
-            print("   Context ID: \(self.currentContext?.id ?? "")")
-            print("   Directory: \(self.currentContext?.dir ?? "")")
-
-            // 3. 刷新右侧视图
             self.rightView?.reloadData()
+            print("✅ Context 创建成功: \(contextId)")
         }
     }
 
@@ -253,38 +186,24 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
     /// 发送创建 Context 请求到云端
     private func sendCreateContextRequest(aedir: String, completion: @escaping (String?) -> Void) {
-        print("📤 发送创建 Context 请求")
-        print("   AE Dir: \(aedir)")
-
-        // 使用 AENetReq 构建 POST 请求
-        let request = AENetReq(
-            post: AEAIServicePath.createContext.rawValue,
-            parameters: ["aedir": aedir],
-            protocolType: .http
-        )
-
-        // 通过 AEModuleCenter 获取网络服务并发送请求
         guard let networkService = networkService else {
             print("❌ 网络服务未初始化")
             completion(nil)
             return
         }
 
+        let request = AENetReq(
+            post: AEAIServicePath.createContext.rawValue,
+            parameters: ["aedir": aedir],
+            protocolType: .http
+        )
+
         networkService.sendRequest(request) { response in
-            if response.isSuccess {
-                // 解析响应
-                if let contextId = response.response?["contextid"] as? String {
-                    print("✅ 收到云端响应")
-                    print("   Context ID: \(contextId)")
-                    completion(contextId)
-                } else {
-                    print("❌ 响应格式错误 - 缺少 contextid 字段")
-                    completion(nil)
-                }
+            if response.isSuccess, let contextId = response.response?["contextid"] as? String {
+                completion(contextId)
             } else {
-                print("❌ 网络请求失败")
                 if let error = response.error {
-                    print("   错误: \(error.localizedDescription)")
+                    print("❌ 网络请求失败: \(error.localizedDescription)")
                 }
                 completion(nil)
             }
@@ -324,12 +243,6 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
         // 3. 显示系统消息：切换到新的 Context
         chatView?.addSystemMessage("切换到新的 Context: \(context.dir)")
 
-        // 4. 重置 Context 的消息导航索引（确保从最新开始）
-        context.messageManager.resetToLatest()
-
-        // 5. 重置历史导航状态
-        context.resetHistoryNavigation()
-        currentInput = ""
 
         // 6. 让输入框获得焦点
         inputTextView.focus()
@@ -391,45 +304,19 @@ extension ViewController: AETextViewDelegate {
 
     /// 请求上一条历史记录（当前 Context 的）
     func aeTextViewRequestPreviousHistory(_ textView: AETextView) -> String? {
-        guard let context = currentContext else {
-            print("⚠️ 没有当前 Context")
-            return nil
-        }
-
-        if let previousMessage = context.getPreviousQuestion() {
-            print("⬆️ 加载上一条消息: \(previousMessage.content)")
-            return previousMessage.content
-        } else {
-            print("⚠️ 没有更早的消息")
-            return nil
-        }
+        guard let context = currentContext else { return nil }
+        return context.navigateQuestionUp()?.content
     }
 
     /// 请求下一条历史记录（当前 Context 的）
     func aeTextViewRequestNextHistory(_ textView: AETextView) -> String? {
-        guard let context = currentContext else {
-            print("⚠️ 没有当前 Context")
-            return nil
-        }
-
-        if let nextMessage = context.getNextQuestion() {
-            print("⬇️ 加载下一条消息: \(nextMessage.content)")
-            return nextMessage.content
-        } else {
-            print("⚠️ 没有更新的消息")
-            return nil
-        }
+        guard let context = currentContext else { return nil }
+        return context.navigateQuestionDown()?.content
     }
 
     /// 处理提交的文本（回车提交）
     private func handleSubmittedText(_ text: String) {
         print("📤 处理提交: \(text)")
-
-        // 添加到当前 Context 的历史记录
-        currentContext?.addCommandToHistory(text)
-
-        // 重置当前输入
-        currentInput = ""
 
         // 在 chatView 中显示用户消息
         chatView?.addUserMessage(text)

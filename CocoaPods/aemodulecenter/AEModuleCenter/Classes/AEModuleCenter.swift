@@ -26,9 +26,6 @@ import AppKit
     /// 存储已注册的模块（使用 NSHashTable 支持弱引用，避免循环引用）
     private let modules: NSHashTable<AnyObject>
 
-    /// 串行队列，确保所有操作都是线程安全的原子操作
-    private let moduleQueue: DispatchQueue
-
     /// 锁，用于保护关键区域
     private let lock: NSRecursiveLock
 
@@ -37,13 +34,6 @@ import AppKit
     private override init() {
         // 使用弱引用的 HashTable，模块被释放时自动移除
         self.modules = NSHashTable<AnyObject>.weakObjects()
-        // 创建串行队列，使用 barrier 保证原子性
-        self.moduleQueue = DispatchQueue(
-            label: "com.aemodulecenter.queue",
-            qos: .userInitiated,
-            attributes: [],
-            autoreleaseFrequency: .workItem
-        )
         // 递归锁，支持同一线程多次加锁
         self.lock = NSRecursiveLock()
         self.lock.name = "com.aemodulecenter.lock"
@@ -91,70 +81,54 @@ import AppKit
 
     /// 注册模块（实例方法）
     private func registerModule(_ module: AEModuleProtocol) -> Bool {
-        return moduleQueue.sync { [weak self] in
-            guard let self = self else { return false }
+        lock.lock()
+        defer { lock.unlock() }
 
-            self.lock.lock()
-            defer { self.lock.unlock() }
-
-            // 检查模块是否已存在
-            if self.modules.contains(module as AnyObject) {
-                debugPrint("[AEModuleCenter] Module already registered: \(type(of: module))")
-                return false
-            }
-
-            // 添加模块
-            self.modules.add(module as AnyObject)
-            debugPrint("[AEModuleCenter] Module registered successfully: \(type(of: module))")
-            return true
+        // 检查模块是否已存在
+        if modules.contains(module as AnyObject) {
+            debugPrint("[AEModuleCenter] Module already registered: \(type(of: module))")
+            return false
         }
+
+        // 添加模块
+        modules.add(module as AnyObject)
+        debugPrint("[AEModuleCenter] Module registered successfully: \(type(of: module))")
+        return true
     }
 
     /// 移除模块（实例方法）
     private func unregisterModule(_ module: AEModuleProtocol) -> Bool {
-        return moduleQueue.sync { [weak self] in
-            guard let self = self else { return false }
+        lock.lock()
+        defer { lock.unlock() }
 
-            self.lock.lock()
-            defer { self.lock.unlock() }
-
-            // 检查模块是否存在
-            if !self.modules.contains(module as AnyObject) {
-                debugPrint("[AEModuleCenter] Module not found: \(type(of: module))")
-                return false
-            }
-
-            // 移除模块
-            self.modules.remove(module as AnyObject)
-            debugPrint("[AEModuleCenter] Module unregistered successfully: \(type(of: module))")
-            return true
+        // 检查模块是否存在
+        if !modules.contains(module as AnyObject) {
+            debugPrint("[AEModuleCenter] Module not found: \(type(of: module))")
+            return false
         }
+
+        // 移除模块
+        modules.remove(module as AnyObject)
+        debugPrint("[AEModuleCenter] Module unregistered successfully: \(type(of: module))")
+        return true
     }
 
     /// 移除所有模块（实例方法）
     private func unregisterAllModules() {
-        moduleQueue.sync { [weak self] in
-            guard let self = self else { return }
+        lock.lock()
+        defer { lock.unlock() }
 
-            self.lock.lock()
-            defer { self.lock.unlock() }
-
-            let count = self.modules.count
-            self.modules.removeAllObjects()
-            debugPrint("[AEModuleCenter] All modules unregistered, count: \(count)")
-        }
+        let count = modules.count
+        modules.removeAllObjects()
+        debugPrint("[AEModuleCenter] All modules unregistered, count: \(count)")
     }
 
     /// 获取已注册模块数量（实例方法）
     private func getModuleCount() -> Int {
-        return moduleQueue.sync { [weak self] in
-            guard let self = self else { return 0 }
+        lock.lock()
+        defer { lock.unlock() }
 
-            self.lock.lock()
-            defer { self.lock.unlock() }
-
-            return self.modules.count
-        }
+        return modules.count
     }
 
     /// 获取指定协议类型的模块实例（实例方法）
@@ -162,7 +136,9 @@ import AppKit
         lock.lock()
         defer { lock.unlock() }
 
-        return modules.allObjects.compactMap { $0 as? T }.first
+        let result = modules.allObjects.compactMap { $0 as? T }.first
+        debugPrint("[AEModuleCenter] Getting module for \(protocolType), found: \(result != nil), total modules: \(modules.allObjects)")
+        return result
     }
 
     // MARK: - Private Helper
