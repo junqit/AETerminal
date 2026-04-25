@@ -14,10 +14,6 @@ import AENetworkEngine
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Properties
-
-    /// 网络模块实例（保持强引用）
-    private let networkModule = AEAINetworkModule()
-
     func applicationWillFinishLaunching(_ notification: Notification) {
         
         // 2. 注册模块到 AEModuleCenter
@@ -55,21 +51,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 配置网络模块
     private func configureNetworkModule() {
-        
-        AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
 
-        // 配置 UDP 网络参数
-        // TODO: 根据实际需求修改服务器地址和端口
-        networkModule.configure(
-            serverHost: "127.0.0.1",  // 服务器地址
-            serverPort: 9000           // 服务器端口
-        )
+        AENetHttpEngine.configure(config: AENetConfig(host: "127.0.0.1", port: 9000))
+
     }
 
     /// 注册模块
     private func registerModules() {
         // 注册网络模块
-        AEModuleCenter.register(module: networkModule)
+        AEModuleCenter.register(module: AEAINetworkModule()
+)
 
         // 可以在这里注册其他模块
         // AEModuleCenter.register(module: OtherModule())

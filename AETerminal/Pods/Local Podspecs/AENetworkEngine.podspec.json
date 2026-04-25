@@ -26,10 +26,7 @@
   "subspecs": [
     {
       "name": "Core",
-      "source_files": [
-        "AEReq/**/*.swift",
-        "AERsp/**/*.swift"
-      ]
+      "source_files": "Core/**/*.swift"
     },
     {
       "name": "HTTP",

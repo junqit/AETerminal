@@ -55,8 +55,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 配置网络模块
     private func configureNetworkModule() {
-        
-        AENetHttpEngine.configure(config: AENetHttpConfig(baseURL: "http://127.0.0.1:9000"))
+
+        AENetHttpEngine.configure(config: AENetConfig(host: "127.0.0.1", port: 9000))
 
         // 配置 UDP 网络参数
         // TODO: 根据实际需求修改服务器地址和端口

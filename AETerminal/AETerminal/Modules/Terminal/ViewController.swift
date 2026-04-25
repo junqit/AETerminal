@@ -46,11 +46,11 @@ class ViewController: NSViewController {
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
 
         // 配置 AENetHttpEngine
-        let httpConfig = AENetHttpConfig(
-            baseURL: "http://localhost:8000",
-            timeout: 30
+        let httpConfig = AENetConfig(
+            host: "localhost",
+            port: 8000
         )
-        AENetHttpEngine.configure(config: httpConfig)
+        AENetHttpEngine.configure(config: httpConfig, timeout: 30)
 
         // 获取网络能力并注册监听
         setupNetworkService()
@@ -256,16 +256,21 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
         print("📤 发送创建 Context 请求")
         print("   AE Dir: \(aedir)")
 
-        // 使用 AENetHttpReq 构建 POST 请求
-        
-        // {"aedir": aedir}
-        let request = AENetHttpReq(
-            post: "/ae/context/create",
-            parameters: ["aedir": aedir]
+        // 使用 AENetReq 构建 POST 请求
+        let request = AENetReq(
+            post: AEAIServicePath.createContext.rawValue,
+            parameters: ["aedir": aedir],
+            protocolType: .http
         )
 
-        // 使用 AENetHttpEngine 发送请求
-        AENetHttpEngine.send(request: request) { response in
+        // 通过 AEModuleCenter 获取网络服务并发送请求
+        guard let networkService = networkService else {
+            print("❌ 网络服务未初始化")
+            completion(nil)
+            return
+        }
+
+        networkService.sendRequest(request) { response in
             if response.isSuccess {
                 // 解析响应
                 if let contextId = response.response?["contextid"] as? String {
@@ -495,17 +500,19 @@ extension ViewController: AETextViewDelegate {
 extension ViewController: AENetworkMessageListener {
 
     /// 接收到网络消息
-    /// - Parameter message: 反序列化后的消息字典
-    func didReceiveMessage(_ message: [String: Any]) {
-        print("📥 收到网络消息: \(message)")
+    func didReceiveMessage(_ response: AENetRsp) {
+        print("📥 收到网络消息, requestId: \(response.requestId)")
 
-        // 解析 sessionid
+        guard let message = response.response else {
+            print("⚠️ 响应数据为空")
+            return
+        }
+
         guard let sessionId = message["sessionid"] as? String else {
             print("⚠️ 消息中缺少 sessionid 字段")
             return
         }
 
-        // 通过 sessionid 获取对应的 Context
         guard let context = AEAIContextManager.getContext(id: sessionId) else {
             print("⚠️ 未找到 sessionid 对应的 Context: \(sessionId)")
             return
@@ -513,22 +520,15 @@ extension ViewController: AENetworkMessageListener {
 
         print("✅ 找到对应的 Context: \(context.id)")
 
-        // 将数据交由 Context 处理
         handleNetworkMessage(message, for: context)
     }
 
     /// 处理网络消息（由 Context 处理）
-    /// - Parameters:
-    ///   - message: 消息字典
-    ///   - context: 对应的 Context
     private func handleNetworkMessage(_ message: [String: Any], for context: AEAIContext) {
-        // 在主线程更新 UI
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
-            // 如果是当前活动的 Context，在 chatView 中显示响应
             if context.id == self.currentContext?.id {
-                // 将消息作为 AI 响应显示
                 self.chatView?.addAIResponse(message as AnyObject)
                 print("✅ 已显示网络消息到 chatView")
             } else {

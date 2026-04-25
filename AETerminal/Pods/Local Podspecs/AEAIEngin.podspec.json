@@ -27,14 +27,22 @@
     "Directory"
   ],
   "dependencies": {
-    "AENetworkEngine": [
+    "AEModuleCenter": [
+
+    ],
+    "AEAINetworkModule": [
 
     ]
   },
   "subspecs": [
     {
       "name": "Context",
-      "source_files": "Context/**/*.swift"
+      "source_files": "Context/**/*.swift",
+      "dependencies": {
+        "AENetworkEngine": [
+
+        ]
+      }
     },
     {
       "name": "Directory",
