@@ -1,0 +1,966 @@
+//
+//  AEChatView.swift
+//  AETerminal
+//
+//  Created by 田峻岐 on 2026/4/7.
+//
+
+import Foundation
+import AppKit
+
+/// 聊天视图 - 显示对话内容
+public class AEChatView: NSView {
+
+    // MARK: - Properties
+
+    /// 滚动视图
+    private var scrollView: NSScrollView!
+
+    /// 文本视图用于显示聊天内容
+    private var textView: NSTextView!
+
+    /// 消息记录
+    private var messages: [(type: MessageType, content: String)] = []
+
+    /// Markdown 渲染器
+    private let markdownRenderer = MarkdownRenderer(fontSize: 13)
+
+    /// 响应解析器
+    private let responseParser = AEAIResponseParser()
+
+    public enum MessageType {
+        case user      // 用户输入
+        case assistant // AI 响应
+        case system    // 系统消息
+        case error     // 错误消息
+    }
+
+    // MARK: - Initialization
+
+    public override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setupUI()
+    }
+
+    public required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+
+    // MARK: - Setup
+
+    private func setupUI() {
+        print("🎨 AEChatView setupUI 开始, bounds: \(bounds)")
+
+        // 创建滚动视图
+        scrollView = NSScrollView()
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true  // 自动隐藏滚动条，更现代
+        scrollView.borderType = .noBorder
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.drawsBackground = true
+
+        // 现代化背景颜色（深浅模式适配）
+        if #available(macOS 10.14, *) {
+            scrollView.backgroundColor = NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    // 深色模式：深灰蓝色背景
+                    return NSColor(red: 0.11, green: 0.11, blue: 0.12, alpha: 1.0)
+                } else {
+                    // 浅色模式：浅灰色背景
+                    return NSColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0)
+                }
+            }
+        } else {
+            scrollView.backgroundColor = NSColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0)
+        }
+
+        // 创建文本系统组件
+        let textStorage = NSTextStorage()
+        let layoutManager = NSLayoutManager()
+        textStorage.addLayoutManager(layoutManager)
+
+        // 使用足够大的初始尺寸
+        let textContainer = NSTextContainer(containerSize: NSSize(width: 1000, height: CGFloat.greatestFiniteMagnitude))
+        textContainer.widthTracksTextView = true
+        layoutManager.addTextContainer(textContainer)
+
+        // 创建文本视图
+        textView = NSTextView(frame: .zero, textContainer: textContainer)
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.drawsBackground = true
+
+        // 文本视图使用相同的背景色
+        if #available(macOS 10.14, *) {
+            textView.backgroundColor = NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return NSColor(red: 0.11, green: 0.11, blue: 0.12, alpha: 1.0)
+                } else {
+                    return NSColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0)
+                }
+            }
+        } else {
+            textView.backgroundColor = NSColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0)
+        }
+
+        textView.textColor = .labelColor
+        textView.font = NSFont.systemFont(ofSize: 14, weight: .regular)  // 更大更易读的字体
+        textView.textContainerInset = NSSize(width: 20, height: 20)  // 更大的内边距
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.autoresizingMask = [.width]
+
+        // 设置尺寸约束
+        textView.minSize = NSSize(width: 0, height: 0)
+        textView.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+
+        scrollView.documentView = textView
+        addSubview(scrollView)
+
+        // 设置约束
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+
+        print("🎨 AEChatView setupUI 完成")
+        print("   scrollView frame: \(scrollView.frame)")
+        print("   textView frame: \(textView.frame)")
+        print("   textStorage: \(textView.textStorage != nil ? "✅" : "❌")")
+
+        // 延迟验证布局
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            print("🔍 布局后检查:")
+            print("   self.bounds: \(self.bounds)")
+            print("   scrollView.frame: \(self.scrollView.frame)")
+            print("   textView.frame: \(self.textView.frame)")
+
+            // 如果布局后还是有问题，强制刷新
+            if self.scrollView.frame.size.width == 0 || self.scrollView.frame.size.height == 0 {
+                print("⚠️ scrollView frame 异常，尝试强制布局")
+                self.needsLayout = true
+                self.layoutSubtreeIfNeeded()
+            }
+        }
+    }
+
+    // MARK: - Public Methods
+
+    /// 添加用户消息
+    public func addUserMessage(_ message: String) {
+        print("💬 AEChatView.addUserMessage: \(message)")
+        DispatchQueue.main.async { [weak self] in
+            self?.messages.append((type: .user, content: message))
+            self?.appendMessage(message, type: .user)
+        }
+    }
+
+    /// 添加 AI 响应消息（支持 Markdown）
+    public func addAssistantMessage(_ message: String, isMarkdown: Bool = true, assistantName: String = "AI") {
+        print("🤖 AEChatView.addAssistantMessage: \(message.prefix(100))... (markdown: \(isMarkdown))")
+        DispatchQueue.main.async { [weak self] in
+            self?.messages.append((type: .assistant, content: message))
+            self?.appendMessage(message, type: .assistant, isMarkdown: isMarkdown, assistantName: assistantName)
+        }
+    }
+
+    /// 添加系统消息
+    public func addSystemMessage(_ message: String) {
+        print("⚙️ AEChatView.addSystemMessage: \(message)")
+        DispatchQueue.main.async { [weak self] in
+            self?.messages.append((type: .system, content: message))
+            self?.appendMessage(message, type: .system)
+        }
+    }
+
+    /// 添加错误消息
+    public func addErrorMessage(_ message: String) {
+        print("❌ AEChatView.addErrorMessage: \(message)")
+        DispatchQueue.main.async { [weak self] in
+            self?.messages.append((type: .error, content: message))
+            self?.appendMessage(message, type: .error)
+        }
+    }
+
+    /// 添加 AI 响应（通过解析器自动解析）
+    /// - Parameter response: AI 原始响应对象
+    public func addAIResponse(_ response: AnyObject) {
+        print("🤖 AEChatView.addAIResponse - 开始处理")
+
+        // 使用解析器解析响应
+        let parsedResponses = responseParser.parseResponse(response)
+
+        // 如果没有解析到任何响应，显示错误
+        if parsedResponses.isEmpty {
+            addErrorMessage("无法解析 AI 响应")
+            return
+        }
+
+        // 根据响应数量选择显示方式
+        if parsedResponses.count == 1 {
+            // 单个响应：使用传统垂直显示
+            let parsedResponse = parsedResponses[0]
+            if parsedResponse.text.isEmpty {
+                addErrorMessage("AI 响应为空")
+            } else {
+                addAssistantMessage(
+                    parsedResponse.text,
+                    isMarkdown: parsedResponse.isMarkdown,
+                    assistantName: parsedResponse.assistantName
+                )
+            }
+        } else {
+            // 多个响应：使用横向对比视图
+            DispatchQueue.main.async { [weak self] in
+                self?.addComparisonView(with: parsedResponses)
+            }
+        }
+    }
+
+    /// 清空所有消息
+    public func clearMessages() {
+        print("🗑️ AEChatView.clearMessages")
+        DispatchQueue.main.async { [weak self] in
+            self?.messages.removeAll()
+            self?.textView.string = ""
+        }
+    }
+
+    /// 测试方法 - 添加欢迎消息
+    public func addWelcomeMessage() {
+        print("👋 AEChatView.addWelcomeMessage")
+
+        // 添加系统消息
+        addSystemMessage("欢迎使用 AI Terminal！开始你的对话吧。")
+
+        // 添加一个测试 Markdown 消息
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            let testMarkdown = """
+# 测试 Markdown 渲染
+
+这是一个**粗体**文本测试。
+
+## 代码示例
+
+```swift
+let greeting = "Hello, World!"
+print(greeting)
+```
+
+## 列表测试
+
+- 列表项 1
+- 列表项 2
+- 列表项 3
+
+> 这是一个引用块
+"""
+            self?.addAssistantMessage(testMarkdown, isMarkdown: true)
+        }
+    }
+
+    // MARK: - Private Methods
+
+    /// 将消息追加到文本视图（简洁设计，无气泡）
+    private func appendMessage(_ message: String, type: MessageType, isMarkdown: Bool = false, assistantName: String = "AI") {
+        guard let storage = textView.textStorage else {
+            print("❌ textView.textStorage is nil!")
+            return
+        }
+
+        print("📝 appendMessage 开始")
+        print("   当前文本长度: \(storage.length)")
+        print("   消息类型: \(type)")
+        print("   是否 Markdown: \(isMarkdown)")
+        print("   消息内容长度: \(message.count)")
+        print("   消息预览: \(message.prefix(100))...")
+
+        // 定义颜色方案
+        let isDarkMode: Bool
+        if #available(macOS 10.14, *) {
+            isDarkMode = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+        } else {
+            isDarkMode = false
+        }
+
+        // 如果不是第一条消息，添加间距
+        if storage.length > 0 {
+            let spacing = NSAttributedString(string: "\n\n", attributes: [:])
+            storage.append(spacing)
+        }
+
+        // 根据消息类型配置样式
+        let timestamp = formatTimestamp(Date())
+        let displayName: String
+        let nameColor: NSColor
+        let contentColor: NSColor
+        let alignment: NSTextAlignment
+        let fontSize: CGFloat = 15  // 更大的字体
+
+        switch type {
+        case .user:
+            displayName = "You"
+            nameColor = isDarkMode
+                ? NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0)   // 深色模式亮蓝
+                : NSColor(red: 0.0, green: 0.48, blue: 1.0, alpha: 1.0)  // 浅色模式蓝色
+            contentColor = isDarkMode ? .white : .black
+            alignment = .right
+        case .assistant:
+            displayName = assistantName  // 使用传入的名字
+            nameColor = isDarkMode
+                ? NSColor(red: 0.4, green: 0.9, blue: 0.6, alpha: 1.0)   // 深色模式亮绿
+                : NSColor(red: 0.2, green: 0.7, blue: 0.4, alpha: 1.0)  // 浅色模式绿色
+            contentColor = isDarkMode ? .white : .black
+            alignment = .left
+        case .system:
+            displayName = "System"
+            nameColor = isDarkMode
+                ? NSColor(red: 1.0, green: 0.7, blue: 0.3, alpha: 1.0)   // 深色模式橙色
+                : NSColor(red: 0.9, green: 0.6, blue: 0.0, alpha: 1.0)  // 浅色模式橙色
+            contentColor = isDarkMode ? .white : .black
+            alignment = .center
+        case .error:
+            displayName = "Error"
+            nameColor = isDarkMode
+                ? NSColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 1.0)   // 深色模式亮红
+                : NSColor(red: 0.9, green: 0.2, blue: 0.2, alpha: 1.0)  // 浅色模式红色
+            contentColor = nameColor
+            alignment = .left
+        }
+
+        // 创建段落样式
+        let headerParagraphStyle = NSMutableParagraphStyle()
+        headerParagraphStyle.alignment = alignment
+
+        let contentParagraphStyle = NSMutableParagraphStyle()
+        contentParagraphStyle.alignment = alignment
+        contentParagraphStyle.lineSpacing = 4  // 行间距
+        contentParagraphStyle.paragraphSpacing = 6  // 段落间距
+
+        // 添加消息头部（名字和时间戳）
+        let headerText = "\(displayName)  \(timestamp)\n"
+        let headerAttr = NSAttributedString(string: headerText, attributes: [
+            .font: NSFont.systemFont(ofSize: 13, weight: .semibold),
+            .foregroundColor: nameColor,
+            .paragraphStyle: headerParagraphStyle
+        ])
+        storage.append(headerAttr)
+        print("   ✅ 添加消息头部，对齐: \(alignment)")
+
+        // 添加消息内容
+        if isMarkdown && type == .assistant {
+            // Markdown 渲染
+            print("   🎨 开始 Markdown 渲染...")
+            let renderedContent = markdownRenderer.render(markdown: message, textColor: contentColor, alignment: alignment)
+            storage.append(renderedContent)
+            print("   ✅ 添加 Markdown 内容")
+        } else {
+            // 普通文本
+            let contentAttr = NSAttributedString(string: "\(message)\n", attributes: [
+                .font: NSFont.systemFont(ofSize: fontSize, weight: .regular),
+                .foregroundColor: contentColor,
+                .paragraphStyle: contentParagraphStyle
+            ])
+            storage.append(contentAttr)
+            print("   ✅ 添加普通文本内容")
+        }
+
+        print("✅ appendMessage 完成 - 新文本总长度: \(storage.length)")
+        print("   textView.string 长度: \(textView.string.count)")
+
+        // 滚动到底部
+        scrollToBottom()
+    }
+
+    /// 格式化时间戳
+    private func formatTimestamp(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        return formatter.string(from: date)
+    }
+
+    /// 滚动到底部
+    private func scrollToBottom() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let range = NSRange(location: self.textView.string.count, length: 0)
+            self.textView.scrollRangeToVisible(range)
+            print("📜 滚动到底部, 文本长度: \(self.textView.string.count)")
+        }
+    }
+
+    // MARK: - 多响应对比视图
+
+    /// 添加多个AI响应的横向对比视图
+    /// - Parameter responses: 解析后的多个响应
+    private func addComparisonView(with responses: [AEAIResponseParser.ParsedResponse]) {
+        guard let storage = textView.textStorage else {
+            print("❌ textView.textStorage is nil!")
+            return
+        }
+
+        print("📊 添加对比视图，共 \(responses.count) 个响应")
+
+        // 如果不是第一条消息，添加间距
+        if storage.length > 0 {
+            let spacing = NSAttributedString(string: "\n\n", attributes: [:])
+            storage.append(spacing)
+        }
+
+        // 添加对比标题
+        let timestamp = formatTimestamp(Date())
+        let isDarkMode: Bool
+        if #available(macOS 10.14, *) {
+            isDarkMode = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+        } else {
+            isDarkMode = false
+        }
+
+        let headerText = "AI 对比  \(timestamp)\n"
+        let headerAttr = NSAttributedString(string: headerText, attributes: [
+            .font: NSFont.systemFont(ofSize: 13, weight: .semibold),
+            .foregroundColor: isDarkMode ? NSColor.secondaryLabelColor : NSColor.tertiaryLabelColor
+        ])
+        storage.append(headerAttr)
+
+        // 记录插入位置
+        let insertPosition = storage.length
+
+        // 创建对比容器（动态高度）
+        let comparisonView = createComparisonContainer(with: responses)
+
+        // 将对比视图添加到 textView
+        textView.addSubview(comparisonView)
+
+        // 先添加一个初始占位符
+        let initialPlaceholder = NSAttributedString(
+            string: String(repeating: "\n", count: 15),
+            attributes: [.font: NSFont.systemFont(ofSize: 1)]
+        )
+        storage.append(initialPlaceholder)
+
+        // 布局对比视图（会根据实际高度更新占位符）
+        layoutComparisonView(comparisonView, insertPosition: insertPosition)
+
+        // 滚动到底部
+        scrollToBottom()
+    }
+
+    /// 创建横向对比容器
+    /// - Parameter responses: 多个响应
+    /// - Returns: 对比容器视图
+    private func createComparisonContainer(with responses: [AEAIResponseParser.ParsedResponse]) -> NSView {
+        // 外层容器
+        let containerView = NSView()
+        containerView.wantsLayer = true
+
+        // 背景和圆角
+        containerView.layer?.backgroundColor = NSColor.separatorColor.cgColor
+        containerView.layer?.cornerRadius = 8
+
+        // 创建水平 StackView
+        let stackView = NSStackView()
+        stackView.orientation = .horizontal
+        stackView.distribution = .fillEqually  // 等宽分配
+        stackView.spacing = 1  // 分隔线宽度
+
+        print("📦 创建对比容器，响应个数: \(responses.count)")
+
+        // 为每个响应创建简单的面板
+        for response in responses {
+            let panel = createSimplePanel(response: response)
+            stackView.addArrangedSubview(panel)
+        }
+
+        containerView.addSubview(stackView)
+
+        // 设置 stackView 填满容器
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+        ])
+
+        return containerView
+    }
+
+    /// 创建简单的响应面板（先不考虑内容，只显示框架）
+    /// - Parameter response: 响应数据
+    /// - Returns: 响应面板视图
+    private func createSimplePanel(response: AEAIResponseParser.ParsedResponse) -> NSView {
+        let panel = NSView()
+        panel.wantsLayer = true
+
+        // 背景色 - 用不同颜色测试
+        if #available(macOS 10.14, *) {
+            panel.layer?.backgroundColor = NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return NSColor(red: 0.2, green: 0.2, blue: 0.25, alpha: 1.0)
+                } else {
+                    return NSColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0)
+                }
+            }.cgColor
+        } else {
+            panel.layer?.backgroundColor = NSColor.lightGray.cgColor
+        }
+
+        // 只添加标题标签测试
+        let titleLabel = NSTextField(labelWithString: response.assistantName)
+        titleLabel.font = NSFont.boldSystemFont(ofSize: 16)
+        titleLabel.textColor = .labelColor
+        titleLabel.alignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.backgroundColor = .clear
+        titleLabel.isBezeled = false
+        titleLabel.isEditable = false
+
+        panel.addSubview(titleLabel)
+
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: panel.centerXAnchor),
+            titleLabel.centerYAnchor.constraint(equalTo: panel.centerYAnchor)
+        ])
+
+        print("   创建面板: \(response.assistantName)")
+
+        return panel
+    }
+
+    /// 创建单个响应面板
+    /// - Parameter response: 响应数据
+    /// - Returns: 响应面板视图
+    private func createResponsePanel(response: AEAIResponseParser.ParsedResponse) -> NSView {
+        let panel = NSView()
+        panel.wantsLayer = true
+        panel.translatesAutoresizingMaskIntoConstraints = false
+
+        // 背景色
+        if #available(macOS 10.14, *) {
+            panel.layer?.backgroundColor = NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return NSColor(red: 0.15, green: 0.15, blue: 0.16, alpha: 1.0)
+                } else {
+                    return NSColor.white
+                }
+            }.cgColor
+        } else {
+            panel.layer?.backgroundColor = NSColor.white.cgColor
+        }
+
+        // 标题标签
+        let titleLabel = NSTextField(labelWithString: response.assistantName)
+        titleLabel.font = NSFont.boldSystemFont(ofSize: 14)
+        titleLabel.textColor = .labelColor
+        titleLabel.alignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // 创建 TextView - 不使用 ScrollView，内容完全展开
+        let textView = NSTextView()
+        textView.isEditable = false
+        textView.isSelectable = true
+        textView.backgroundColor = .clear
+        textView.textColor = .labelColor
+        textView.font = NSFont.systemFont(ofSize: 14)
+        textView.textContainerInset = NSSize(width: 12, height: 12)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+
+        // 关键：禁用滚动，让 TextView 完全展开显示内容
+        textView.isVerticallyResizable = false
+        textView.isHorizontallyResizable = false
+
+        print("📝 创建面板 - AI: \(response.assistantName)")
+        print("   内容长度: \(response.text.count)")
+
+        // 设置内容
+        let isDarkMode: Bool
+        if #available(macOS 10.14, *) {
+            isDarkMode = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+        } else {
+            isDarkMode = false
+        }
+        let textColor: NSColor = isDarkMode ? .white : .black
+
+        if response.isMarkdown {
+            let rendered = markdownRenderer.render(
+                markdown: response.text,
+                textColor: textColor,
+                alignment: .left
+            )
+            textView.textStorage?.setAttributedString(rendered)
+        } else {
+            textView.string = response.text
+            textView.textColor = textColor
+        }
+
+        print("   设置后 textView.string.count: \(textView.string.count)")
+
+        // 添加子视图
+        panel.addSubview(titleLabel)
+        panel.addSubview(textView)
+
+        // 设置约束
+        NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: panel.topAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -12),
+
+            textView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
+            textView.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 8),
+            textView.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -8),
+            textView.bottomAnchor.constraint(equalTo: panel.bottomAnchor, constant: -8)
+        ])
+
+        return panel
+    }
+
+    /// 布局对比视图到指定位置
+    /// - Parameters:
+    ///   - view: 对比视图
+    ///   - insertPosition: 插入位置
+    private func layoutComparisonView(_ view: NSView, insertPosition: Int) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            // 计算可用宽度（占满整个 textView 宽度，减去内边距）
+            let availableWidth = self.textView.bounds.width - self.textView.textContainerInset.width * 2
+
+            // 获取插入位置的坐标
+            let glyphIndex = self.textView.layoutManager?.glyphIndexForCharacter(at: insertPosition) ?? 0
+            let rect = self.textView.layoutManager?.boundingRect(
+                forGlyphRange: NSRange(location: glyphIndex, length: 1),
+                in: self.textView.textContainer!
+            ) ?? .zero
+
+            // 使用固定高度
+            let fixedHeight: CGFloat = 300
+
+            print("📐 布局对比视图:")
+            print("   可用宽度: \(availableWidth)")
+            print("   固定高度: \(fixedHeight)")
+            print("   Y 位置: \(rect.minY + 5)")
+
+            // 设置视图的 frame
+            view.frame = CGRect(
+                x: self.textView.textContainerInset.width,
+                y: rect.minY + 5,
+                width: availableWidth,
+                height: fixedHeight
+            )
+
+            print("   最终 frame: \(view.frame)")
+
+            // 更新占位符
+            if let storage = self.textView.textStorage {
+                // 删除旧占位符
+                let oldPlaceholderLength = storage.length - insertPosition
+                if oldPlaceholderLength > 0 {
+                    storage.deleteCharacters(in: NSRange(location: insertPosition, length: oldPlaceholderLength))
+                }
+
+                // 添加新占位符
+                let placeholderLines = Int(ceil((fixedHeight + 20) / 20))
+                let newPlaceholder = NSAttributedString(
+                    string: String(repeating: "\n", count: placeholderLines),
+                    attributes: [.font: NSFont.systemFont(ofSize: 1)]
+                )
+                storage.append(newPlaceholder)
+            }
+        }
+    }
+
+// MARK: - MarkdownRenderer
+
+/// Markdown 渲染器 - 将 Markdown 文本转换为 NSAttributedString
+class MarkdownRenderer {
+
+    // MARK: - 字体配置
+
+    private let baseFont: NSFont
+    private let baseFontSize: CGFloat
+    private let codeFont: NSFont
+    private var currentTextColor: NSColor = .labelColor
+    private var currentAlignment: NSTextAlignment = .left
+
+    init(fontSize: CGFloat = 15) {  // 增大默认字体
+        self.baseFontSize = fontSize
+        self.baseFont = NSFont.systemFont(ofSize: fontSize)
+        self.codeFont = NSFont.monospacedSystemFont(ofSize: fontSize - 1, weight: .regular)
+    }
+
+    // MARK: - 公共方法
+
+    /// 渲染 Markdown 文本为富文本
+    func render(markdown: String, textColor: NSColor, alignment: NSTextAlignment) -> NSAttributedString {
+        // 设置当前颜色和对齐
+        self.currentTextColor = textColor
+        self.currentAlignment = alignment
+
+        let result = NSMutableAttributedString()
+
+        // 创建段落样式
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = alignment
+        paragraphStyle.lineSpacing = 4
+        paragraphStyle.paragraphSpacing = 6
+
+        // 按行处理
+        let lines = markdown.components(separatedBy: .newlines)
+        var inCodeBlock = false
+        var codeBlockContent = ""
+        var codeBlockLanguage = ""
+
+        for line in lines {
+            // 处理代码块
+            if line.hasPrefix("```") {
+                if inCodeBlock {
+                    // 结束代码块
+                    result.append(renderCodeBlock(codeBlockContent, language: codeBlockLanguage))
+                    codeBlockContent = ""
+                    codeBlockLanguage = ""
+                    inCodeBlock = false
+                } else {
+                    // 开始代码块
+                    inCodeBlock = true
+                    codeBlockLanguage = String(line.dropFirst(3).trimmingCharacters(in: .whitespaces))
+                }
+                continue
+            }
+
+            if inCodeBlock {
+                // 收集代码块内容
+                codeBlockContent += line + "\n"
+            } else {
+                // 处理普通行
+                result.append(renderLine(line))
+            }
+        }
+
+        // 如果还有未关闭的代码块
+        if inCodeBlock {
+            result.append(renderCodeBlock(codeBlockContent, language: codeBlockLanguage))
+        }
+
+        return result
+    }
+
+    // MARK: - 私有方法
+
+    /// 渲染单行文本
+    private func renderLine(_ line: String) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+
+        // 空行
+        if line.trimmingCharacters(in: .whitespaces).isEmpty {
+            result.append(NSAttributedString(string: "\n"))
+            return result
+        }
+
+        // 标题
+        if line.hasPrefix("#") {
+            return renderHeading(line)
+        }
+
+        // 无序列表
+        if line.hasPrefix("- ") || line.hasPrefix("* ") || line.hasPrefix("+ ") {
+            return renderListItem(line, ordered: false)
+        }
+
+        // 有序列表 (1. 2. 3. 等)
+        if line.range(of: "^\\d+\\.\\s", options: .regularExpression) != nil {
+            return renderListItem(line, ordered: true)
+        }
+
+        // 引用
+        if line.hasPrefix("> ") {
+            return renderBlockquote(line)
+        }
+
+        // 普通段落
+        return renderParagraph(line)
+    }
+
+    /// 渲染标题
+    private func renderHeading(_ line: String) -> NSAttributedString {
+        var level = 0
+        var content = line
+
+        // 计算标题级别
+        for char in line {
+            if char == "#" {
+                level += 1
+            } else {
+                break
+            }
+        }
+
+        // 提取标题内容
+        if level > 0 && level <= 6 {
+            content = String(line.dropFirst(level).trimmingCharacters(in: .whitespaces))
+        }
+
+        // 根据级别设置字体大小（增大）
+        let fontSize = baseFontSize + CGFloat(7 - level) * 3
+        let font = NSFont.boldSystemFont(ofSize: fontSize)
+
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: currentTextColor
+        ]
+
+        let result = NSMutableAttributedString(string: content + "\n", attributes: attrs)
+        return result
+    }
+
+    /// 渲染列表项
+    private func renderListItem(_ line: String, ordered: Bool) -> NSAttributedString {
+        let bullet = ordered ? "  " : "  • "
+        let content: String
+
+        if ordered {
+            // 有序列表，保留数字
+            if let match = line.range(of: "^\\d+\\.\\s", options: .regularExpression) {
+                content = String(line[match.upperBound...])
+            } else {
+                content = line
+            }
+        } else {
+            // 无序列表，去掉标记
+            content = String(line.dropFirst(2))
+        }
+
+        let result = NSMutableAttributedString(string: bullet)
+        result.append(renderInlineFormats(content))
+        result.append(NSAttributedString(string: "\n"))
+
+        return result
+    }
+
+    /// 渲染引用
+    private func renderBlockquote(_ line: String) -> NSAttributedString {
+        let content = String(line.dropFirst(2))
+
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: baseFont,
+            .foregroundColor: NSColor.secondaryLabelColor,
+            .paragraphStyle: {
+                let style = NSMutableParagraphStyle()
+                style.headIndent = 20
+                style.firstLineHeadIndent = 20
+                return style
+            }()
+        ]
+
+        let result = NSMutableAttributedString(string: "▎ " + content + "\n", attributes: attrs)
+        return result
+    }
+
+    /// 渲染段落
+    private func renderParagraph(_ line: String) -> NSAttributedString {
+        let result = renderInlineFormats(line)
+        let mutable = NSMutableAttributedString(attributedString: result)
+        mutable.append(NSAttributedString(string: "\n"))
+        return mutable
+    }
+
+    /// 渲染行内格式
+    private func renderInlineFormats(_ text: String) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+
+        // 暂时使用简单的文本处理
+        result.append(NSAttributedString(string: text, attributes: [
+            .font: baseFont,
+            .foregroundColor: dynamicTextColor()
+        ]))
+
+        return result
+    }
+
+    /// 渲染代码块
+    private func renderCodeBlock(_ code: String, language: String) -> NSAttributedString {
+        let result = NSMutableAttributedString()
+
+        // 代码块背景和边框效果
+        let codeAttrs: [NSAttributedString.Key: Any] = [
+            .font: NSFont.monospacedSystemFont(ofSize: 14, weight: .regular),  // 更大字体
+            .foregroundColor: currentTextColor,
+            .backgroundColor: codeBackgroundColor(),
+            .paragraphStyle: {
+                let style = NSMutableParagraphStyle()
+                style.headIndent = 10
+                style.firstLineHeadIndent = 10
+                style.tailIndent = -10
+                return style
+            }()
+        ]
+
+        // 语言标签（如果有）
+        if !language.isEmpty {
+            let langAttrs: [NSAttributedString.Key: Any] = [
+                .font: NSFont.systemFont(ofSize: 12),
+                .foregroundColor: NSColor.secondaryLabelColor,
+                .backgroundColor: codeBackgroundColor()
+            ]
+            result.append(NSAttributedString(string: "[\(language)]\n", attributes: langAttrs))
+        }
+
+        // 代码内容
+        result.append(NSAttributedString(string: code, attributes: codeAttrs))
+        result.append(NSAttributedString(string: "\n"))
+
+        return result
+    }
+
+    // MARK: - 颜色工具
+
+    /// 动态文本颜色
+    private func dynamicTextColor() -> NSColor {
+        if #available(macOS 10.14, *) {
+            return NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return .white
+                } else {
+                    return .black
+                }
+            }
+        } else {
+            return .labelColor
+        }
+    }
+
+    /// 代码文本颜色
+    private func codeTextColor() -> NSColor {
+        if #available(macOS 10.14, *) {
+            return NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
+                } else {
+                    return NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
+                }
+            }
+        } else {
+            return .labelColor
+        }
+    }
+
+    /// 代码背景颜色
+    private func codeBackgroundColor() -> NSColor {
+        if #available(macOS 10.14, *) {
+            return NSColor(name: nil) { appearance in
+                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
+                    return NSColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
+                } else {
+                    return NSColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
+                }
+            }
+        } else {
+            return .controlBackgroundColor
+        }
+    }
+}
