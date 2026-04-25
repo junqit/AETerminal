@@ -1,0 +1,6 @@
+framework module Pods_AETerminal {
+  umbrella header "Pods-AETerminal-umbrella.h"
+
+  export *
+  module * { export * }
+}
