@@ -101,9 +101,11 @@ public class AEAIContext {
 
         print("✅ AEAIContext 获取网络服务成功")
 
-        var parameters: [String: Any] = [:]
-        parameters.merge(toDictionary()) { (_, new) in new }
-        parameters.merge(question.toDictionary()) { (_, new) in new }
+        let parameters: [String: Any] = [
+            "llm_types": ["claude", "gemini"],
+            "context": toDictionary(),
+            "question": question.toDictionary()
+        ]
 
         let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: parameters, protocolType: .http)
         request.timeout = 1000

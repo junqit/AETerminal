@@ -23,7 +23,7 @@ import AppKit
 
     // MARK: - Private Properties
 
-    /// 存储已注册的模块（使用 NSHashTable 支持弱引用，避免循环引用）
+    /// 存储已注册的模块
     private let modules: NSHashTable<AnyObject>
 
     /// 锁，用于保护关键区域
@@ -32,8 +32,8 @@ import AppKit
     // MARK: - Initialization
 
     private override init() {
-        // 使用弱引用的 HashTable，模块被释放时自动移除
-        self.modules = NSHashTable<AnyObject>.weakObjects()
+        // 使用强引用的 HashTable
+        self.modules = NSHashTable<AnyObject>(options: .strongMemory)
         // 递归锁，支持同一线程多次加锁
         self.lock = NSRecursiveLock()
         self.lock.name = "com.aemodulecenter.lock"
