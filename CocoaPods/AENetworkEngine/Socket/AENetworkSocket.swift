@@ -205,29 +205,38 @@ public class AENetworkSocket {
         }
     }
 
-    /// 将 AENetReq 编码为数据（组装成 Map 格式）
+    /// 将 AENetReq 编码为数据（组装成 Map 格式，与 HTTP 层保持一致）
     private func encodeRequest(_ request: AENetReq) throws -> Data {
         var dataMap: [String: Any] = [:]
 
         // 添加请求方法
         dataMap["method"] = request.method.rawValue
 
-        // 添加路径（不拼接 path，直接使用 request.path）
+        // 添加路径
         dataMap["path"] = request.path
-
-        // 添加参数
-        if let parameters = request.parameters {
-            dataMap["parameters"] = parameters
-        }
 
         // 添加请求头
         if let headers = request.headers {
             dataMap["headers"] = headers
         }
 
-        // 添加 body（如果是 Data，转换为 base64 字符串）
+        // 处理参数和 body（与 HTTP 层逻辑一致）
         if let body = request.body {
+            // 如果有明确的 body，使用 base64 编码
             dataMap["body"] = body.base64EncodedString()
+        } else if request.method != .GET, let parameters = request.parameters {
+            // POST 等请求：将 parameters 序列化为 JSON 放到 body
+            if let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: []) {
+                dataMap["body"] = jsonData.base64EncodedString()
+
+                // 添加 Content-Type header
+                var headers = request.headers ?? [:]
+                headers["Content-Type"] = "application/json"
+                dataMap["headers"] = headers
+            }
+        } else if request.method == .GET, let parameters = request.parameters {
+            // GET 请求：将 parameters 作为单独字段（服务端需要拼接到 URL）
+            dataMap["parameters"] = parameters
         }
 
         // 添加超时时间

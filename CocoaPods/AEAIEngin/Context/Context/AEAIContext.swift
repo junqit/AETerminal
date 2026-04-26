@@ -4,6 +4,12 @@ import AEModuleCenter
 import AEAINetworkModule
 import AENetworkEngine
 
+/// Context 数据接收代理
+public protocol AEAIContextDelegate: AnyObject {
+    /// 接收到网络消息
+    func context(_ context: AEAIContext, didReceiveResponse response: AENetRsp)
+}
+
 /// 命令历史记录项
 internal struct CommandHistoryItem: Codable {
     let id: UUID
@@ -35,6 +41,9 @@ public class AEAIContext {
     /// 最后使用时间（用于排序）
     public var lastUsedTime: Date?
 
+    /// Context 代理
+    public weak var delegate: AEAIContextDelegate?
+
     // MARK: - Command History
 
     /// 命令历史记录列表（索引0是最新的）
@@ -64,6 +73,7 @@ public class AEAIContext {
         self.questionManager = AEAIQuestionManager(contextID: self.id)
 
         loadCommandHistory()
+        registerNetworkListener()
     }
 
     /// 初始化上下文（指定 ID）
@@ -77,56 +87,57 @@ public class AEAIContext {
         self.questionManager = AEAIQuestionManager(contextID: self.id)
 
         loadCommandHistory()
+        registerNetworkListener()
+    }
+
+    /// 注册网络监听
+    private func registerNetworkListener() {
+        guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
+            print("⚠️ AEAIContext 注册网络监听失败：无法获取网络服务")
+            return
+        }
+        networkService.addListener(self)
+        print("✅ AEAIContext[\(id)] 注册网络监听成功")
     }
 
     // MARK: - 消息发送接口
 
     /// 发送问题（接收 UI 发送的消息）并请求 AI 响应
-    /// - Parameters:
-    ///   - question: 问题对象
-    ///   - completion: 完成回调，返回 AI 的原始响应结果
-    public func sendQuestion(
-        _ question: AEAIQuestion,
-        completion: @escaping (Result<AnyObject, Error>) -> Void
-    ) {
+    /// - Parameter question: 问题对象
+    public func sendQuestion(_ question: AEAIQuestion) {
+
         lastUsedTime = Date()
         questionManager.addQuestion(question)
 
+        let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: nil, protocolType: .http)
+        request.timeout = 1000
+
         guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
-            let error = NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network service not available"])
             print("❌ AEAIContext 获取网络服务失败")
-            completion(.failure(error))
+            let error = NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Network service not available"])
+            let errorResponse = AENetRsp(
+                requestId: request.requestId,
+                protocolType: .http,
+                statusCode: -1,
+                error: error
+            )
+            delegate?.context(self, didReceiveResponse: errorResponse)
             return
         }
 
         print("✅ AEAIContext 获取网络服务成功")
 
+        // 组装请求参数，将 requestId 作为公有参数添加
         let parameters: [String: Any] = [
+            "requestId": request.requestId,
             "llm_types": ["claude", "gemini"],
             "context": toDictionary(),
             "question": question.toDictionary()
         ]
+        request.parameters = parameters
 
-        let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: parameters, protocolType: .http)
-        request.timeout = 1000
-
-        networkService.sendRequest(request) { response in
-            if let error = response.error {
-                completion(.failure(error))
-                return
-            }
-
-            guard response.isSuccess else {
-                completion(.failure(NSError(domain: "AEAIContext", code: response.statusCode, userInfo: [NSLocalizedDescriptionKey: "HTTP request failed"])))
-                return
-            }
-
-            if let responseData = response.response {
-                completion(.success(responseData as AnyObject))
-            } else {
-                completion(.failure(NSError(domain: "AEAIContext", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
-            }
-        }
+        // 发送请求，通过 listener 接收响应
+        networkService.sendRequest(request, completion: nil)
     }
 
     // MARK: - Question History Methods
@@ -274,6 +285,43 @@ public class AEAIContext {
             return UUID().uuidString
         }
         return data.sha256Hash()
+    }
+
+    // MARK: - Network Message Handling
+
+    /// 接收网络消息（内部方法，由 AEAIContextManager 调用）
+    internal func handleNetworkMessage(_ response: AENetRsp) {
+        delegate?.context(self, didReceiveResponse: response)
+    }
+}
+
+// MARK: - AENetworkMessageListener
+
+extension AEAIContext: AENetworkMessageListener {
+
+    /// 接收到网络消息
+    public func didReceiveMessage(_ response: AENetRsp) {
+        print("📥 AEAIContext[\(id)] 收到网络消息, requestId: \(response.requestId)")
+
+        guard let message = response.response else {
+            print("⚠️ 响应数据为空")
+            return
+        }
+
+        // 从响应中提取 context.id
+        guard let contextData = message["context"] as? [String: Any],
+              let contextId = contextData["id"] as? String else {
+            print("⚠️ 消息中缺少 context.id 字段")
+            return
+        }
+
+        // 检查是否是发给当前 Context 的消息
+        if contextId == self.id {
+            print("✅ 消息属于当前 Context")
+            delegate?.context(self, didReceiveResponse: response)
+        } else {
+            print("⚠️ 消息不属于当前 Context[\(id)]，实际为[\(contextId)]，忽略")
+        }
     }
 }
 

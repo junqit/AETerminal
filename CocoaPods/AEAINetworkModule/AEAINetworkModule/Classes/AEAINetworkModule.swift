@@ -296,40 +296,44 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
     // MARK: - Send Methods
 
     /// 发送请求并返回响应
-    public func sendRequest(_ request: AENetReq, completion: @escaping (AENetRsp) -> Void) {
+    public func sendRequest(_ request: AENetReq, completion: ((AENetRsp) -> Void)?) {
         switch request.protocolType {
         case .socket:
             sendQueue.async { [weak self] in
                 guard let self = self else {
                     let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "Module released"]))
-                    completion(response)
+                    completion?(response)
                     return
                 }
-                
+
                 guard let socketManager = self.socketManager else {
                     let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "网络未初始化"]))
-                    completion(response)
+                    completion?(response)
                     return
                 }
-                
+
                 guard self.isConnected else {
                     let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: NSError(domain: "AEAINetworkModule", code: -2, userInfo: [NSLocalizedDescriptionKey: "网络未连接"]))
-                    completion(response)
+                    completion?(response)
                     return
                 }
-                
+
                 do {
                     try socketManager.send(request)
                 } catch {
                     let response = AENetRsp(requestId: request.requestId, protocolType: request.protocolType, error: error)
                     DispatchQueue.main.async {
-                        completion(response)
+                        completion?(response)
                     }
                 }
             }
-            
+
         case .http:
-            AENetHttpEngine.send(request: request, completion: completion)
+            if let completion = completion {
+                AENetHttpEngine.send(request: request, completion: completion)
+            } else {
+                AENetHttpEngine.send(request: request) { _ in }
+            }
         }
     }
 

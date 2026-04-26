@@ -96,14 +96,6 @@ class ViewController: NSViewController {
 
         inputTextView.focus()
 
-        // 在视图显示后注册网络监听（此时模块已注册）
-        if let service = networkService {
-            service.addListener(self)
-            print("✅ ViewController 注册网络监听成功")
-        } else {
-            print("❌ ViewController 获取不到网络服务")
-        }
-
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
             guard let self = self, let chatView = self.chatView else { return }
             chatView.addWelcomeMessage()
@@ -177,6 +169,10 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
             let config = AEContextConfig(content: path)
             self.currentContext = AEAIContextManager.createContext(config, withId: contextId)
+
+            // 设置 Context 的 delegate
+            self.currentContext?.delegate = self
+
             self.rightView?.reloadData()
             print("✅ Context 创建成功: \(contextId)")
         }
@@ -222,6 +218,9 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
         // 切换当前活动的 Context
         currentContext = context
+
+        // 设置 Context 的 delegate 为当前控制器
+        context.delegate = self
 
         // 在 statusView 中显示当前 Context 的目录信息
         updateStatusView(with: context)
@@ -343,81 +342,33 @@ extension ViewController: AETextViewDelegate {
         print("   问题内容: \(text)")
 
         // 通过 Context 发送问题
-        context.sendQuestion(question) { [weak self] result in
-            switch result {
-            case .success(let response):
-                print("✅ AI 响应成功")
-                self?.handleAIResponse(response)
-            case .failure(let error):
-                print("❌ AI 响应失败: \(error.localizedDescription)")
-                self?.handleAIError(error)
-            }
-        }
+        context.sendQuestion(question)
 
         // 发送问题后，刷新 rightView（因为 lastUsedTime 更新了）
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
             self?.rightView?.reloadData()
         }
     }
-
-    /// 处理 AI 响应
-    private func handleAIResponse(_ response: AnyObject) {
-        print("🔍 AI 响应原始数据: \(response)")
-
-        // 使用 chatView 的 addAIResponse 方法来自动解析和显示响应
-        // 该方法内部会使用 AEAIResponseParser 解析 llm_responses 中的所有内容
-        DispatchQueue.main.async { [weak self] in
-            self?.chatView?.addAIResponse(response)
-        }
-    }
-
-    /// 处理 AI 错误
-    private func handleAIError(_ error: Error) {
-        print("错误: \(error.localizedDescription)")
-
-        // 在 chatView 中显示错误消息
-        DispatchQueue.main.async { [weak self] in
-            self?.chatView?.addErrorMessage(error.localizedDescription)
-        }
-    }
 }
 
-// MARK: - AENetworkMessageListener
+// MARK: - AEAIContextDelegate
 
-extension ViewController: AENetworkMessageListener {
+extension ViewController: AEAIContextDelegate {
 
-    /// 接收到网络消息
-    func didReceiveMessage(_ response: AENetRsp) {
-        print("📥 收到网络消息, requestId: \(response.requestId)")
-
-        guard let message = response.response else {
-            print("⚠️ 响应数据为空")
-            return
-        }
-
-        guard let sessionId = message["sessionid"] as? String else {
-            print("⚠️ 消息中缺少 sessionid 字段")
-            return
-        }
-
-        guard let context = AEAIContextManager.getContext(id: sessionId) else {
-            print("⚠️ 未找到 sessionid 对应的 Context: \(sessionId)")
-            return
-        }
-
-        print("✅ 找到对应的 Context: \(context.id)")
-
-        handleNetworkMessage(message, for: context)
-    }
-
-    /// 处理网络消息（由 Context 处理）
-    private func handleNetworkMessage(_ message: [String: Any], for context: AEAIContext) {
+    /// 接收 Context 转发的网络消息
+    func context(_ context: AEAIContext, didReceiveResponse response: AENetRsp) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
 
             if context.id == self.currentContext?.id {
-                self.chatView?.addAIResponse(message as AnyObject)
-                print("✅ 已显示网络消息到 chatView")
+                if let error = response.error {
+                    print("❌ AI 响应失败: \(error.localizedDescription)")
+                    self.chatView?.addErrorMessage(error.localizedDescription)
+                } else if let message = response.response {
+                    print("✅ AI 响应成功")
+                    self.chatView?.addAIResponse(message as AnyObject)
+                    print("✅ 已显示网络消息到 chatView")
+                }
             } else {
                 print("⚠️ 收到的消息不属于当前活动的 Context")
             }
