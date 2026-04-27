@@ -358,7 +358,10 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         case .http:
             AENetHttpEngine.send(request: request) { [weak self] rsp in
                 
-                if let ss = self {
+                if let completion = completion {
+                    completion(rsp)
+                }
+                else if let ss = self {
                     ss.listenerManager.notifyListeners(response: rsp)
                 }
                 

@@ -13,9 +13,11 @@ import AEFoundation
 /// 缓存的上下文信息（轻量级，用于持久化）
 public struct CachedContext: Codable {
 
+    let id: String
     let dir: String
 
     public init(from context: AEAIContext) {
+        self.id = context.id
         self.dir = context.dir
     }
 }
@@ -151,9 +153,10 @@ public class AERightView: NSView {
     private func loadContexts() {
         // 1. 先尝试从缓存加载
         if let cachedContexts = loadContextsFromCache(), !cachedContexts.isEmpty {
-            // 从缓存的信息创建 AEAIContext 对象
+            // 从缓存的信息创建 AEAIContext 对象（使用缓存的 id）
             contexts = cachedContexts.compactMap { cached in
-                let context = AEAIContext(config: AEContextConfig(content: cached.dir))
+                let config = AEContextConfig(content: cached.dir)
+                let context = AEAIContext(config: config, customId: cached.id)
                 return context
             }
 

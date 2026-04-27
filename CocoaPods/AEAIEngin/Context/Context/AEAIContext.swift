@@ -73,7 +73,6 @@ public class AEAIContext {
         self.questionManager = AEAIQuestionManager(contextID: self.id)
 
         loadCommandHistory()
-        registerNetworkListener()
     }
 
     /// 初始化上下文（指定 ID）
@@ -87,17 +86,27 @@ public class AEAIContext {
         self.questionManager = AEAIQuestionManager(contextID: self.id)
 
         loadCommandHistory()
-        registerNetworkListener()
     }
 
-    /// 注册网络监听
-    private func registerNetworkListener() {
+    // MARK: - Network Listener Management
+
+    /// 注册网络监听（当 Context 变为活动状态时调用）
+    public func registerNetworkListener() {
         guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
-            print("⚠️ AEAIContext 注册网络监听失败：无法获取网络服务")
+            print("⚠️ AEAIContext[\(id)] 注册网络监听失败：无法获取网络服务")
             return
         }
         networkService.addListener(self)
         print("✅ AEAIContext[\(id)] 注册网络监听成功")
+    }
+
+    /// 移除网络监听（当 Context 变为非活动状态时调用）
+    public func unregisterNetworkListener() {
+        guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
+            return
+        }
+        networkService.removeListener(self)
+        print("✅ AEAIContext[\(id)] 移除网络监听成功")
     }
 
     // MARK: - 消息发送接口

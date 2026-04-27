@@ -168,10 +168,16 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
             }
 
             let config = AEContextConfig(content: path)
-            self.currentContext = AEAIContextManager.createContext(config, withId: contextId)
+            let newContext = AEAIContextManager.createContext(config, withId: contextId)
 
             // 设置 Context 的 delegate
-            self.currentContext?.delegate = self
+            newContext.delegate = self
+
+            // 注册网络监听
+            newContext.registerNetworkListener()
+
+            // 设置为当前 Context
+            self.currentContext = newContext
 
             self.rightView?.reloadData()
             print("✅ Context 创建成功: \(contextId)")
@@ -216,11 +222,19 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
         print("✅ 切换 Context: \(context.dir)")
         print("   Context ID: \(context.id)")
 
+        // 移除旧 Context 的网络监听
+        if let oldContext = currentContext, oldContext.id != context.id {
+            oldContext.unregisterNetworkListener()
+        }
+
         // 切换当前活动的 Context
         currentContext = context
 
         // 设置 Context 的 delegate 为当前控制器
         context.delegate = self
+
+        // 注册新 Context 的网络监听
+        context.registerNetworkListener()
 
         // 在 statusView 中显示当前 Context 的目录信息
         updateStatusView(with: context)
