@@ -65,12 +65,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 配置网络模块
     private func configureNetworkModule() {
-        AENetHttpEngine.configure(config: AENetConfig(host: "127.0.0.1", port: 9000))
+        // 配置 HTTP
+        let httpConfig = AENetworkConfig(type: .http, host: "127.0.0.1", port: 9000)
+        networkModule.configure(with: httpConfig)
 
-        networkModule.configure(
-            serverIP: "127.0.0.1",
-            serverPort: 9000
-        )
+        // 配置 Socket
+        let socketConfig = AENetworkConfig(type: .socket, host: "127.0.0.1", port: 8888)
+        networkModule.configure(with: socketConfig)
     }
 
     /// 注册模块

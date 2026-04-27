@@ -139,7 +139,7 @@ public class AENetworkSocket {
         try send(data)
     }
 
-    /// 发送原始数据
+    /// 发送原始数据（封装为数据包）
     /// - Parameter data: 要发送的数据
     /// - Throws: 发送失败时抛出错误
     public func send(_ data: Data) throws {
@@ -150,7 +150,11 @@ public class AENetworkSocket {
             throw AESocketError.notConnected
         }
 
-        connection?.send(content: data, completion: .contentProcessed { [weak self] error in
+        // 使用 AEPacket 封装数据
+        let packet = AEPacket.create(dataType: .request, data: data)
+        let packetData = packet.toBytes()
+
+        connection?.send(content: packetData, completion: .contentProcessed { [weak self] error in
             if let error = error {
                 print("发送数据失败: \(error)")
                 self?.updateState(.failed(AESocketError.sendFailed))

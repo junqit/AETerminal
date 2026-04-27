@@ -352,7 +352,6 @@ public class AEChatMessageCell: NSTableCellView {
     private func updateTextWidths() {
         // 获取 TableView 的宽度
         guard let tableView = self.superview as? NSTableView else {
-            print("   ⚠️ updateTextWidths: superview 不是 NSTableView")
             return
         }
         let tableWidth = tableView.bounds.width
@@ -364,15 +363,8 @@ public class AEChatMessageCell: NSTableCellView {
 
         let maxWidth = tableWidth - leadingConstant - trailingConstant - padding
 
-        print("   📏 updateTextWidths:")
-        print("      tableWidth: \(tableWidth)")
-        print("      leadingConstant: \(leadingConstant)")
-        print("      trailingConstant: \(trailingConstant)")
-        print("      maxWidth: \(maxWidth)")
-
         // 只有当宽度有效时才设置
         guard maxWidth > 0 else {
-            print("   ⚠️ maxWidth <= 0，跳过设置")
             return
         }
 

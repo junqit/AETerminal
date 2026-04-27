@@ -301,7 +301,7 @@ extension AEAIContext: AENetworkMessageListener {
 
     /// 接收到网络消息
     public func didReceiveMessage(_ response: AENetRsp) {
-        print("📥 AEAIContext[\(id)] 收到网络消息, requestId: \(response.requestId)")
+        print("📥 AEAIContext[\(id)] 收到网络消息, requestId: \(response.response)")
 
         guard let message = response.response else {
             print("⚠️ 响应数据为空")

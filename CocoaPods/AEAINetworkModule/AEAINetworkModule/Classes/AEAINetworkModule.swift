@@ -20,8 +20,11 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
     /// 监听者管理器
     private let listenerManager: AENetworkListenerManager
 
-    /// 网络配置
-    private var networkConfig: AEAISocketConfig?
+    /// Socket 网络配置
+    private var socketConfig: AEAISocketConfig?
+
+    /// HTTP 网络配置
+    private var httpConfig: AENetConfig?
 
     /// 是否已初始化
     private var isInitialized: Bool = false
@@ -42,21 +45,46 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
     // MARK: - Configuration
 
     /// 配置网络参数
+    /// - Parameter config: 网络配置
+    public func configure(with config: AENetworkConfig) {
+        switch config.type {
+        case .http:
+            // 配置 HTTP 引擎
+            let httpNetConfig = AENetConfig(host: config.host, port: config.port)
+            AENetHttpEngine.configure(config: httpNetConfig)
+            self.httpConfig = httpNetConfig
+            print("✅ HTTP 网络配置成功: \(config.host):\(config.port)")
+
+        case .socket:
+            // 配置 Socket
+            let socketNetConfig = AEAISocketConfig(
+                serverIP: config.host,
+                serverPort: config.port,
+                protocolType: .udp
+            )
+            self.socketConfig = socketNetConfig
+            print("✅ Socket 网络配置成功: \(config.host):\(config.port)")
+        }
+    }
+
+    /// 配置网络参数（旧方法，保持兼容）
     /// - Parameter config: Socket 配置
     /// - Returns: 自身实例，支持链式调用
     @discardableResult
+    @available(*, deprecated, message: "使用 configure(with: AENetworkConfig) 替代")
     public func configure(with config: AEAISocketConfig) -> Self {
-        self.networkConfig = config
+        self.socketConfig = config
         return self
     }
 
-    /// 配置网络参数（便捷方法）
+    /// 配置网络参数（便捷方法，旧方法，保持兼容）
     /// - Parameters:
     ///   - serverIP: 服务器 IP 地址
     ///   - serverPort: 服务器端口
     ///   - protocolType: 协议类型（默认 UDP）
     /// - Returns: 自身实例，支持链式调用
     @discardableResult
+    @available(*, deprecated, message: "使用 configure(with: AENetworkConfig) 替代")
     public func configure(
         serverIP: String,
         serverPort: UInt16,
@@ -126,13 +154,12 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
             return
         }
 
-        guard let config = networkConfig else {
-            log("⚠️ 未配置网络参数，跳过网络初始化")
-            log("💡 请在应用启动前调用 configure() 方法设置网络配置")
+        guard let config = socketConfig else {
+            log("⚠️ 未配置 Socket 参数，跳过 Socket 初始化")
             return
         }
 
-        log("🚀 开始初始化 AEAI 网络...")
+        log("🚀 开始初始化 AEAI Socket 网络...")
 
         // 创建 Socket
         socketManager = AENetworkSocket(
@@ -156,7 +183,7 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         do {
             try socketManager?.connect()
         } catch {
-            log("❌ AEAI 网络连接失败: \(error.localizedDescription)")
+            log("❌ AEAI Socket 连接失败: \(error.localizedDescription)")
         }
     }
 
@@ -231,11 +258,11 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     /// 手动连接网络（用于需要延迟连接的场景）
     public func connect(completion: ((Bool, Error?) -> Void)? = nil) {
-        guard let config = networkConfig else {
+        guard let config = socketConfig else {
             let error = NSError(
                 domain: "AEAINetworkModule",
                 code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "未配置网络参数"]
+                userInfo: [NSLocalizedDescriptionKey: "未配置 Socket 参数"]
             )
             completion?(false, error)
             return
@@ -329,10 +356,12 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
             }
 
         case .http:
-            if let completion = completion {
-                AENetHttpEngine.send(request: request, completion: completion)
-            } else {
-                AENetHttpEngine.send(request: request) { _ in }
+            AENetHttpEngine.send(request: request) { [weak self] rsp in
+                
+                if let ss = self {
+                    ss.listenerManager.notifyListeners(response: rsp)
+                }
+                
             }
         }
     }
