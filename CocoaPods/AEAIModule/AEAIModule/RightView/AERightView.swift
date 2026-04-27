@@ -360,6 +360,10 @@ extension AERightView: NSTableViewDelegate {
     }
 
     public func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        // 双击事件检测
+        if NSApp.currentEvent?.clickCount == 2 {
+            handleDoubleClick(row: row)
+        }
         return true
     }
 
@@ -374,7 +378,38 @@ extension AERightView: NSTableViewDelegate {
         tableView.reloadData()
 
         // 注意：这里不更新 selectedContext，也不通知 delegate
-        // 只有按回车键确认时才真正切换 Context
+        // 只有按回车键或双击时才真正切换 Context
+
+        // 刷新显示
+        tableView.reloadData()
+    }
+
+    /// 处理双击事件
+    private func handleDoubleClick(row: Int) {
+        guard row >= 0, row < contexts.count else { return }
+
+        let context = contexts[row]
+
+        // 更新 selectedContext
+        selectedContext = context
+
+        print("✅ 双击选择 Context: \(context.dir)")
+
+        // 更新最后使用时间
+        context.lastUsedTime = Date()
+
+        // 重新排序，将选中的 context 移到第一位
+        sortContextsByLastUsed()
+
+        // 保存更新后的 Context 列表到缓存
+        saveContextsToCache()
+
+        // 通知业务层 - 用户双击切换 Context
+        delegate?.rightView(self, didSelectContext: context)
+
+        // 清除临时选中状态
+        selectedIndex = -1
+        tableView.deselectAll(nil)
 
         // 刷新显示
         tableView.reloadData()
@@ -560,12 +595,18 @@ extension AERightView: AECombinationKeyHandler {
 
         let context = contexts[selectedIndex]
 
-        // 只有在回车时才真正更新 selectedContext
+        // 检查是否已经是当前选中的 Context
+        if selectedContext?.id == context.id {
+            print("⚠️ 已经是当前 Context，无需重复切换")
+            return
+        }
+
+        // 更新 selectedContext
         selectedContext = context
 
-        print("✅ 确认选择 Context: \(context.dir)")
+        print("✅ 回车确认选择 Context: \(context.dir)")
 
-        // 更新最后使用时间，使其排到第一位
+        // 更新最后使用时间
         context.lastUsedTime = Date()
 
         // 重新排序，将选中的 context 移到第一位

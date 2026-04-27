@@ -16,8 +16,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "305"
             endingLineNumber = "305"
-            landmarkName = "didReceiveMessage(_:)"
-            landmarkType = "7">
+            landmarkName = "AEAIContext"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -33,22 +33,6 @@
             startingLineNumber = "328"
             endingLineNumber = "328"
             landmarkName = "sendRequest(_:completion:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "AAA82ABE-4289-4B1F-8453-FABD57E9D16D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../CocoaPods/AEAIEngin/Context/Context/AEAIContext.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
-            landmarkName = "sendQuestion(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
