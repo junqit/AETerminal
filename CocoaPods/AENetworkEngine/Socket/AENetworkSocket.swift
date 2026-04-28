@@ -60,8 +60,11 @@ public class AENetworkSocket {
     /// 状态变化回调
     public var onStateChanged: ((AESocketState) -> Void)?
 
-    /// 接收数据回调
-    public var onDataReceived: ((Data) -> Void)?
+    /// 接收响应回调（解析后的 AENetRsp）
+    public var onResponseReceived: ((AENetRsp) -> Void)?
+
+    /// 数据包缓冲区
+    private let packetBuffer = AEPacketBuffer()
 
     // MARK: - Initialization
 
@@ -76,6 +79,18 @@ public class AENetworkSocket {
         self.port = port
         self.path = path
         self.protocolType = protocolType
+
+        // 配置数据包缓冲区回调
+        packetBuffer.onResponseReceived = { [weak self] response in
+            guard let self = self else { return }
+            print("📦 [Socket] 收到解析后的响应: requestId=\(response.requestId)")
+            // 通知上层业务
+            self.onResponseReceived?(response)
+        }
+
+        packetBuffer.onParseError = { error in
+            print("❌ [Socket] 数据包解析错误: \(error)")
+        }
     }
 
     // MARK: - Connection Management
@@ -86,8 +101,11 @@ public class AENetworkSocket {
         case .disconnected, .failed:
             break
         default:
+            print("⚠️ [Socket] 连接已存在，跳过重复连接")
             return
         }
+
+        print("🔌 [Socket] 开始连接: \(ip):\(port) (\(protocolType == .tcp ? "TCP" : "UDP"))")
 
         let host = NWEndpoint.Host(ip)
 
@@ -117,8 +135,13 @@ public class AENetworkSocket {
 
     /// 断开连接
     public func disconnect() {
+        print("🔌 [Socket] 断开连接: \(ip):\(port)")
         connection?.cancel()
         connection = nil
+
+        // 清空缓冲区
+        packetBuffer.clear()
+
         updateState(.disconnected)
     }
 
@@ -154,10 +177,14 @@ public class AENetworkSocket {
         let packet = AEPacket.create(dataType: .request, data: data)
         let packetData = packet.toBytes()
 
+        print("📤 [Socket] 发送数据: \(data.count) bytes (封包后: \(packetData.count) bytes)")
+
         connection?.send(content: packetData, completion: .contentProcessed { [weak self] error in
             if let error = error {
-                print("发送数据失败: \(error)")
+                print("❌ [Socket] 发送数据失败: \(error)")
                 self?.updateState(.failed(AESocketError.sendFailed))
+            } else {
+                print("✅ [Socket] 数据发送成功")
             }
         })
     }
@@ -167,19 +194,29 @@ public class AENetworkSocket {
     private func handleStateChange(_ newState: NWConnection.State) {
         switch newState {
         case .ready:
+            print("✅ [Socket] 连接成功: \(ip):\(port)")
             updateState(.connected)
 
         case .waiting(let error):
+            print("⏳ [Socket] 连接等待: \(error)")
             updateState(.failed(error))
 
         case .failed(let error):
+            print("❌ [Socket] 连接失败: \(error)")
             updateState(.failed(error))
 
         case .cancelled:
+            print("🔌 [Socket] 连接已取消")
             updateState(.disconnected)
 
-        default:
-            break
+        case .setup:
+            print("🔧 [Socket] 连接设置中...")
+
+        case .preparing:
+            print("⚙️ [Socket] 连接准备中...")
+
+        @unknown default:
+            print("⚠️ [Socket] 未知状态: \(newState)")
         }
     }
 
@@ -190,21 +227,31 @@ public class AENetworkSocket {
 
     private func receiveData() {
         connection?.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] data, _, isComplete, error in
+            guard let self = self else { return }
+
             if let data = data, !data.isEmpty {
-                self?.onDataReceived?(data)
+                print("📥 [Socket] 接收数据: \(data.count) bytes")
+
+                // 将数据追加到缓冲区，由缓冲区负责解析
+                self.packetBuffer.append(data)
             }
 
             if let error = error {
-                print("接收数据错误: \(error)")
-                self?.updateState(.failed(error))
+                print("❌ [Socket] 接收数据错误: \(error)")
+                self.updateState(.failed(error))
                 return
             }
 
-            if isComplete {
-                self?.updateState(.disconnected)
+            // UDP 协议：isComplete 表示当前数据报完整，但应继续接收下一个数据报
+            // TCP 协议：isComplete 表示连接关闭
+            if isComplete && self.protocolType == .tcp {
+                print("🔌 [Socket] TCP 连接关闭")
+                self.updateState(.disconnected)
             } else {
-                // 继续接收
-                self?.receiveData()
+                // 使用异步调度继续接收，避免递归栈溢出
+                self.queue.async { [weak self] in
+                    self?.receiveData()
+                }
             }
         }
     }
@@ -230,14 +277,13 @@ public class AENetworkSocket {
             dataMap["body"] = body.base64EncodedString()
         } else if request.method != .GET, let parameters = request.parameters {
             // POST 等请求：将 parameters 序列化为 JSON 放到 body
-            if let jsonData = try? JSONSerialization.data(withJSONObject: parameters, options: []) {
-                dataMap["body"] = jsonData.base64EncodedString()
+            dataMap["body"] = parameters
 
-                // 添加 Content-Type header
-                var headers = request.headers ?? [:]
-                headers["Content-Type"] = "application/json"
-                dataMap["headers"] = headers
-            }
+            // 添加 Content-Type header
+            var headers = request.headers ?? [:]
+            headers["Content-Type"] = "application/json"
+            dataMap["headers"] = headers
+
         } else if request.method == .GET, let parameters = request.parameters {
             // GET 请求：将 parameters 作为单独字段（服务端需要拼接到 URL）
             dataMap["parameters"] = parameters
@@ -245,6 +291,8 @@ public class AENetworkSocket {
 
         // 添加超时时间
         dataMap["timeout"] = request.timeout
+        
+        print("socket reqeuest:\(dataMap)")
 
         // 将 map 序列化为 JSON
         guard let jsonData = try? JSONSerialization.data(withJSONObject: dataMap, options: []) else {

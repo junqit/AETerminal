@@ -144,6 +144,26 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     // MARK: - Network Management
 
+    /// 创建并配置 Socket Manager
+    private func createSocketManager(config: AEAISocketConfig, stateChanged: ((AESocketState) -> Void)?) -> AENetworkSocket {
+        let socket = AENetworkSocket(
+            ip: config.serverIP,
+            port: config.serverPort,
+            path: config.path,
+            protocolType: config.protocolType
+        )
+
+        // 设置状态监听
+        socket.onStateChanged = stateChanged
+
+        // 设置响应接收监听（已解析为 AENetRsp）
+        socket.onResponseReceived = { [weak self] response in
+            self?.handleReceivedResponse(response)
+        }
+
+        return socket
+    }
+
     /// 初始化网络
     private func initializeNetwork() {
         initLock.lock()
@@ -162,21 +182,8 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         log("🚀 开始初始化 AEAI Socket 网络...")
 
         // 创建 Socket
-        socketManager = AENetworkSocket(
-            ip: config.serverIP,
-            port: config.serverPort,
-            path: config.path,
-            protocolType: config.protocolType
-        )
-
-        // 设置状态监听
-        socketManager?.onStateChanged = { [weak self] state in
+        socketManager = createSocketManager(config: config) { [weak self] state in
             self?.handleStateChange(state)
-        }
-
-        // 设置数据接收监听
-        socketManager?.onDataReceived = { [weak self] data in
-            self?.handleReceivedData(data)
         }
 
         // 连接到服务器
@@ -234,23 +241,11 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         }
     }
 
-    /// 处理接收到的数据
-    private func handleReceivedData(_ data: Data) {
-        guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-              let requestId = json["requestId"] as? String else {
-            log("⚠️ 无法解析接收到的数据或缺少 requestId")
-            return
-        }
+    /// 处理接收到的响应（已由 AEPacketBuffer 解析）
+    private func handleReceivedResponse(_ response: AENetRsp) {
+        log("📦 收到解析后的响应: requestId=\(response.requestId)")
 
-        log("📨 收到消息: \(json["type"] ?? "unknown")")
-
-        let response = AENetRsp(
-            requestId: requestId,
-            protocolType: .socket,
-            statusCode: 200,
-            data: data,
-            error: nil
-        )
+        // 直接通知监听者
         listenerManager.notifyListeners(response: response)
     }
 
@@ -269,14 +264,8 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         }
 
         if socketManager == nil {
-            socketManager = AENetworkSocket(
-                ip: config.serverIP,
-                port: config.serverPort,
-                path: config.path,
-                protocolType: config.protocolType
-            )
-
-            socketManager?.onStateChanged = { [weak self] state in
+            // 创建 Socket Manager，包含完成回调的状态处理
+            socketManager = createSocketManager(config: config) { [weak self] state in
                 self?.handleStateChange(state)
 
                 // 通知完成回调
@@ -288,10 +277,6 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
                 default:
                     break
                 }
-            }
-
-            socketManager?.onDataReceived = { [weak self] data in
-                self?.handleReceivedData(data)
             }
         }
 
