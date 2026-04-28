@@ -183,7 +183,7 @@ public class AEPacketParser {
         }
 
         guard let requestId = json["requestId"] as? String else {
-            print("⚠️ [Parser] 数据包中缺少 requestId 字段")
+            print("⚠️ [Parser] 数据包中缺少 requestId 字段 \(json)")
             let error = NSError(domain: "AEPacketParser", code: -2, userInfo: [NSLocalizedDescriptionKey: "数据包中缺少 requestId 字段"])
             onParseError?(error)
             return

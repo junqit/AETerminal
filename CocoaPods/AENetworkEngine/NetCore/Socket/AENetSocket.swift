@@ -272,8 +272,10 @@ public class AENetSocket {
         // 处理参数和 body（与 HTTP 层逻辑一致）
         if let body = request.body {
             dataMap["body"] = body
-        } else if let parameters = request.parameters {
-            dataMap["body"] = parameters
+        }
+
+        if let parameters = request.parameters {
+            dataMap.merge(parameters) { (_, new) in new }
         }
             
         // 添加超时时间

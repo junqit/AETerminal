@@ -118,7 +118,7 @@ public class AEAIContext {
         lastUsedTime = Date()
         questionManager.addQuestion(question)
 
-        let request = AENetReq(post: AEAIServicePath.chat.rawValue, parameters: nil, protocolType: .socket)
+        let request = AENetReq(post: AEAIServicePath.cancel.rawValue, parameters: nil, protocolType: .socket)
         request.timeout = 1000
 
         guard let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) else {
