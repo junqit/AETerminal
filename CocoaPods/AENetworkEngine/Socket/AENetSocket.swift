@@ -1,5 +1,5 @@
 //
-//  AENetworkSocket.swift
+//  AENetSocket.swift
 //  AENetworkEngine
 //
 //  Created by Claude on 2026/4/23.
@@ -32,7 +32,7 @@ public enum AESocketError: Error {
 }
 
 /// 网络 Socket 类，支持 TCP/UDP 连接
-public class AENetworkSocket {
+public class AENetSocket {
 
     // MARK: - Properties
 
@@ -63,8 +63,8 @@ public class AENetworkSocket {
     /// 接收响应回调（解析后的 AENetRsp）
     public var onResponseReceived: ((AENetRsp) -> Void)?
 
-    /// 数据包缓冲区
-    private let packetBuffer = AEPacketBuffer()
+    /// 数据包解析器
+    private let packetParser = AEPacketParser()
 
     // MARK: - Initialization
 
@@ -80,17 +80,20 @@ public class AENetworkSocket {
         self.path = path
         self.protocolType = protocolType
 
-        // 配置数据包缓冲区回调
-        packetBuffer.onResponseReceived = { [weak self] response in
+        // 配置数据包解析器回调
+        packetParser.onResponseReceived = { [weak self] response in
             guard let self = self else { return }
             print("📦 [Socket] 收到解析后的响应: requestId=\(response.requestId)")
             // 通知上层业务
             self.onResponseReceived?(response)
         }
 
-        packetBuffer.onParseError = { error in
+        packetParser.onParseError = { error in
             print("❌ [Socket] 数据包解析错误: \(error)")
         }
+
+        // 启动解析器
+        packetParser.start()
     }
 
     // MARK: - Connection Management
@@ -140,7 +143,7 @@ public class AENetworkSocket {
         connection = nil
 
         // 清空缓冲区
-        packetBuffer.clear()
+        packetParser.getBuffer().clear()
 
         updateState(.disconnected)
     }
@@ -232,8 +235,9 @@ public class AENetworkSocket {
             if let data = data, !data.isEmpty {
                 print("📥 [Socket] 接收数据: \(data.count) bytes")
 
-                // 将数据追加到缓冲区，由缓冲区负责解析
-                self.packetBuffer.append(data)
+                // 将数据追加到缓冲区，并通知解析器
+                self.packetParser.getBuffer().append(data)
+                self.packetParser.notifyDataAvailable()
             }
 
             if let error = error {
@@ -275,20 +279,11 @@ public class AENetworkSocket {
         if let body = request.body {
             // 如果有明确的 body，使用 base64 编码
             dataMap["body"] = body.base64EncodedString()
-        } else if request.method != .GET, let parameters = request.parameters {
+        } else if let parameters = request.parameters {
             // POST 等请求：将 parameters 序列化为 JSON 放到 body
             dataMap["body"] = parameters
-
-            // 添加 Content-Type header
-            var headers = request.headers ?? [:]
-            headers["Content-Type"] = "application/json"
-            dataMap["headers"] = headers
-
-        } else if request.method == .GET, let parameters = request.parameters {
-            // GET 请求：将 parameters 作为单独字段（服务端需要拼接到 URL）
-            dataMap["parameters"] = parameters
         }
-
+            
         // 添加超时时间
         dataMap["timeout"] = request.timeout
         
@@ -311,7 +306,7 @@ public class AENetworkSocket {
 
 // MARK: - Extension for convenient usage
 
-extension AENetworkSocket {
+extension AENetSocket {
 
     /// 便利方法：连接并发送请求
     /// - Parameter request: HTTP 请求对象

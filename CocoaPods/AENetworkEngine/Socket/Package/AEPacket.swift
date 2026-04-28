@@ -37,7 +37,7 @@ public struct AEPacketHeader {
     let magicCode: UInt16
 
     /// 数据类型，2字节
-    let dataType: UInt16
+    let dataType: AEDataType
 
     /// 数据长度（不包含包头），4字节
     let length: UInt32
@@ -51,7 +51,7 @@ public struct AEPacketHeader {
     /// 初始化包头
     init(dataType: AEDataType, length: UInt32, checksum: UInt16) {
         self.magicCode = MAGIC_CODE
-        self.dataType = dataType.rawValue
+        self.dataType = dataType
         self.length = length
         self.checksum = checksum
     }
@@ -67,7 +67,7 @@ public struct AEPacketHeader {
 
         // 使用大端序解包
         let magicCode = data.withUnsafeBytes { $0.load(fromByteOffset: 0, as: UInt16.self) }.bigEndian
-        let dataType = data.withUnsafeBytes { $0.load(fromByteOffset: 2, as: UInt16.self) }.bigEndian
+        let dataTypeRaw = data.withUnsafeBytes { $0.load(fromByteOffset: 2, as: UInt16.self) }.bigEndian
         let length = data.withUnsafeBytes { $0.load(fromByteOffset: 4, as: UInt32.self) }.bigEndian
         let checksum = data.withUnsafeBytes { $0.load(fromByteOffset: 8, as: UInt16.self) }.bigEndian
 
@@ -76,8 +76,12 @@ public struct AEPacketHeader {
             throw AEPacketError.invalidMagicCode(expected: MAGIC_CODE, actual: magicCode)
         }
 
+        // 解析数据类型
+        guard let dataType = AEDataType(rawValue: dataTypeRaw) else {
+            throw AEPacketError.invalidDataType(value: dataTypeRaw)
+        }
+
         return AEPacketHeader(
-            magicCode: magicCode,
             dataType: dataType,
             length: length,
             checksum: checksum
@@ -91,7 +95,7 @@ public struct AEPacketHeader {
 
         // 使用大端序（网络字节序）
         var magicBE = magicCode.bigEndian
-        var dataTypeBE = dataType.bigEndian
+        var dataTypeBE = dataType.rawValue.bigEndian
         var lengthBE = length.bigEndian
         var checksumBE = checksum.bigEndian
 
@@ -108,13 +112,6 @@ public struct AEPacketHeader {
     /// - Returns: 数据是否完整
     func validate(data: Data) -> Bool {
         return checksum == AEPacket.calculateCRC16(data: data)
-    }
-
-    private init(magicCode: UInt16, dataType: UInt16, length: UInt32, checksum: UInt16) {
-        self.magicCode = magicCode
-        self.dataType = dataType
-        self.length = length
-        self.checksum = checksum
     }
 }
 
@@ -196,6 +193,7 @@ public enum AEPacketError: Error, LocalizedError {
     case insufficientData(expected: Int, actual: Int)
     case invalidMagicCode(expected: UInt16, actual: UInt16)
     case checksumMismatch(expected: UInt16, actual: UInt16)
+    case invalidDataType(value: UInt16)
 
     public var errorDescription: String? {
         switch self {
@@ -205,6 +203,8 @@ public enum AEPacketError: Error, LocalizedError {
             return String(format: "无效的魔数: 0x%04X, 期望: 0x%04X", actual, expected)
         case .checksumMismatch(let expected, let actual):
             return String(format: "数据校验失败: 期望 0x%04X, 实际 0x%04X", expected, actual)
+        case .invalidDataType(let value):
+            return String(format: "无效的数据类型: 0x%04X", value)
         }
     }
 }

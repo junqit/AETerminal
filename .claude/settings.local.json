@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pod install *)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -destination 'platform=macOS' clean build)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -destination 'platform=macOS' build)",
+      "Bash(xcodebuild -workspace AETerminal.xcworkspace -scheme AETerminal -configuration Debug build)"
+    ]
+  }
+}

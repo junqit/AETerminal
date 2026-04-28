@@ -9,7 +9,7 @@ import Foundation
 import AENetworkEngine
 
 /**
- AEAINetworkModule 使用示例（基于 AENetworkSocket）
+ AEAINetworkModule 使用示例（基于 AENetSocket）
 
  演示如何使用 AEAINetworkModule 进行网络连接和数据发送
  */

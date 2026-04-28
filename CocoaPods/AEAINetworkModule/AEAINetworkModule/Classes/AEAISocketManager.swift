@@ -8,13 +8,13 @@
 import Foundation
 import AENetworkEngine
 
-/// AI Socket 管理器 - 使用 AENetworkSocket 进行 UDP 连接
+/// AI Socket 管理器 - 使用 AENetSocket 进行 UDP 连接
 public class AEAISocketManager {
 
     // MARK: - Properties
 
     /// Socket 连接实例
-    private var socket: AENetworkSocket?
+    private var socket: AENetSocket?
 
     /// 服务器 IP 地址
     private let serverIP: String
@@ -28,11 +28,8 @@ public class AEAISocketManager {
     /// 连接状态变化回调
     public var onConnectionStateChanged: ((AESocketState) -> Void)?
 
-    /// 数据接收回调
-    public var onDataReceived: ((Data) -> Void)?
-
-    /// 消息接收回调（解析为字典）
-    public var onMessageReceived: (([String: Any]) -> Void)?
+    /// 响应接收回调（返回完整的 AENetRsp 对象）
+    public var onResponseReceived: ((AENetRsp) -> Void)?
 
     /// 是否已连接
     public var isConnected: Bool {
@@ -61,7 +58,7 @@ public class AEAISocketManager {
     /// - Parameter completion: 完成回调
     public func connect(completion: ((Bool, Error?) -> Void)? = nil) {
         // 创建 UDP Socket
-        socket = AENetworkSocket(
+        socket = AENetSocket(
             ip: serverIP,
             port: serverPort,
             path: path,
@@ -85,9 +82,9 @@ public class AEAISocketManager {
         }
 
         // 设置数据接收监听
-        socket?.onDataReceived = { [weak self] data in
-            self?.handleReceivedData(data)
-            self?.onDataReceived?(data)
+        socket?.onResponseReceived = { [weak self] (response: AENetRsp) in
+            // 直接传递 AENetRsp 对象给上层
+            self?.onResponseReceived?(response)
         }
 
         // 执行连接
@@ -156,17 +153,6 @@ public class AEAISocketManager {
             print("[AEAISocketManager] Socket 已连接")
         case .failed(let error):
             print("[AEAISocketManager] Socket 连接失败: \(error)")
-        }
-    }
-
-    /// 处理接收到的数据
-    private func handleReceivedData(_ data: Data) {
-        // 尝试解析为 JSON 字典
-        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
-            print("[AEAISocketManager] 收到消息: \(json)")
-            onMessageReceived?(json)
-        } else {
-            print("[AEAISocketManager] 收到原始数据，大小: \(data.count) 字节")
         }
     }
 

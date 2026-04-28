@@ -76,11 +76,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         // 配置 HTTP
-        let httpConfig = AENetworkConfig(type: .http, host: "127.0.0.1", port: 9000)
+        let httpConfig = AENetConfig(type: .http, host: "127.0.0.1", port: 9000)
         networkModule.configure(with: httpConfig)
 
         // 配置 Socket
-        let socketConfig = AENetworkConfig(type: .socket, host: "127.0.0.1", port: 8888)
+        let socketConfig = AENetConfig(type: .socket, host: "127.0.0.1", port: 8888)
         networkModule.configure(with: socketConfig)
     }
 }

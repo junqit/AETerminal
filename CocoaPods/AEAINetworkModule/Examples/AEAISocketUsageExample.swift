@@ -11,7 +11,7 @@ import AENetworkEngine
 /**
  AEAISocketManager 使用示例
 
- 演示如何在 AEAINetworkModule 中使用 AENetworkSocket 进行 UDP 连接
+ 演示如何在 AEAINetworkModule 中使用 AENetSocket 进行 UDP 连接
  */
 
 // MARK: - 基础使用示例
