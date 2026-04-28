@@ -10,21 +10,18 @@ import AEModuleCenter
 import AENetworkEngine
 
 /// AEAI 网络模块 - 负责管理网络连接
-public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol {
+public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol, AENetCoreDelegate {
 
     // MARK: - Properties
-
-    /// Socket 管理器实例
-    private var socketManager: AEAISocketManager?
 
     /// 监听者管理器
     private let listenerManager: AENetworkListenerManager
 
-    /// Socket 网络配置
-    private var socketConfig: AEAISocketConfig?
+    /// 网络配置集合（用于记录配置）
+    private var configs: Set<AENetConfig> = []
 
-    /// HTTP 网络配置
-    private var httpConfig: AENetConfig?
+    /// 网络配置与核心映射表（用于存储已创建的核心）
+    private var netCores: [AENetConfig: AENetCoreProtocol] = [:]
 
     // MARK: - Initialization
 
@@ -35,57 +32,12 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     // MARK: - Configuration
 
-    /// 配置网络参数
+    /// 配置网络参数（仅记录配置，不创建核心）
     /// - Parameter config: 网络配置
     public func configure(with config: AENetConfig) {
-        switch config.type {
-        case .http:
-            // 配置 HTTP 引擎
-            AENetHttpEngine.configure(config: config)
-            self.httpConfig = config
-            print("✅ HTTP 网络配置成功: \(config.host):\(config.port)")
-
-        case .socket:
-            // 配置 Socket
-            let socketNetConfig = AEAISocketConfig(
-                serverIP: config.host,
-                serverPort: config.port,
-                protocolType: .udp
-            )
-            self.socketConfig = socketNetConfig
-            print("✅ Socket 网络配置成功: \(config.host):\(config.port)")
-        }
-    }
-
-    /// 配置网络参数（旧方法，保持兼容）
-    /// - Parameter config: Socket 配置
-    /// - Returns: 自身实例，支持链式调用
-    @discardableResult
-    @available(*, deprecated, message: "使用 configure(with: AENetConfig) 替代")
-    public func configure(with config: AEAISocketConfig) -> Self {
-        self.socketConfig = config
-        return self
-    }
-
-    /// 配置网络参数（便捷方法，旧方法，保持兼容）
-    /// - Parameters:
-    ///   - serverIP: 服务器 IP 地址
-    ///   - serverPort: 服务器端口
-    ///   - protocolType: 协议类型（默认 UDP）
-    /// - Returns: 自身实例，支持链式调用
-    @discardableResult
-    @available(*, deprecated, message: "使用 configure(with: AENetConfig) 替代")
-    public func configure(
-        serverIP: String,
-        serverPort: UInt16,
-        protocolType: AESocketProtocol = .udp
-    ) -> Self {
-        let config = AEAISocketConfig(
-            serverIP: serverIP,
-            serverPort: serverPort,
-            protocolType: protocolType
-        )
-        return configure(with: config)
+        // 添加到配置集合
+        configs.insert(config)
+        print("✅ 配置已记录: \(config.type), \(config.host):\(config.port)")
     }
 
     // MARK: - AEModuleProtocol - macOS
@@ -133,59 +85,72 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
 
     // MARK: - Network Management
 
-    /// 初始化网络
+    /// 初始化网络（统一创建所有网络核心）
     private func initializeNetwork() {
-        guard let config = socketConfig else {
-            print("⚠️ 未配置 Socket 参数，跳过 Socket 初始化")
-            return
-        }
+        // 遍历所有配置，创建对应的网络核心
+        for config in configs {
+            // 创建对应类型的网络核心
+            let core: AENetCoreProtocol
 
-        print("🚀 开始初始化 AEAI Socket 网络...")
+            switch config.type {
+            case .http:
+                core = AENetHttpEngine(config: config)
+                print("✅ HTTP 网络核心创建成功: \(config.host):\(config.port)")
 
-        // 创建 Socket Manager
-        let manager = AEAISocketManager(
-            serverIP: config.serverIP,
-            serverPort: config.serverPort,
-            path: config.path
-        )
+            case .socket:
+                core = AENetSocketCore(config: config)
+                print("✅ Socket 网络核心创建成功: \(config.host):\(config.port), type=\(config.socketType)")
 
-        // 设置状态监听
-        manager.onConnectionStateChanged = { [weak self] state in
-            self?.handleStateChange(state)
-        }
+                // Socket 需要连接
+                if let socketCore = core as? AENetSocketCore {
+                    socketCore.onConnectionStateChanged = { [weak self] state in
+                        self?.handleStateChange(state)
+                    }
 
-        // 设置响应接收监听
-        manager.onResponseReceived = { [weak self] response in
-            self?.handleReceivedResponse(response)
-        }
-
-        self.socketManager = manager
-
-        // 连接到服务器
-        manager.connect { success, error in
-            if success {
-                print("✅ AEAI 网络初始化成功")
-            } else {
-                print("❌ AEAI Socket 连接失败: \(error?.localizedDescription ?? "未知错误")")
+                    socketCore.connect { success, error in
+                        if success {
+                            print("✅ Socket 网络初始化成功")
+                        } else {
+                            print("❌ Socket 连接失败: \(error?.localizedDescription ?? "未知错误")")
+                        }
+                    }
+                }
             }
+
+            // 设置代理
+            core.delegate = self
+
+            // 保存核心到映射表
+            netCores[config] = core
         }
     }
 
     /// 关闭网络
     private func shutdownNetwork() {
         print("🛑 关闭 AEAI 网络连接...")
-        socketManager?.disconnect()
-        socketManager = nil
+
+        // 通过类型查找 Socket 核心并断开
+        if let core = findCore(for: .socket),
+           let socketCore = core as? AENetSocketCore {
+            socketCore.disconnect()
+        }
+
         print("✅ AEAI 网络已关闭")
     }
 
     /// 重新连接（如果需要）
     private func reconnectIfNeeded() {
-        if let manager = socketManager, !manager.isConnected {
-            print("🔄 重新连接 AEAI 网络...")
-            manager.connect { success, error in
+        // 通过类型查找 Socket 核心
+        guard let core = findCore(for: .socket),
+              let socketCore = core as? AENetSocketCore else {
+            return
+        }
+
+        if !socketCore.isConnected {
+            print("🔄 重新连接 Socket 网络...")
+            socketCore.connect { success, error in
                 if !success {
-                    print("❌ AEAI 网络重连失败: \(error?.localizedDescription ?? "未知错误")")
+                    print("❌ Socket 重连失败: \(error?.localizedDescription ?? "未知错误")")
                 }
             }
         }
@@ -205,19 +170,25 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
         }
     }
 
-    /// 处理接收到的响应
-    private func handleReceivedResponse(_ response: AENetRsp) {
-        print("📦 收到响应: requestId=\(response.requestId)")
-
-        // 通知监听者
-        listenerManager.notifyListeners(response: response)
-    }
-
     // MARK: - Public Methods
+
+    /// 根据网络类型查找核心
+    /// - Parameter type: 网络类型
+    /// - Returns: 对应的网络核心（如果存在）
+    private func findCore(for type: AENetworkType) -> AENetCoreProtocol? {
+        for (config, core) in netCores {
+            if config.type == type {
+                return core
+            }
+        }
+        return nil
+    }
 
     /// 手动连接网络（用于需要延迟连接的场景）
     public func connect(completion: ((Bool, Error?) -> Void)? = nil) {
-        guard let config = socketConfig else {
+        // 通过类型查找 Socket 核心
+        guard let core = findCore(for: .socket),
+              let socketCore = core as? AENetSocketCore else {
             let error = NSError(
                 domain: "AEAINetworkModule",
                 code: -1,
@@ -227,88 +198,63 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol 
             return
         }
 
-        if socketManager == nil {
-            // 创建 Socket Manager
-            let manager = AEAISocketManager(
-                serverIP: config.serverIP,
-                serverPort: config.serverPort,
-                path: config.path
-            )
-
-            // 设置状态监听
-            manager.onConnectionStateChanged = { [weak self] state in
-                self?.handleStateChange(state)
-            }
-
-            // 设置响应接收监听
-            manager.onResponseReceived = { [weak self] response in
-                self?.handleReceivedResponse(response)
-            }
-
-            self.socketManager = manager
-        }
-
-        // 连接
-        socketManager?.connect(completion: completion)
+        socketCore.connect(completion: completion)
     }
 
     /// 手动断开网络
     public func disconnect() {
-        socketManager?.disconnect()
-        socketManager = nil
+        // 通过类型查找 Socket 核心
+        guard let core = findCore(for: .socket),
+              let socketCore = core as? AENetSocketCore else {
+            return
+        }
+
+        socketCore.disconnect()
     }
 
     /// 获取网络连接状态
     public var isConnected: Bool {
-        return socketManager?.isConnected ?? false
+        // 通过类型查找 Socket 核心
+        guard let core = findCore(for: .socket),
+              let socketCore = core as? AENetSocketCore else {
+            return false
+        }
+
+        return socketCore.isConnected
     }
 
     // MARK: - Send Methods
 
     /// 发送请求并返回响应
     public func sendRequest(_ request: AENetReq, completion: ((AENetRsp) -> Void)?) {
-        switch request.protocolType {
-        case .socket:
-            guard let socketManager = self.socketManager else {
-                let response = AENetRsp(
-                    requestId: request.requestId,
-                    protocolType: request.protocolType,
-                    error: NSError(domain: "AEAINetworkModule", code: -1, userInfo: [NSLocalizedDescriptionKey: "网络未初始化"])
-                )
-                completion?(response)
-                return
-            }
+        // 根据请求的协议类型查找对应的网络核心
+        let targetType: AENetworkType = (request.protocolType == .socket) ? .socket : .http
 
-            guard socketManager.isConnected else {
-                let response = AENetRsp(
-                    requestId: request.requestId,
-                    protocolType: request.protocolType,
-                    error: NSError(domain: "AEAINetworkModule", code: -2, userInfo: [NSLocalizedDescriptionKey: "网络未连接"])
-                )
-                completion?(response)
-                return
-            }
-
-            do {
-                try socketManager.send(request)
-            } catch {
-                let response = AENetRsp(
-                    requestId: request.requestId,
-                    protocolType: request.protocolType,
-                    error: error
-                )
-                completion?(response)
-            }
-
-        case .http:
-            AENetHttpEngine.send(request: request) { [weak self] rsp in
-                if let completion = completion {
-                    completion(rsp)
-                } else if let self = self {
-                    self.listenerManager.notifyListeners(response: rsp)
-                }
-            }
+        guard let core = findCore(for: targetType) else {
+            let error = NSError(
+                domain: "AEAINetworkModule",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "未配置 \(request.protocolType) 类型的网络核心"]
+            )
+            let response = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
+                error: error
+            )
+            completion?(response)
+            return
         }
+
+        core.send(request: request, completion: completion)
+    }
+
+    // MARK: - AENetCoreDelegate
+
+    /// 接收到网络核心主动推送的响应
+    /// - Parameter response: 响应对象
+    public func netCore(didReceive response: AENetRsp) {
+        // 通过监听者管理器分发响应
+        listenerManager.notifyListeners(response: response)
     }
 
     // MARK: - Listener Management

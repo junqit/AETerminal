@@ -7,370 +7,337 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05874C32BAADB058C10A8BBE4A252408 /* AENetReq.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59636A4658422F7DDBB83E38A87FF6C7 /* AENetReq.swift */; };
+		00AF7FAA064230A7F947DC0C5453F2A1 /* AENetworkEngine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 61912623BC157D50FE44467ED347C172 /* AENetworkEngine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		05D01E43D0AE12675CD5726C0F9BB242 /* AEFoundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1FA059C61D97DA8A429DCFAA61B1F61 /* AEFoundation.swift */; };
 		0639B09FEC703DF25D65884FF8E95BF4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		08E948A8D53C0F7A86981A7F8935A875 /* AEAINetworkModule-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7A1127EF4C21AACEE422C4A5E6AE3136 /* AEAINetworkModule-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0BD72625BC3C83805BA3EE1EAF84328A /* AEPacketBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D708EA42CB7B2ECE850C8323DEA750C3 /* AEPacketBuffer.swift */; };
-		16FAC0103E9BB7D4424F3FA11CA4D987 /* AEAIContextManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BA5D9CE05DF01B72FA01D192D23B65D /* AEAIContextManagerDelegate.swift */; };
-		177E5A27C5BA09BCEB3B10002B86F452 /* AEChatViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2846A968928F92B7CF3850F93EDAB00 /* AEChatViewNew.swift */; };
-		1974D82BE55100F0F14012C05D2F2A9C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		1B747D8BCCCD566F144D4A10AAE03904 /* AEFileCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01807D410910CD4264FD56130FCDA787 /* AEFileCacheEngine.swift */; };
-		1C3D8B01A0D87F1C91F9369DC79DE7C2 /* AEAtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61BE39112294E541D404C20398DFFCDD /* AEAtom.swift */; };
-		1C6868F62C20F69E2D60D72D834F6E8D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		1D8B791DE8DA4A4E2E508067E3D18317 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
-		1D9FA5EDBED460789420514F030B608F /* AEAIContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA73ED34E3C7E8BEF07F8E3C865E2E3 /* AEAIContextManager.swift */; };
-		1EB29165C78968C5C23AC21AAC2727EF /* AENetworkMessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2031E828CC9D0E88691AB4B304243F22 /* AENetworkMessageListener.swift */; };
-		277CFD3FC59A1FB2AE2A1368B8AD75E6 /* AEComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB64BA32F0612F4FB6BEA00F85D83141 /* AEComparisonView.swift */; };
-		34135AE16D4EA2051722B8AAB8615BC4 /* AEPacketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2C99AC5ACBDFCDA99C43AF03B3444 /* AEPacketParser.swift */; };
-		34A88A82F61FCECFF81CFB18EFE7010B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
-		36A6B74B5434B14F3498A37ADCFEB913 /* AESession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACC38944C5B6BD78E16898A2239A4B6 /* AESession.swift */; };
-		37D5428ACCBF7E69D949F36CF2674B49 /* AEContextConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A21102B7B6C146F35AC385BBE598D0F4 /* AEContextConfig.swift */; };
-		37EE98E3BC703B82C33F81248FE9994F /* AEDBCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4CC9400CBC44FD976851682A50FA1A /* AEDBCacheEngine.swift */; };
-		385E8F385467EAC77FF887D12FA708E1 /* AEUDPSocketConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 443320C1ECF0B8D4F7DCA3189B472907 /* AEUDPSocketConfig.swift */; };
-		399129EE4CFCDD11157C024032511790 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C17D2A34FDA09CD2061C74D66F68DA5 /* AppKit.framework */; };
-		407A72A206731BA9C7452B3D6F39FBE5 /* AEKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F841C9150E4317A40A37AA19B410E19 /* AEKeyCode.swift */; };
-		4199B0D82AB776F712CA8F0A351959C4 /* AEOptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E81FE7642A7AD201D2609A53A267552 /* AEOptionKey.swift */; };
-		43AC17F0EA347DE13BFFC6BB964E6A30 /* AENetworkEngine-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BDE3C7506ECDF65026AE39393614423 /* AENetworkEngine-dummy.m */; };
-		48A11AFDAF850BF085A3C94EE2F0A83A /* AEAISocketConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A8BBD9E33765F1D9982123767F6F83 /* AEAISocketConfig.swift */; };
-		4B20AA2FA238F5818726879FA2057AA7 /* AENetHttpEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FFCA2E8F0B53E488B4B25ECA69F461 /* AENetHttpEngine.swift */; };
-		4BF21F6B4B94C609AC1401797BB6E13C /* AEFoundation-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCEBED9C348DA9390351EFD9D0E6365 /* AEFoundation-dummy.m */; };
-		4DDA8CFF139E39AFB1CBF022F4F2F727 /* AEModuleCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 51492B57255729796CF54CF1CE4046C3 /* AEModuleCenter-dummy.m */; };
-		525A88EE9FDC80EF9135EEB76423A14F /* AEAIEngin-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 57F28EF5E56E5B50E9146E9ADF89DED2 /* AEAIEngin-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		52A204EF96E052F1E11BDC61004D430F /* AEModuleCenter-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 98B5316C40173CF4D153C81B3F687034 /* AEModuleCenter-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		534DDB140B2C4A3CC89BFD6F3DCB259B /* AEAIQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34522AC92E27BBC0055FB2BECD3EFA6E /* AEAIQuestion.swift */; };
-		56A76447EFA7BC36B13C9C1361E75C86 /* AEChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8249C80AD48442B769BDDD65CE6335E /* AEChatView.swift */; };
-		58CD2464497A2E9B9BA925474B3AE143 /* AEControlKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF57A73D3C3ECD1B46BADEA4272853B8 /* AEControlKey.swift */; };
-		5C04891EAF625D357C6E475995F53AEA /* AETextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA4A8CF78B99D882237C9F331E73AC5D /* AETextView.swift */; };
-		5FEC74040ADFD7A9ED265C0BB3C68063 /* AELeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E188C11E5D58EC4F4B6687FBD795D5C /* AELeftView.swift */; };
-		6021E78BC7AFCB8C18F79D0C52254ADB /* AEAIModule-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB32BE9793E4050A193DE7490288546 /* AEAIModule-dummy.m */; };
-		6346C403A085A217656216ADEF575DE1 /* AEUDPSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7169EDD492C1FFB9D59A676476CEA1F /* AEUDPSocketClient.swift */; };
-		65DC1584B2EC736E9A75E0EA4BAD3775 /* AEIOProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0057824CF410D46D42ACC01936870084 /* AEIOProtocol.swift */; };
-		674320F779444840F2A592F599CFF038 /* AERightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B779A44597A518BF5CF3ADA1F29ABC /* AERightView.swift */; };
-		695B7A53801B8170E1A4BE4D17EA4A24 /* AECacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD9100917B9864EE5DF85CC47DB6A2A /* AECacheEngine.swift */; };
+		0C8961544461CBC9C2E8196C9C839DE4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
+		102CC2CBF36191BE8B00D054067BED47 /* AEAtom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F16C527E3D5B3F4F5FFE05EA996997E /* AEAtom.swift */; };
+		10432A54A23B24FECE10F1EF5C90EAA8 /* AEFoundation-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C25698BBC597E9D5FCB11CAE6BFCD27B /* AEFoundation-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1134A3F210F8817DB6A317A64FB6496B /* AENetSocketCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA866B2F88447E09D1ECB4D59FF84DE /* AENetSocketCore.swift */; };
+		16FAC0103E9BB7D4424F3FA11CA4D987 /* AEAIContextManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2654B4F82086EDE94CF1EBDA6B1E870 /* AEAIContextManagerDelegate.swift */; };
+		1724D49232275C7DFCF68BC1CC38ACBE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
+		177E5A27C5BA09BCEB3B10002B86F452 /* AEChatViewNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02DB2640BAB4FE5A816C67EBC414381A /* AEChatViewNew.swift */; };
+		1D9FA5EDBED460789420514F030B608F /* AEAIContextManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9FF068F5333925A3645B6E78BC6380A /* AEAIContextManager.swift */; };
+		20D6EE4760954B258D8851F8FD938C7A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
+		277CFD3FC59A1FB2AE2A1368B8AD75E6 /* AEComparisonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D77EF68CD87E4628EB5A34D9DCDCFDE /* AEComparisonView.swift */; };
+		326BB904ECE131426092D9209CD3C7CD /* AEFoundation-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 929D30852411C2B982A0C965BE56AF6A /* AEFoundation-dummy.m */; };
+		3411A5A1635880E65EAB6B2778EAB034 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
+		36A35D6CD7DDDA7A09A43F61C5195197 /* AENetworkListenerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAF499A9FE7FEDE044F88C1D18F11CB6 /* AENetworkListenerManager.swift */; };
+		37D5428ACCBF7E69D949F36CF2674B49 /* AEContextConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F0D1BBB4E3D209EDE06BA2756267A /* AEContextConfig.swift */; };
+		3B3BD814B49DA4C24B1D92412C255F82 /* AEUDPSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7799D252AD352AE86C8F6A80A57E52EE /* AEUDPSocketClient.swift */; };
+		3B40C6211950C59EBEC310576B1A401B /* AEAINetworkModule-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 5B3D80FCEDAE8A2359C6FC5604CD8DC9 /* AEAINetworkModule-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3EFF7CD8F8E0BB0E889F582CB3970CE5 /* AEModuleCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913A8B540106EDF9B7C199C7B33B6C8A /* AEModuleCenter.swift */; };
+		407A72A206731BA9C7452B3D6F39FBE5 /* AEKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9CBF85FF9A045F55DF7198B812FA8C /* AEKeyCode.swift */; };
+		4199B0D82AB776F712CA8F0A351959C4 /* AEOptionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C185B6AAB6566AC088ABCA445D5DFF /* AEOptionKey.swift */; };
+		50065996BEE025B23698B476FF562B9D /* AESession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C140D67B508F2DECC682F049BAAE1A5 /* AESession.swift */; };
+		525A88EE9FDC80EF9135EEB76423A14F /* AEAIEngin-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F123570D1266DEA361B35B8F005B4FC6 /* AEAIEngin-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		534DDB140B2C4A3CC89BFD6F3DCB259B /* AEAIQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CEA96C32991631D99066E0FA82A2F32 /* AEAIQuestion.swift */; };
+		56A76447EFA7BC36B13C9C1361E75C86 /* AEChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6C0C668E0026B67481055C92CF475A /* AEChatView.swift */; };
+		56DA45AE37692058EA9E01A69966FC63 /* AEIOProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC1694BCB67EF7D203EE1F3F5C048D8 /* AEIOProtocol.swift */; };
+		58904AD14961F58CD53A6FB8C0790D43 /* AEUDPSocketConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E4D0F27DE7F25B05D72DB95B1B9283 /* AEUDPSocketConfig.swift */; };
+		58CD2464497A2E9B9BA925474B3AE143 /* AEControlKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C6F2C38F6EEEA6196270791A10A4F4 /* AEControlKey.swift */; };
+		594BA4FD084EBD73D3BFB1524AA14917 /* AEAINetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50C691B852AAAD0FBCFFC6818E66DED7 /* AEAINetworkProtocol.swift */; };
+		5AC1B69A92983CA12539600545D9A0ED /* AEPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E823BE1B78D21790ABC843B9AA9359E /* AEPacket.swift */; };
+		5C04891EAF625D357C6E475995F53AEA /* AETextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C563982D04409D1B549855E3115A9797 /* AETextView.swift */; };
+		5FEC74040ADFD7A9ED265C0BB3C68063 /* AELeftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBDE07DB4DD0E6008B1CE1D9C420F29A /* AELeftView.swift */; };
+		6021E78BC7AFCB8C18F79D0C52254ADB /* AEAIModule-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E4A47175B33E98A449A51506511D76E /* AEAIModule-dummy.m */; };
+		602B8C6639203537E5F320652D17EBDE /* AEFileCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7258DAC72D207B57121C6220472B7640 /* AEFileCacheEngine.swift */; };
+		60C0770633BC69812A3FBD02922CDAA5 /* AETCPSocketConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA3AB2C752F411B84A297A9A96BF09A /* AETCPSocketConfig.swift */; };
+		6288C43AA2D0991F616D76412B129D8E /* AETCPSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3FE2F56CE85E076BB460195177A432D /* AETCPSocketClient.swift */; };
+		674320F779444840F2A592F599CFF038 /* AERightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E0CD877723E4EBD7F5874DF1659F08 /* AERightView.swift */; };
+		69CA66A4A815ED9571DB37676C76709E /* AECacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71D58FFBE9B1FCD27E73460402D779A /* AECacheEngine.swift */; };
 		6E281D6914EE8B6474775266EFBF3F04 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C17D2A34FDA09CD2061C74D66F68DA5 /* AppKit.framework */; };
-		749165DF14B8AE107B3222D5BDD737D0 /* AETextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8736E42D26DBC3D4B9101FDE88B1BF89 /* AETextViewDelegate.swift */; };
-		7C14D313568DC96E79B8B7C371237194 /* AEShiftKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A30FADF513C938C68353EB28F2685F46 /* AEShiftKey.swift */; };
-		9159365A2F1C93A629CA8320839DED87 /* AEAINetworkModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94140AFA954F5C27A9A77025554E79F4 /* AEAINetworkModule.swift */; };
-		941C6D1FDC0B5168A47EFAEFB6B06E22 /* AEAINetworkProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2889A371EF862068AD717CEF0BAA25F0 /* AEAINetworkProtocol.swift */; };
-		9485DAB484BF5312021BBEE03D627A46 /* AEAIResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F215CEF732675B09CE6355043F2E94 /* AEAIResponseParser.swift */; };
-		969B87B2253F5DA2A6B34702E125CC43 /* AEPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E891D4B94296F774A15957C43D3F060A /* AEPacket.swift */; };
-		9F36E88D5565851ECB8F1A5A139BF3F6 /* AEChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB3A67CB2E7E6A728285E9B949CB0BC /* AEChatMessageCell.swift */; };
+		6F7D09E30F67C8610AB44ED4D78A47A3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
+		6F84162B78CF5BDE20D34FC889165EED /* AESystemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282584FDA970EB7F2F3DCA23A0C6673D /* AESystemInfo.swift */; };
+		749165DF14B8AE107B3222D5BDD737D0 /* AETextViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54A833BA12870D863B27C35D6CFD91D0 /* AETextViewDelegate.swift */; };
+		7C14D313568DC96E79B8B7C371237194 /* AEShiftKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 660C125A2ED92325E8FE64DF72F0B340 /* AEShiftKey.swift */; };
+		9485DAB484BF5312021BBEE03D627A46 /* AEAIResponseParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29396E82FBA24AA0B1E281236E749EBC /* AEAIResponseParser.swift */; };
+		98A4D4EEF7ED24E8AECA86B2609E9A70 /* AENetSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA18799EEE2D29A551A840E756772407 /* AENetSocket.swift */; };
+		99D132760AC2B6AED2404AADCA0A5B3C /* AEModuleCenter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 943B656F3E77F080F30516B8C20BDCE7 /* AEModuleCenter-dummy.m */; };
+		9F36E88D5565851ECB8F1A5A139BF3F6 /* AEChatMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1899146CB798E692A24746F620B77A10 /* AEChatMessageCell.swift */; };
+		A34CA8BAD9579F69B8C102712848E897 /* AEPacketBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF5BCB1AC33EE5846E187E1994E89E60 /* AEPacketBuffer.swift */; };
 		A59B1E30D34E917C2519DBFEC16BA2C6 /* Pods-AETerminal-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 42C1E37F4D33D31699A685DDD03A8B06 /* Pods-AETerminal-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A732E110B6D525694B9D715C2796CB3B /* AEAIServicePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1552DA72E1FFB7A2EF0510C31DA1C126 /* AEAIServicePath.swift */; };
-		A8E14F54A1D1ED098AFCAEE95DB91C00 /* AEAISocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B00791EE34BED1419DAD9123C1847 /* AEAISocketManager.swift */; };
-		AE3A5256BD85E86BD27E380232A4BFB9 /* AENetworkListenerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DBE70EC50CDDB035E2D39D2BABF1FD /* AENetworkListenerManager.swift */; };
-		AFB62A5C01B27B3A405349EBCC9556DC /* AEFoundation-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 554EFC6C360438B69CFF238AA5C3D2A0 /* AEFoundation-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B0C2FEEC94625EE97247BF9CF3F6BEBB /* AEUserDefaultsCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6063CC19A09B20395778A3FAA709E9B /* AEUserDefaultsCacheEngine.swift */; };
-		B22638769F6BE701218BB527E62CE1BE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		B2C888088E459EE043AA2FEA18629A47 /* AESystemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8479E80508A09B9DE5277695CC75F1C /* AESystemInfo.swift */; };
-		B37C1885BA2BAA855CF94079D1717782 /* AEModuleCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B9F11739BDDCAA2C6555AA343DA3B0 /* AEModuleCenter.swift */; };
+		A732E110B6D525694B9D715C2796CB3B /* AEAIServicePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C34B7D9B050A7ECA996EBD4780CC64E /* AEAIServicePath.swift */; };
+		A7857C57D4940E2BA35905ECCE01A8A4 /* AENetHttpEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAEA69EF21675EAD45BE8405A765B999 /* AENetHttpEngine.swift */; };
+		A9153861D56F50AFAF9FD8A6EC1291EE /* AEDBCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CEB5FC9E361B7E0F1A4D73B68F3C48 /* AEDBCacheEngine.swift */; };
+		ACF0F02752DCF870D8E6291E106A749E /* AENetRsp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571D61C0170F563D098BB8634689906C /* AENetRsp.swift */; };
+		AD682F329C4814AFE61FD85A0D2AC0D8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
+		B29109D3BB0221038680C42EE59359A8 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C17D2A34FDA09CD2061C74D66F68DA5 /* AppKit.framework */; };
 		B46611ECFA66CD10DE27881C7C7FC4DE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		B4AA0CC3954B2D902F5F811DB531065C /* AEModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817995DF632498F2D97E90C8C6C17608 /* AEModuleProtocol.swift */; };
-		B8F9CCE4343053F160984CD90E0579E7 /* AENetworkEngine-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C90A2BCF2E3FB22D4D235F55CD1C480C /* AENetworkEngine-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B9E992F1CC0B061200FFB19C703E1451 /* AETlvTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F4132C39BD6A9350A80BA376C448D9 /* AETlvTests.swift */; };
-		BE3B528F879461BF3788A32C6F94A5FD /* AECommandKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D55F08203656D5E037C5146FFC5FB7 /* AECommandKey.swift */; };
-		BF95B89B13C96E81DEB81EF7DDB746CA /* AEDataStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F39641D94F3353DC0586D20A0BFAAF /* AEDataStream.swift */; };
+		BE3B528F879461BF3788A32C6F94A5FD /* AECommandKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46E6C1BCC84436EE3FC19800582B6C3 /* AECommandKey.swift */; };
+		BE826D8BE531B584C22D1FA79B3DD3C3 /* AEUDPNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B207B591D50D3F181A757A076A5BE4D /* AEUDPNetworkManager.swift */; };
+		C1D808ED4B4736DE4E861903F4519131 /* AEPacketParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954C1CFB6FF43A6EC20E128B0CA78777 /* AEPacketParser.swift */; };
 		C2EE5F2845917BAE73B3A56887F69A68 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		C67E8FA9C400A91B09D6997E3F8C40C8 /* AEAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF145C555F7591F64D500FB16FBC9FBB /* AEAIService.swift */; };
-		C73CC1145B7CBF280531E56CA36A4EB6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */; };
-		C8F56AC7C7FFE4B6E313C2F6A4ADA5E0 /* AECombinationKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1624955FBD2E2DBB8416FBE6961B093A /* AECombinationKeyManager.swift */; };
-		CA5829E732A930C40FE3595901A7A20C /* AENetRsp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885296681BE770578E98D97AD84974AA /* AENetRsp.swift */; };
+		C4E6C514588D4065FE156D39EE7F732F /* AENetworkEngine-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C74641D1CDB7E4622116C528D6543BF3 /* AENetworkEngine-dummy.m */; };
+		C67E8FA9C400A91B09D6997E3F8C40C8 /* AEAIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7520351CA5BA92425D538BA3CADB35 /* AEAIService.swift */; };
+		C6A834D9EE9850DB15CD6FB5B2CD5691 /* AENetworkMessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED02593803E5070BD3091527F200155E /* AENetworkMessageListener.swift */; };
+		C738B5146392DBCB2A2377C0EF7BABD9 /* AENetReq.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201B02E2CD13BFE0BD1E8C410A9556C6 /* AENetReq.swift */; };
+		C8F56AC7C7FFE4B6E313C2F6A4ADA5E0 /* AECombinationKeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B28B4DDAF63380791AAAE66E3081E05A /* AECombinationKeyManager.swift */; };
+		CDC6414458CDC553CBAA136114FB2D2F /* AEAISocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0135EEB88EA46F7CCEDE417D9D517384 /* AEAISocketManager.swift */; };
 		CF955454D50A46FC46E15AC78C75FD2D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */; };
-		D85C78045DDEFE10A38BAA991D1C33AB /* AEDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8BDC1D6C8AF59E2D36B7497B3103FFF /* AEDirectory.swift */; };
-		DDF504C3DCC4B168374C6F700654DE4B /* AEChatView.swift.backup in Sources */ = {isa = PBXBuildFile; fileRef = 9FF5EA3D9EF2AD568217EA9AF4C904D9 /* AEChatView.swift.backup */; };
-		DECE2851A715CB92BAD2EC07E0F43CA0 /* AEAIEngin-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E798D86F053D38A7D67BE881E0543640 /* AEAIEngin-dummy.m */; };
-		E558FA7C556658769244817D93895A44 /* AEAIQuestionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20D0CD6D41CFE56EE1F849FC3E36D6B5 /* AEAIQuestionManager.swift */; };
-		EB162BFAFC9E3FDF9D3A4DD4BC6C7EEF /* AETCPSocketConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA51B308AC1A618155624271BE3708F1 /* AETCPSocketConfig.swift */; };
-		EB41E1AA0DB77995C5ED903D888EAD08 /* AENetSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D1960E47BBF7C6FA01E9FAABAD854E /* AENetSecurity.swift */; };
-		EB8B961D0229FD260E5E7B733F442E3C /* AEUDPNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD514E0489DFC0C56DDC1D753517A0A6 /* AEUDPNetworkManager.swift */; };
-		EBAE81FAFC575EE88BED13BB2A294A4A /* AETCPSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543F2B97DF09B2F733CA0DA8F48001D9 /* AETCPSocketClient.swift */; };
-		ED43D9F95630D87D9D76680BBE05B948 /* AEAIModule-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 11A46785B8E512AB2485CABEA6C2E3E4 /* AEAIModule-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		EF28C4745950CE70AEAF4A9C9E8D5981 /* AENetSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D0D6C970C592DF0AF94B7F3D514DBAA /* AENetSocket.swift */; };
-		F27E03C4AFB9DFB3B2BF0FD2A6845D28 /* AECombinationKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E773E6E22E6BD90198038DE83FC696A /* AECombinationKeyHandler.swift */; };
+		D254813AB4EEADF5072FB15A0B026153 /* AENetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 365E68E61B37AF9B1C99E6577D1B3A91 /* AENetConfig.swift */; };
+		D85C78045DDEFE10A38BAA991D1C33AB /* AEDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B4E734917FC43C03958CE381701FA9 /* AEDirectory.swift */; };
+		D8D4E78E624985C7B045E4A176D96521 /* AEAINetworkModule-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF3DD8A6CAC9614A071F5DA7E97B50 /* AEAINetworkModule-dummy.m */; };
+		DD1CE9914C8A88B6B19D34D2B3EBC31F /* AEDataStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8CD26C4CADCE9EBE27AF65E9E1AC67 /* AEDataStream.swift */; };
+		DDF504C3DCC4B168374C6F700654DE4B /* AEChatView.swift.backup in Sources */ = {isa = PBXBuildFile; fileRef = 69408C69A59E445E8D8939EDADAC4968 /* AEChatView.swift.backup */; };
+		DECE2851A715CB92BAD2EC07E0F43CA0 /* AEAIEngin-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BABE9ABF27AC8F9256A5E98DA7E5B61F /* AEAIEngin-dummy.m */; };
+		E4E2CE003D7FF00F21C4689250AEDBF1 /* AETlvTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B12CFD2539758C2199942E122B7BC3 /* AETlvTests.swift */; };
+		E558FA7C556658769244817D93895A44 /* AEAIQuestionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C264B8D3BD802C39F9218E9FC454741 /* AEAIQuestionManager.swift */; };
+		ED43D9F95630D87D9D76680BBE05B948 /* AEAIModule-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 67530D8172ECED879C8B7BE0FC88D0D3 /* AEAIModule-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F27E03C4AFB9DFB3B2BF0FD2A6845D28 /* AECombinationKeyHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB9424B8328F5FE09A9FE2F8C134E55 /* AECombinationKeyHandler.swift */; };
 		F291695F6D5A6997387319CBC4FCFBDC /* Pods-AETerminal-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E51E84ACD07D4825F5882C503427166 /* Pods-AETerminal-dummy.m */; };
-		F57A0208A25C7868A38A8267058449F6 /* MarkdownRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC7D4FA3FB134E315101BDCF296A743D /* MarkdownRenderer.swift */; };
-		F64519859277FB11209474397F0B597F /* AEAIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3C60BD070F546B242D8359B8C436BBD /* AEAIContext.swift */; };
-		F6986F092099095DF1A74183D430DDD9 /* AECacheEngineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58DBC6B09F39B4AA1C32F6FD9F8F26F /* AECacheEngineProtocol.swift */; };
-		F81621091D9E16E0576552FF3F002380 /* AEFnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED64D8FEEE4B39CF2BE4327613C74E1E /* AEFnKey.swift */; };
-		FA578C9DE025A71AF499F0906E6C030A /* AEAINetworkModule-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AFC4276E73D4A4B9CF0DBD796A3414CA /* AEAINetworkModule-dummy.m */; };
-		FAE22CDFDE7C8D0CF9455CEA9BA5C9E0 /* AENetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AD0EBE2AB62B450FF7C2BAA115CF7A /* AENetConfig.swift */; };
-		FCB90077074216DC05C8F7AF04FE4A15 /* AEFoundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9E1637267A0C0159F625B4FDE2125B0 /* AEFoundation.swift */; };
+		F2FA0D8B11E2E81DE801B93ADB633E22 /* AEModuleCenter-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C213599D3A242120B8604CBC89749484 /* AEModuleCenter-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F43D7AF8EDA7460B90D6514D9EA6AF78 /* AECacheEngineProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC67984372A84D375D84700FE2505A78 /* AECacheEngineProtocol.swift */; };
+		F57A0208A25C7868A38A8267058449F6 /* MarkdownRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEDD4054D51C044E7B2F3C6100100C6 /* MarkdownRenderer.swift */; };
+		F5B407E1843DD609E640F2984E530598 /* AENetSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C084DEC7E5D707C79D02A3C99D01455 /* AENetSecurity.swift */; };
+		F64519859277FB11209474397F0B597F /* AEAIContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4616A48E66926ABF0E784E9C1FAD4BE9 /* AEAIContext.swift */; };
+		F81621091D9E16E0576552FF3F002380 /* AEFnKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810B2DD827D2E651D89C2E489205B10 /* AEFnKey.swift */; };
+		FB0EFAD640E710A6773AF5259F452B20 /* AEAINetworkModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE3B9CDE881382F648D218C5D1DC972 /* AEAINetworkModule.swift */; };
+		FB2869EB73B76477A512DD7AA42177BC /* AEUserDefaultsCacheEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4BBF9E67430D3A3F731189E9F643C9B /* AEUserDefaultsCacheEngine.swift */; };
+		FDE8D20E2B3B71A5C61A91CF3FAE5FD9 /* AENetCoreInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE74C94B3E8D18D8597C0877EBF78FB0 /* AENetCoreInterface.swift */; };
+		FFED984469D7C6155F64F4F328768B20 /* AEModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5E69B247D7A1B327C4BB18A9F97788 /* AEModuleProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		046F371B940A9D36AB12718E1FBE3783 /* PBXContainerItemProxy */ = {
+		0438FD6B0F2DCBC2AC355B26ACE7483A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5FC09F11D925031B019F7F73F1373737;
 			remoteInfo = AEModuleCenter;
 		};
-		19BB72FD70B737904F59CE76A50C4F3D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
-			remoteInfo = AENetworkEngine;
-		};
-		2445C782215CFD9B8EAFF7B30B523EFB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9C465D2B4B8212B0C3A2802324335C7A;
-			remoteInfo = AEFoundation;
-		};
-		26A6B70FFBC6547CFAB28DAE71593CE6 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
-			remoteInfo = AENetworkEngine;
-		};
-		3985D77917A026D4FB18C8D9708927F8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DEC1AEAD2EC1037F19A6F9C040E599F0;
-			remoteInfo = AEAIEngin;
-		};
-		49E6CB7F96190C262B4E174A03BFB2A4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
-			remoteInfo = AENetworkEngine;
-		};
-		70AC1977336285966360BF66DFFBF2FF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5FC09F11D925031B019F7F73F1373737;
-			remoteInfo = AEModuleCenter;
-		};
-		78E1553A9EE1C68A75BE2F13CFE811CC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5FC09F11D925031B019F7F73F1373737;
-			remoteInfo = AEModuleCenter;
-		};
-		79BBE9DC9D2357AED66628E9CC42FE24 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 56239B192C68AEA1B3E732E3A944C6E6;
-			remoteInfo = AEAINetworkModule;
-		};
-		7DBF6A035FCD23470C7EC41478835C42 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DEC1AEAD2EC1037F19A6F9C040E599F0;
-			remoteInfo = AEAIEngin;
-		};
-		9911BA43E930CD91BFF06A127564F42E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
-			remoteInfo = AENetworkEngine;
-		};
-		BCDF35E59390000A510398243EB4B1A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9C465D2B4B8212B0C3A2802324335C7A;
-			remoteInfo = AEFoundation;
-		};
-		DB964D50A24236514E6C1F0D0ECA2BAF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 56239B192C68AEA1B3E732E3A944C6E6;
-			remoteInfo = AEAINetworkModule;
-		};
-		DFDA682C64423BFCFB11531598129988 /* PBXContainerItemProxy */ = {
+		047BE695EEE011B4CEAC41390DAA6238 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 1A771A6075990D89B83ECF57902FA5BD;
 			remoteInfo = AEAIModule;
 		};
+		057057FDDEE6345C70EABD7A234191FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEC1AEAD2EC1037F19A6F9C040E599F0;
+			remoteInfo = AEAIEngin;
+		};
+		1CF0966231723171A672FE6FD3C1263C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C465D2B4B8212B0C3A2802324335C7A;
+			remoteInfo = AEFoundation;
+		};
+		3A1282682DD60A69B7C96B860D55D723 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DEC1AEAD2EC1037F19A6F9C040E599F0;
+			remoteInfo = AEAIEngin;
+		};
+		55153E5FB3AE42DBD8CE38458178DAE5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56239B192C68AEA1B3E732E3A944C6E6;
+			remoteInfo = AEAINetworkModule;
+		};
+		56C2B154A5224A90C3FFE991F187E98B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
+			remoteInfo = AENetworkEngine;
+		};
+		5C69CB6B4B75859F76E1B7D5002BA625 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9C465D2B4B8212B0C3A2802324335C7A;
+			remoteInfo = AEFoundation;
+		};
+		76440A19BBBE36DA7524D9DC2B26E876 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
+			remoteInfo = AENetworkEngine;
+		};
+		99D77DDB88E8BD21E7FB3225A94CE05A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
+			remoteInfo = AENetworkEngine;
+		};
+		A1C640044CA74A3F5F2D70DDE6756826 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 56239B192C68AEA1B3E732E3A944C6E6;
+			remoteInfo = AEAINetworkModule;
+		};
+		B1DA14F43211A33E99DE795F3D7EBDC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FC09F11D925031B019F7F73F1373737;
+			remoteInfo = AEModuleCenter;
+		};
+		D7BCB650FFBAE66421F6F4C62927019A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FC09F11D925031B019F7F73F1373737;
+			remoteInfo = AEModuleCenter;
+		};
+		EF29C70622E7381B79FC76CA0A0175CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FD2A2EAECFA8A11DA898C93718B0EFB2;
+			remoteInfo = AENetworkEngine;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0057824CF410D46D42ACC01936870084 /* AEIOProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEIOProtocol.swift; sourceTree = "<group>"; };
-		01807D410910CD4264FD56130FCDA787 /* AEFileCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFileCacheEngine.swift; sourceTree = "<group>"; };
-		0374A7FE202F0D49EB42D9697A231484 /* AEAIModule-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIModule-prefix.pch"; sourceTree = "<group>"; };
+		0135EEB88EA46F7CCEDE417D9D517384 /* AEAISocketManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAISocketManager.swift; path = AEAINetworkModule/Classes/AEAISocketManager.swift; sourceTree = "<group>"; };
+		02DB2640BAB4FE5A816C67EBC414381A /* AEChatViewNew.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatViewNew.swift; sourceTree = "<group>"; };
+		04B4E734917FC43C03958CE381701FA9 /* AEDirectory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEDirectory.swift; path = Directory/AEDirectory.swift; sourceTree = "<group>"; };
 		059FC9A0A890A1AD1477CB6139574395 /* AEModuleCenter */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AEModuleCenter; path = AEModuleCenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		07DBE70EC50CDDB035E2D39D2BABF1FD /* AENetworkListenerManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetworkListenerManager.swift; path = AEAINetworkModule/Classes/AENetworkListenerManager.swift; sourceTree = "<group>"; };
-		08C1375D39BBE4DD1B1C0D40D2D670C0 /* AEAINetworkModule.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAINetworkModule.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		09EA45D9591A383F9E4CF04589AB350C /* AENetworkEngine-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AENetworkEngine-Info.plist"; sourceTree = "<group>"; };
-		0B00C80704808D7C609B9B25D632DE54 /* AEAIEngin-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIEngin-prefix.pch"; sourceTree = "<group>"; };
-		0BDE3C7506ECDF65026AE39393614423 /* AENetworkEngine-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AENetworkEngine-dummy.m"; sourceTree = "<group>"; };
-		0C639922A0A29E204AAEC00636BA5ABF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		0C7B00791EE34BED1419DAD9123C1847 /* AEAISocketManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAISocketManager.swift; path = AEAINetworkModule/Classes/AEAISocketManager.swift; sourceTree = "<group>"; };
-		113E841F5DB0C0D4031012A922A8AD0E /* AENetworkEngine.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AENetworkEngine.modulemap; sourceTree = "<group>"; };
-		11A46785B8E512AB2485CABEA6C2E3E4 /* AEAIModule-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIModule-umbrella.h"; sourceTree = "<group>"; };
-		13ABC90C71F7E58E52C8B62CA505B4EE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		1552DA72E1FFB7A2EF0510C31DA1C126 /* AEAIServicePath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIServicePath.swift; sourceTree = "<group>"; };
-		1624955FBD2E2DBB8416FBE6961B093A /* AECombinationKeyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECombinationKeyManager.swift; sourceTree = "<group>"; };
-		19028A046B14629D539F60DF9FB2670B /* AEAINetworkModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAINetworkModule.release.xcconfig; sourceTree = "<group>"; };
+		07EF3484C5216CFFDEFCE88E1DE3EA0C /* AEAINetworkModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAINetworkModule.debug.xcconfig; sourceTree = "<group>"; };
+		08382A3FEBC8B9AA8C17873F086E58EC /* AENetworkEngine-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AENetworkEngine-prefix.pch"; sourceTree = "<group>"; };
+		0A9DF6EC16578361603341A5BB80A124 /* AEAIEngin-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIEngin-prefix.pch"; sourceTree = "<group>"; };
+		0B207B591D50D3F181A757A076A5BE4D /* AEUDPNetworkManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPNetworkManager.swift; sourceTree = "<group>"; };
+		0E07FB27C1DBE3CED2EF938B423D4221 /* AEAIModule.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAIModule.modulemap; sourceTree = "<group>"; };
+		11C6F2C38F6EEEA6196270791A10A4F4 /* AEControlKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEControlKey.swift; sourceTree = "<group>"; };
+		155C79C2B0777D236F338566D49FCA46 /* AEFoundation.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEFoundation.modulemap; sourceTree = "<group>"; };
+		1899146CB798E692A24746F620B77A10 /* AEChatMessageCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatMessageCell.swift; sourceTree = "<group>"; };
+		1C264B8D3BD802C39F9218E9FC454741 /* AEAIQuestionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIQuestionManager.swift; sourceTree = "<group>"; };
+		1C6C0C668E0026B67481055C92CF475A /* AEChatView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatView.swift; sourceTree = "<group>"; };
+		1C7520351CA5BA92425D538BA3CADB35 /* AEAIService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIService.swift; sourceTree = "<group>"; };
 		1C7868701D933E031B7E239A1BC29C32 /* AENetworkEngine */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AENetworkEngine; path = AENetworkEngine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1F4D4FA6971AD72675AD85885E262ECE /* AEAIModule.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAIModule.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		1F841C9150E4317A40A37AA19B410E19 /* AEKeyCode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEKeyCode.swift; sourceTree = "<group>"; };
-		2031E828CC9D0E88691AB4B304243F22 /* AENetworkMessageListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetworkMessageListener.swift; path = AEAINetworkModule/Classes/AENetworkMessageListener.swift; sourceTree = "<group>"; };
-		206F1427DFF22D2CAE0220153D51B650 /* AEAIEngin.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAIEngin.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		20D0CD6D41CFE56EE1F849FC3E36D6B5 /* AEAIQuestionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIQuestionManager.swift; sourceTree = "<group>"; };
-		26A8BBD9E33765F1D9982123767F6F83 /* AEAISocketConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAISocketConfig.swift; path = Socket/AEAISocketConfig.swift; sourceTree = "<group>"; };
-		2837FD7559552896840E117CAB61CAD4 /* AEFoundation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEFoundation.debug.xcconfig; sourceTree = "<group>"; };
-		2889A371EF862068AD717CEF0BAA25F0 /* AEAINetworkProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAINetworkProtocol.swift; path = AEAINetworkModule/Classes/AEAINetworkProtocol.swift; sourceTree = "<group>"; };
+		201B02E2CD13BFE0BD1E8C410A9556C6 /* AENetReq.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetReq.swift; sourceTree = "<group>"; };
+		2413DD8A3C9F73D16C3ECF428C27094B /* AEAIEngin-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAIEngin-Info.plist"; sourceTree = "<group>"; };
+		282584FDA970EB7F2F3DCA23A0C6673D /* AESystemInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AESystemInfo.swift; sourceTree = "<group>"; };
+		29396E82FBA24AA0B1E281236E749EBC /* AEAIResponseParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIResponseParser.swift; sourceTree = "<group>"; };
 		2C17D2A34FDA09CD2061C74D66F68DA5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/AppKit.framework; sourceTree = DEVELOPER_DIR; };
-		2DACABC6F5ACA52746E73AEF8348EB93 /* AEModuleCenter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEModuleCenter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		2E81FE7642A7AD201D2609A53A267552 /* AEOptionKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEOptionKey.swift; sourceTree = "<group>"; };
-		2F46EC23C99F9B36C6279A6492EA5938 /* AEAIEngin-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAIEngin-Info.plist"; sourceTree = "<group>"; };
-		34522AC92E27BBC0055FB2BECD3EFA6E /* AEAIQuestion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIQuestion.swift; sourceTree = "<group>"; };
-		386953F4BFD0608285C44B9313D0912C /* AEAIEngin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIEngin.debug.xcconfig; sourceTree = "<group>"; };
-		38F39641D94F3353DC0586D20A0BFAAF /* AEDataStream.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEDataStream.swift; sourceTree = "<group>"; };
-		39D55F08203656D5E037C5146FFC5FB7 /* AECommandKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECommandKey.swift; sourceTree = "<group>"; };
-		3DB32BE9793E4050A193DE7490288546 /* AEAIModule-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAIModule-dummy.m"; sourceTree = "<group>"; };
+		2C34B7D9B050A7ECA996EBD4780CC64E /* AEAIServicePath.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIServicePath.swift; sourceTree = "<group>"; };
+		2DAF010074D7B5A3998C4786CBACD4B4 /* AEAIModule-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAIModule-Info.plist"; sourceTree = "<group>"; };
+		3000106A449202902287F9A70020EA79 /* AEFoundation-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEFoundation-Info.plist"; sourceTree = "<group>"; };
+		34977C83F78B1864CA0BC9D9D621649F /* AEModuleCenter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEModuleCenter.release.xcconfig; sourceTree = "<group>"; };
+		34E04C3953C03D985CD9C6A96BF6A7A2 /* AEAIModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIModule.debug.xcconfig; sourceTree = "<group>"; };
+		365E68E61B37AF9B1C99E6577D1B3A91 /* AENetConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetConfig.swift; path = Request/AENetConfig.swift; sourceTree = "<group>"; };
+		3CC9814CFBA11393748CEC0631209585 /* AEModuleCenter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEModuleCenter.debug.xcconfig; sourceTree = "<group>"; };
+		3F16C527E3D5B3F4F5FFE05EA996997E /* AEAtom.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAtom.swift; sourceTree = "<group>"; };
+		3FA3AB2C752F411B84A297A9A96BF09A /* AETCPSocketConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETCPSocketConfig.swift; sourceTree = "<group>"; };
 		3FE06B0C9797509491B8EFE3900F411F /* AEAIEngin */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AEAIEngin; path = AEAIEngin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42C1E37F4D33D31699A685DDD03A8B06 /* Pods-AETerminal-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AETerminal-umbrella.h"; sourceTree = "<group>"; };
-		42D6A5473FD23A9BC1C650DE50EEA390 /* AEModuleCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEModuleCenter-prefix.pch"; sourceTree = "<group>"; };
-		443320C1ECF0B8D4F7DCA3189B472907 /* AEUDPSocketConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPSocketConfig.swift; sourceTree = "<group>"; };
-		4742EF9BCD4E641B1C839D4C0E69F1BB /* AEFoundation-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEFoundation-Info.plist"; sourceTree = "<group>"; };
-		4E188C11E5D58EC4F4B6687FBD795D5C /* AELeftView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AELeftView.swift; sourceTree = "<group>"; };
-		5074234FE53C32EB8768DCB5D92794EB /* AEAIModule.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAIModule.modulemap; sourceTree = "<group>"; };
-		51492B57255729796CF54CF1CE4046C3 /* AEModuleCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEModuleCenter-dummy.m"; sourceTree = "<group>"; };
-		543F2B97DF09B2F733CA0DA8F48001D9 /* AETCPSocketClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETCPSocketClient.swift; sourceTree = "<group>"; };
-		554EFC6C360438B69CFF238AA5C3D2A0 /* AEFoundation-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEFoundation-umbrella.h"; sourceTree = "<group>"; };
-		56EBC6142CD106759D46DBB2C1A3ACF4 /* AEModuleCenter-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEModuleCenter-Info.plist"; sourceTree = "<group>"; };
-		57F28EF5E56E5B50E9146E9ADF89DED2 /* AEAIEngin-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIEngin-umbrella.h"; sourceTree = "<group>"; };
-		59636A4658422F7DDBB83E38A87FF6C7 /* AENetReq.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetReq.swift; sourceTree = "<group>"; };
-		5A6D5319504F4C82D0426B93713CF84B /* AEFoundation.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEFoundation.modulemap; sourceTree = "<group>"; };
+		4616A48E66926ABF0E784E9C1FAD4BE9 /* AEAIContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIContext.swift; sourceTree = "<group>"; };
+		4CEA96C32991631D99066E0FA82A2F32 /* AEAIQuestion.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIQuestion.swift; sourceTree = "<group>"; };
+		4DBB0B55D1EBB73C663578C60E6339CF /* AENetworkEngine.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AENetworkEngine.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		50C691B852AAAD0FBCFFC6818E66DED7 /* AEAINetworkProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAINetworkProtocol.swift; path = AEAINetworkModule/Classes/AEAINetworkProtocol.swift; sourceTree = "<group>"; };
+		54A833BA12870D863B27C35D6CFD91D0 /* AETextViewDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETextViewDelegate.swift; sourceTree = "<group>"; };
+		571D61C0170F563D098BB8634689906C /* AENetRsp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetRsp.swift; sourceTree = "<group>"; };
+		57C2115C09B9C527731005537E17CC00 /* AEAIEngin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIEngin.debug.xcconfig; sourceTree = "<group>"; };
+		5810B2DD827D2E651D89C2E489205B10 /* AEFnKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFnKey.swift; sourceTree = "<group>"; };
+		5A0A16DE5D3EAEED389341EFD2AADF6A /* AEAINetworkModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAINetworkModule.release.xcconfig; sourceTree = "<group>"; };
+		5B3D80FCEDAE8A2359C6FC5604CD8DC9 /* AEAINetworkModule-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAINetworkModule-umbrella.h"; sourceTree = "<group>"; };
 		5D0269DE8ED4CB94E5F6E2BB553BA00B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		61BE39112294E541D404C20398DFFCDD /* AEAtom.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAtom.swift; sourceTree = "<group>"; };
-		66B9F11739BDDCAA2C6555AA343DA3B0 /* AEModuleCenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEModuleCenter.swift; path = AEModuleCenter/Classes/AEModuleCenter.swift; sourceTree = "<group>"; };
-		6743A5DFE9A25C341FAA3ABBBEF372F4 /* AEFoundation-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEFoundation-prefix.pch"; sourceTree = "<group>"; };
+		5D9CBF85FF9A045F55DF7198B812FA8C /* AEKeyCode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEKeyCode.swift; sourceTree = "<group>"; };
+		5DB9424B8328F5FE09A9FE2F8C134E55 /* AECombinationKeyHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECombinationKeyHandler.swift; sourceTree = "<group>"; };
+		5E4A47175B33E98A449A51506511D76E /* AEAIModule-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAIModule-dummy.m"; sourceTree = "<group>"; };
+		5F5E69B247D7A1B327C4BB18A9F97788 /* AEModuleProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEModuleProtocol.swift; path = AEModuleCenter/Classes/AEModuleProtocol.swift; sourceTree = "<group>"; };
+		5FEDD4054D51C044E7B2F3C6100100C6 /* MarkdownRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkdownRenderer.swift; sourceTree = "<group>"; };
+		60B12CFD2539758C2199942E122B7BC3 /* AETlvTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETlvTests.swift; sourceTree = "<group>"; };
+		61912623BC157D50FE44467ED347C172 /* AENetworkEngine-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AENetworkEngine-umbrella.h"; sourceTree = "<group>"; };
+		660C125A2ED92325E8FE64DF72F0B340 /* AEShiftKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEShiftKey.swift; sourceTree = "<group>"; };
+		67530D8172ECED879C8B7BE0FC88D0D3 /* AEAIModule-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIModule-umbrella.h"; sourceTree = "<group>"; };
+		69408C69A59E445E8D8939EDADAC4968 /* AEChatView.swift.backup */ = {isa = PBXFileReference; includeInIndex = 1; path = AEChatView.swift.backup; sourceTree = "<group>"; };
+		6C140D67B508F2DECC682F049BAAE1A5 /* AESession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AESession.swift; sourceTree = "<group>"; };
 		6D8D7D2D28E319A8348A4B20054BCC4E /* AEAIModule */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AEAIModule; path = AEAIModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		72AD0EBE2AB62B450FF7C2BAA115CF7A /* AENetConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetConfig.swift; path = Core/AENetConfig.swift; sourceTree = "<group>"; };
+		7258DAC72D207B57121C6220472B7640 /* AEFileCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFileCacheEngine.swift; sourceTree = "<group>"; };
+		7393499F8DE91AA131E16287E045E472 /* AENetworkEngine.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AENetworkEngine.modulemap; sourceTree = "<group>"; };
+		73CEB5FC9E361B7E0F1A4D73B68F3C48 /* AEDBCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEDBCacheEngine.swift; sourceTree = "<group>"; };
+		75FA226521F22F918FFB43B47DEC43CC /* AENetworkEngine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AENetworkEngine.debug.xcconfig; sourceTree = "<group>"; };
+		7799D252AD352AE86C8F6A80A57E52EE /* AEUDPSocketClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPSocketClient.swift; sourceTree = "<group>"; };
 		77F3B58791F8BF3B33EBA3CE1FA74A60 /* Pods-AETerminal-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-AETerminal-frameworks.sh"; sourceTree = "<group>"; };
-		78F215CEF732675B09CE6355043F2E94 /* AEAIResponseParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIResponseParser.swift; sourceTree = "<group>"; };
-		7A1127EF4C21AACEE422C4A5E6AE3136 /* AEAINetworkModule-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAINetworkModule-umbrella.h"; sourceTree = "<group>"; };
-		7ACC38944C5B6BD78E16898A2239A4B6 /* AESession.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AESession.swift; sourceTree = "<group>"; };
-		7CA73ED34E3C7E8BEF07F8E3C865E2E3 /* AEAIContextManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAIContextManager.swift; path = Context/AEAIContextManager.swift; sourceTree = "<group>"; };
-		7D0D6C970C592DF0AF94B7F3D514DBAA /* AENetSocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetSocket.swift; path = Socket/AENetSocket.swift; sourceTree = "<group>"; };
-		7FB4F016C55FF27DE5EB43AF7E2317D9 /* AEAIModule-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAIModule-Info.plist"; sourceTree = "<group>"; };
+		791A8A99AE03F86690AB9E56961579D2 /* AEAINetworkModule-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAINetworkModule-Info.plist"; sourceTree = "<group>"; };
 		7FCD56936706FE7A734056C897AE6C2F /* Pods-AETerminal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AETerminal.release.xcconfig"; sourceTree = "<group>"; };
-		7FD9100917B9864EE5DF85CC47DB6A2A /* AECacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECacheEngine.swift; sourceTree = "<group>"; };
-		80D88BA8AF54E842AF8C1D984BFD8EE6 /* AEAIEngin.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAIEngin.modulemap; sourceTree = "<group>"; };
-		817995DF632498F2D97E90C8C6C17608 /* AEModuleProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEModuleProtocol.swift; path = AEModuleCenter/Classes/AEModuleProtocol.swift; sourceTree = "<group>"; };
-		8736E42D26DBC3D4B9101FDE88B1BF89 /* AETextViewDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETextViewDelegate.swift; sourceTree = "<group>"; };
-		875B65DAD5D8F52DDF05671EDAFB3E68 /* AEAIEngin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIEngin.release.xcconfig; sourceTree = "<group>"; };
-		885296681BE770578E98D97AD84974AA /* AENetRsp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetRsp.swift; sourceTree = "<group>"; };
-		8CCDEC5B32CBCFAD648A73086CA0AE44 /* AEAIModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIModule.release.xcconfig; sourceTree = "<group>"; };
+		87D1F854367FBA49448D4CB72A6C82EF /* AEModuleCenter.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEModuleCenter.modulemap; sourceTree = "<group>"; };
+		87E3A82EA873952A4EC865B3EE7EBBA8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		8B49FA0953D8DAAFCB528A8389ADEF5A /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		8E51E84ACD07D4825F5882C503427166 /* Pods-AETerminal-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AETerminal-dummy.m"; sourceTree = "<group>"; };
-		8E773E6E22E6BD90198038DE83FC696A /* AECombinationKeyHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECombinationKeyHandler.swift; sourceTree = "<group>"; };
-		8EB3A67CB2E7E6A728285E9B949CB0BC /* AEChatMessageCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatMessageCell.swift; sourceTree = "<group>"; };
-		8EE2CB13B0034BBF799DAA4839269347 /* AEAINetworkModule-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEAINetworkModule-Info.plist"; sourceTree = "<group>"; };
-		90B4260A0883710F8F6CBFCAE4C9B0A4 /* AENetworkEngine.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AENetworkEngine.debug.xcconfig; sourceTree = "<group>"; };
-		93417A12784C9A06902B32742D572D9D /* AENetworkEngine.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AENetworkEngine.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		94140AFA954F5C27A9A77025554E79F4 /* AEAINetworkModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAINetworkModule.swift; path = AEAINetworkModule/Classes/AEAINetworkModule.swift; sourceTree = "<group>"; };
-		981DCEFE5EDB27A37BA91CD821177B66 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		98B5316C40173CF4D153C81B3F687034 /* AEModuleCenter-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEModuleCenter-umbrella.h"; sourceTree = "<group>"; };
+		8F258064F852AD947AC4738FF64A7A0F /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		8FBF3DD8A6CAC9614A071F5DA7E97B50 /* AEAINetworkModule-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAINetworkModule-dummy.m"; sourceTree = "<group>"; };
+		913A8B540106EDF9B7C199C7B33B6C8A /* AEModuleCenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEModuleCenter.swift; path = AEModuleCenter/Classes/AEModuleCenter.swift; sourceTree = "<group>"; };
+		929D30852411C2B982A0C965BE56AF6A /* AEFoundation-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEFoundation-dummy.m"; sourceTree = "<group>"; };
+		93E0CD877723E4EBD7F5874DF1659F08 /* AERightView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AERightView.swift; sourceTree = "<group>"; };
+		943B656F3E77F080F30516B8C20BDCE7 /* AEModuleCenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEModuleCenter-dummy.m"; sourceTree = "<group>"; };
+		954C1CFB6FF43A6EC20E128B0CA78777 /* AEPacketParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacketParser.swift; sourceTree = "<group>"; };
+		98C3B64F0127B6DAEC35B042D24EADAE /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		99DD6CFD30FEF35752E6B2B991774856 /* AEFoundation */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AEFoundation; path = AEFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9BA5D9CE05DF01B72FA01D192D23B65D /* AEAIContextManagerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAIContextManagerDelegate.swift; path = Context/AEAIContextManagerDelegate.swift; sourceTree = "<group>"; };
-		9BCEBED9C348DA9390351EFD9D0E6365 /* AEFoundation-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEFoundation-dummy.m"; sourceTree = "<group>"; };
-		9CE2C99AC5ACBDFCDA99C43AF03B3444 /* AEPacketParser.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacketParser.swift; sourceTree = "<group>"; };
+		9A3ACD9A9DA91A462B2AD20E1A4DE936 /* AEAIEngin.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAIEngin.modulemap; sourceTree = "<group>"; };
+		9C084DEC7E5D707C79D02A3C99D01455 /* AENetSecurity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetSecurity.swift; sourceTree = "<group>"; };
+		9D77EF68CD87E4628EB5A34D9DCDCFDE /* AEComparisonView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEComparisonView.swift; sourceTree = "<group>"; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9FF5EA3D9EF2AD568217EA9AF4C904D9 /* AEChatView.swift.backup */ = {isa = PBXFileReference; includeInIndex = 1; path = AEChatView.swift.backup; sourceTree = "<group>"; };
-		A21102B7B6C146F35AC385BBE598D0F4 /* AEContextConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEContextConfig.swift; sourceTree = "<group>"; };
-		A29C0DFCBCA9D74A6A0E7E8CCDF91569 /* AEAINetworkModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAINetworkModule.debug.xcconfig; sourceTree = "<group>"; };
-		A30FADF513C938C68353EB28F2685F46 /* AEShiftKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEShiftKey.swift; sourceTree = "<group>"; };
-		A4AE59F034075B835140EEED9FEAF461 /* AEModuleCenter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEModuleCenter.release.xcconfig; sourceTree = "<group>"; };
-		A673396E2159158CC849284986CE3931 /* AEAINetworkModule-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAINetworkModule-prefix.pch"; sourceTree = "<group>"; };
-		A8249C80AD48442B769BDDD65CE6335E /* AEChatView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatView.swift; sourceTree = "<group>"; };
-		A9E1637267A0C0159F625B4FDE2125B0 /* AEFoundation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFoundation.swift; sourceTree = "<group>"; };
-		AA4A8CF78B99D882237C9F331E73AC5D /* AETextView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETextView.swift; sourceTree = "<group>"; };
-		AFC4276E73D4A4B9CF0DBD796A3414CA /* AEAINetworkModule-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAINetworkModule-dummy.m"; sourceTree = "<group>"; };
+		9E823BE1B78D21790ABC843B9AA9359E /* AEPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacket.swift; sourceTree = "<group>"; };
+		A32F0D1BBB4E3D209EDE06BA2756267A /* AEContextConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEContextConfig.swift; sourceTree = "<group>"; };
+		A46E6C1BCC84436EE3FC19800582B6C3 /* AECommandKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECommandKey.swift; sourceTree = "<group>"; };
+		A5225C7A2128C588542F198F66E9FDE3 /* AEAIModule-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIModule-prefix.pch"; sourceTree = "<group>"; };
+		A71D58FFBE9B1FCD27E73460402D779A /* AECacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECacheEngine.swift; sourceTree = "<group>"; };
+		A849CC85E56FEDA50B30E249D0814AAD /* AEFoundation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEFoundation.release.xcconfig; sourceTree = "<group>"; };
+		A9FF068F5333925A3645B6E78BC6380A /* AEAIContextManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAIContextManager.swift; path = Context/AEAIContextManager.swift; sourceTree = "<group>"; };
+		ABB1F4E5BFE38079FB8F65C019A517F3 /* AEAIEngin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIEngin.release.xcconfig; sourceTree = "<group>"; };
+		AC67984372A84D375D84700FE2505A78 /* AECacheEngineProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECacheEngineProtocol.swift; sourceTree = "<group>"; };
+		ADB292166C06D4D2F6565C150BAB4CD4 /* AEModuleCenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEModuleCenter-prefix.pch"; sourceTree = "<group>"; };
+		AE4B72154F7D330F5DA612592649D009 /* AENetworkEngine-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AENetworkEngine-Info.plist"; sourceTree = "<group>"; };
 		B0457E5646C1B4625D4BE92F692ED76A /* Pods-AETerminal-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AETerminal-acknowledgements.markdown"; sourceTree = "<group>"; };
-		B3C60BD070F546B242D8359B8C436BBD /* AEAIContext.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIContext.swift; sourceTree = "<group>"; };
-		B5056B6B2580850299E43A2AD6C2FC42 /* AEAIModule.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIModule.debug.xcconfig; sourceTree = "<group>"; };
-		B58DBC6B09F39B4AA1C32F6FD9F8F26F /* AECacheEngineProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECacheEngineProtocol.swift; sourceTree = "<group>"; };
-		B6063CC19A09B20395778A3FAA709E9B /* AEUserDefaultsCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUserDefaultsCacheEngine.swift; sourceTree = "<group>"; };
-		B6FFCA2E8F0B53E488B4B25ECA69F461 /* AENetHttpEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetHttpEngine.swift; path = HTTP/Engine/AENetHttpEngine.swift; sourceTree = "<group>"; };
-		B70EAE9D48450D81EF196A075AB25B9D /* AENetworkEngine-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AENetworkEngine-prefix.pch"; sourceTree = "<group>"; };
-		BFA4AFCB15B10B313366BD805B78A9E6 /* AEFoundation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEFoundation.release.xcconfig; sourceTree = "<group>"; };
-		C0755B70EA74632CED91C1DADD3B757E /* AEFoundation.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEFoundation.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C5D0636CAA19CD4D560811EF4B5159D0 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
-		C7169EDD492C1FFB9D59A676476CEA1F /* AEUDPSocketClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPSocketClient.swift; sourceTree = "<group>"; };
-		C8BDC1D6C8AF59E2D36B7497B3103FFF /* AEDirectory.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEDirectory.swift; path = Directory/AEDirectory.swift; sourceTree = "<group>"; };
-		C90A2BCF2E3FB22D4D235F55CD1C480C /* AENetworkEngine-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AENetworkEngine-umbrella.h"; sourceTree = "<group>"; };
+		B28B4DDAF63380791AAAE66E3081E05A /* AECombinationKeyManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AECombinationKeyManager.swift; sourceTree = "<group>"; };
+		B6A32D41C04DF1F898D5684776A2FBA5 /* AEAINetworkModule-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAINetworkModule-prefix.pch"; sourceTree = "<group>"; };
+		B79E6F9B0FB6416AE471B18FE85AC186 /* AEFoundation.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEFoundation.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B8A9B295ED63BA23D56BBA4182F92AC2 /* AEModuleCenter-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AEModuleCenter-Info.plist"; sourceTree = "<group>"; };
+		B98CD018B76A23996C9DADA2B317293B /* AEAIEngin.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAIEngin.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		BABE9ABF27AC8F9256A5E98DA7E5B61F /* AEAIEngin-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAIEngin-dummy.m"; sourceTree = "<group>"; };
+		BAEA69EF21675EAD45BE8405A765B999 /* AENetHttpEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetHttpEngine.swift; sourceTree = "<group>"; };
+		BBDE07DB4DD0E6008B1CE1D9C420F29A /* AELeftView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AELeftView.swift; sourceTree = "<group>"; };
+		BC31D678757E97C0A1502D37768BDE18 /* AEAINetworkModule.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAINetworkModule.modulemap; sourceTree = "<group>"; };
+		BE8CD26C4CADCE9EBE27AF65E9E1AC67 /* AEDataStream.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEDataStream.swift; sourceTree = "<group>"; };
+		C1FA059C61D97DA8A429DCFAA61B1F61 /* AEFoundation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFoundation.swift; sourceTree = "<group>"; };
+		C213599D3A242120B8604CBC89749484 /* AEModuleCenter-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEModuleCenter-umbrella.h"; sourceTree = "<group>"; };
+		C25698BBC597E9D5FCB11CAE6BFCD27B /* AEFoundation-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEFoundation-umbrella.h"; sourceTree = "<group>"; };
+		C3F253C6A7F5FA32BBABF6BDC4A177BB /* AEFoundation-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEFoundation-prefix.pch"; sourceTree = "<group>"; };
+		C563982D04409D1B549855E3115A9797 /* AETextView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETextView.swift; sourceTree = "<group>"; };
+		C74641D1CDB7E4622116C528D6543BF3 /* AENetworkEngine-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AENetworkEngine-dummy.m"; sourceTree = "<group>"; };
+		C76D9620CC6D3A1AB29D193CC1F8A1A5 /* AEAIModule.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEAIModule.release.xcconfig; sourceTree = "<group>"; };
 		CA137F83DD6F9BE0983D21380F2EB8D3 /* Pods-AETerminal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AETerminal.debug.xcconfig"; sourceTree = "<group>"; };
-		CF57A73D3C3ECD1B46BADEA4272853B8 /* AEControlKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEControlKey.swift; sourceTree = "<group>"; };
+		CF5BCB1AC33EE5846E187E1994E89E60 /* AEPacketBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacketBuffer.swift; sourceTree = "<group>"; };
 		CFFB99363652E6B3AEE35B9CFD51E896 /* AEAINetworkModule */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AEAINetworkModule; path = AEAINetworkModule.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D708EA42CB7B2ECE850C8323DEA750C3 /* AEPacketBuffer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacketBuffer.swift; sourceTree = "<group>"; };
+		D2654B4F82086EDE94CF1EBDA6B1E870 /* AEAIContextManagerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAIContextManagerDelegate.swift; path = Context/AEAIContextManagerDelegate.swift; sourceTree = "<group>"; };
 		D775B6DC13FEAD52C8ED3CFC6723A1FF /* Pods-AETerminal.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-AETerminal.modulemap"; sourceTree = "<group>"; };
-		D8479E80508A09B9DE5277695CC75F1C /* AESystemInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AESystemInfo.swift; sourceTree = "<group>"; };
-		D8D1960E47BBF7C6FA01E9FAABAD854E /* AENetSecurity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetSecurity.swift; sourceTree = "<group>"; };
+		D96EEBD361BFD71052F94D96F05A96B8 /* AEFoundation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEFoundation.debug.xcconfig; sourceTree = "<group>"; };
 		DA3620C2B1D9362E81B2526A0F102EF3 /* Pods-AETerminal */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-AETerminal"; path = Pods_AETerminal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DA51B308AC1A618155624271BE3708F1 /* AETCPSocketConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETCPSocketConfig.swift; sourceTree = "<group>"; };
+		DA4986338BA9DE5BB7B682B2205F374B /* AEModuleCenter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEModuleCenter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		DAF499A9FE7FEDE044F88C1D18F11CB6 /* AENetworkListenerManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetworkListenerManager.swift; path = AEAINetworkModule/Classes/AENetworkListenerManager.swift; sourceTree = "<group>"; };
 		DB37791907FA8D950353629A726F4D2C /* Pods-AETerminal-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AETerminal-acknowledgements.plist"; sourceTree = "<group>"; };
-		DC7D4FA3FB134E315101BDCF296A743D /* MarkdownRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MarkdownRenderer.swift; sourceTree = "<group>"; };
-		DDCF4EF3C9F7536DFD11C37344847ECA /* AEAINetworkModule.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEAINetworkModule.modulemap; sourceTree = "<group>"; };
-		DF145C555F7591F64D500FB16FBC9FBB /* AEAIService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEAIService.swift; sourceTree = "<group>"; };
-		E0F4132C39BD6A9350A80BA376C448D9 /* AETlvTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETlvTests.swift; sourceTree = "<group>"; };
+		DCA866B2F88447E09D1ECB4D59FF84DE /* AENetSocketCore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetSocketCore.swift; path = AEAINetworkModule/Classes/AENetSocketCore.swift; sourceTree = "<group>"; };
+		DFE3B9CDE881382F648D218C5D1DC972 /* AEAINetworkModule.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AEAINetworkModule.swift; path = AEAINetworkModule/Classes/AEAINetworkModule.swift; sourceTree = "<group>"; };
 		E4D3B0665E6E93F0D383C4884922F340 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
-		E798D86F053D38A7D67BE881E0543640 /* AEAIEngin-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AEAIEngin-dummy.m"; sourceTree = "<group>"; };
-		E891D4B94296F774A15957C43D3F060A /* AEPacket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEPacket.swift; sourceTree = "<group>"; };
-		ED64D8FEEE4B39CF2BE4327613C74E1E /* AEFnKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEFnKey.swift; sourceTree = "<group>"; };
-		ED8ED1C60EA4981767D1BB14448612B7 /* AEModuleCenter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AEModuleCenter.debug.xcconfig; sourceTree = "<group>"; };
-		F2846A968928F92B7CF3850F93EDAB00 /* AEChatViewNew.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEChatViewNew.swift; sourceTree = "<group>"; };
-		F7226C3C799CF5FA7E0159EF54CC7947 /* AEModuleCenter.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AEModuleCenter.modulemap; sourceTree = "<group>"; };
-		F7B779A44597A518BF5CF3ADA1F29ABC /* AERightView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AERightView.swift; sourceTree = "<group>"; };
-		F7DB2DA58D90D521797B724010E489D4 /* AENetworkEngine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AENetworkEngine.release.xcconfig; sourceTree = "<group>"; };
+		E6C185B6AAB6566AC088ABCA445D5DFF /* AEOptionKey.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEOptionKey.swift; sourceTree = "<group>"; };
+		EA18799EEE2D29A551A840E756772407 /* AENetSocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetSocket.swift; sourceTree = "<group>"; };
+		ECF82933548390B1632C177031737758 /* AENetworkEngine.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AENetworkEngine.release.xcconfig; sourceTree = "<group>"; };
+		ED02593803E5070BD3091527F200155E /* AENetworkMessageListener.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AENetworkMessageListener.swift; path = AEAINetworkModule/Classes/AENetworkMessageListener.swift; sourceTree = "<group>"; };
+		EEE5A05D8CC23836B0BDA0BC0D1FD1DD /* AEAIModule.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAIModule.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F123570D1266DEA361B35B8F005B4FC6 /* AEAIEngin-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AEAIEngin-umbrella.h"; sourceTree = "<group>"; };
+		F1E4D0F27DE7F25B05D72DB95B1B9283 /* AEUDPSocketConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPSocketConfig.swift; sourceTree = "<group>"; };
+		F3FE2F56CE85E076BB460195177A432D /* AETCPSocketClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AETCPSocketClient.swift; sourceTree = "<group>"; };
+		F4BBF9E67430D3A3F731189E9F643C9B /* AEUserDefaultsCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUserDefaultsCacheEngine.swift; sourceTree = "<group>"; };
 		F88DB0A785A57EE46ABF1FD46EA36C9F /* Pods-AETerminal-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AETerminal-Info.plist"; sourceTree = "<group>"; };
-		FA4CC9400CBC44FD976851682A50FA1A /* AEDBCacheEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEDBCacheEngine.swift; sourceTree = "<group>"; };
-		FB64BA32F0612F4FB6BEA00F85D83141 /* AEComparisonView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEComparisonView.swift; sourceTree = "<group>"; };
-		FD514E0489DFC0C56DDC1D753517A0A6 /* AEUDPNetworkManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEUDPNetworkManager.swift; sourceTree = "<group>"; };
+		FBB5D2411555CEF86E6C08AC0B0B1DE4 /* AEAINetworkModule.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AEAINetworkModule.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		FDC1694BCB67EF7D203EE1F3F5C048D8 /* AEIOProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AEIOProtocol.swift; sourceTree = "<group>"; };
+		FE74C94B3E8D18D8597C0877EBF78FB0 /* AENetCoreInterface.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AENetCoreInterface.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		042E0B8F16E9AA81B6475402C48AA3F2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B22638769F6BE701218BB527E62CE1BE /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		206BDE842BC34FA8D6B0F7973F7D1F80 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C73CC1145B7CBF280531E56CA36A4EB6 /* Cocoa.framework in Frameworks */,
-				1D8B791DE8DA4A4E2E508067E3D18317 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		24F5226FF2508A7238883335DDC9D2B9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				399129EE4CFCDD11157C024032511790 /* AppKit.framework in Frameworks */,
-				1C6868F62C20F69E2D60D72D834F6E8D /* Cocoa.framework in Frameworks */,
-				34A88A82F61FCECFF81CFB18EFE7010B /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		29EE05E4BFB7126E4BA724FC7ABA4982 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1974D82BE55100F0F14012C05D2F2A9C /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3E0C6C2E2BFA53CEC56723319916E4F8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -389,6 +356,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		947A1C8B5F6192B443DCEBB21F6608D4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B29109D3BB0221038680C42EE59359A8 /* AppKit.framework in Frameworks */,
+				AD682F329C4814AFE61FD85A0D2AC0D8 /* Cocoa.framework in Frameworks */,
+				0C8961544461CBC9C2E8196C9C839DE4 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9C48AAFB5BB0915B01032522AB0D2DC9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				20D6EE4760954B258D8851F8FD938C7A /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AA2CEE6DC2D1E4751BB6993BA1BED0DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -397,261 +382,232 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D01081C286E22DD977E363F05E568398 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3411A5A1635880E65EAB6B2778EAB034 /* Cocoa.framework in Frameworks */,
+				6F7D09E30F67C8610AB44ED4D78A47A3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6966DBD93BC43005AA5B007E088B404 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1724D49232275C7DFCF68BC1CC38ACBE /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01945F1E82127B5E36E96E3A6796AEAB /* HTTP */ = {
+		08B5CDCDDF3D20941A7F00DDC8EC9721 /* Transmission */ = {
 			isa = PBXGroup;
 			children = (
-				B6FFCA2E8F0B53E488B4B25ECA69F461 /* AENetHttpEngine.swift */,
+				9B00D5950BEBB3016C8E1EF29982DCEB /* security */,
+				AD919A6E04BDC1E465DE95D4534DEF17 /* session */,
+				D08BA13F867EAE9AB161EE7EA6650C6A /* system */,
 			);
-			name = HTTP;
+			name = Transmission;
+			path = Transmission;
 			sourceTree = "<group>";
 		};
-		0772A29F0504BD22106860B9D3EC3DCF /* AEReq */ = {
+		143D82207C79F49C12AE083B737AA230 /* AERsp */ = {
 			isa = PBXGroup;
 			children = (
-				59636A4658422F7DDBB83E38A87FF6C7 /* AENetReq.swift */,
+				571D61C0170F563D098BB8634689906C /* AENetRsp.swift */,
 			);
-			name = AEReq;
-			path = Core/AEReq;
+			name = AERsp;
+			path = Request/AERsp;
 			sourceTree = "<group>";
 		};
-		08FA3CB17400EB7E8EA964EBEE65245D /* Support Files */ = {
+		16CD019240A78ABCBA39CFD86E1145A9 /* LeftView */ = {
 			isa = PBXGroup;
 			children = (
-				113E841F5DB0C0D4031012A922A8AD0E /* AENetworkEngine.modulemap */,
-				0BDE3C7506ECDF65026AE39393614423 /* AENetworkEngine-dummy.m */,
-				09EA45D9591A383F9E4CF04589AB350C /* AENetworkEngine-Info.plist */,
-				B70EAE9D48450D81EF196A075AB25B9D /* AENetworkEngine-prefix.pch */,
-				C90A2BCF2E3FB22D4D235F55CD1C480C /* AENetworkEngine-umbrella.h */,
-				90B4260A0883710F8F6CBFCAE4C9B0A4 /* AENetworkEngine.debug.xcconfig */,
-				F7DB2DA58D90D521797B724010E489D4 /* AENetworkEngine.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AENetworkEngine";
-			sourceTree = "<group>";
-		};
-		0FF6E92B4FA6CD4029B9126FD58B1CCC /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				DDCF4EF3C9F7536DFD11C37344847ECA /* AEAINetworkModule.modulemap */,
-				AFC4276E73D4A4B9CF0DBD796A3414CA /* AEAINetworkModule-dummy.m */,
-				8EE2CB13B0034BBF799DAA4839269347 /* AEAINetworkModule-Info.plist */,
-				A673396E2159158CC849284986CE3931 /* AEAINetworkModule-prefix.pch */,
-				7A1127EF4C21AACEE422C4A5E6AE3136 /* AEAINetworkModule-umbrella.h */,
-				A29C0DFCBCA9D74A6A0E7E8CCDF91569 /* AEAINetworkModule.debug.xcconfig */,
-				19028A046B14629D539F60DF9FB2670B /* AEAINetworkModule.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AEAINetworkModule";
-			sourceTree = "<group>";
-		};
-		1755CE7ACAF0BF9E04E34C6A31629EDD /* LeftView */ = {
-			isa = PBXGroup;
-			children = (
-				4E188C11E5D58EC4F4B6687FBD795D5C /* AELeftView.swift */,
+				BBDE07DB4DD0E6008B1CE1D9C420F29A /* AELeftView.swift */,
 			);
 			name = LeftView;
 			path = AEAIModule/LeftView;
 			sourceTree = "<group>";
 		};
-		1DB54F1C401C3079ECF9C83A8A9DCC82 /* CacheEngine */ = {
+		1D69C2202F05956E6F03307F8B634C95 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				7FD9100917B9864EE5DF85CC47DB6A2A /* AECacheEngine.swift */,
-				B58DBC6B09F39B4AA1C32F6FD9F8F26F /* AECacheEngineProtocol.swift */,
-				FA4CC9400CBC44FD976851682A50FA1A /* AEDBCacheEngine.swift */,
-				01807D410910CD4264FD56130FCDA787 /* AEFileCacheEngine.swift */,
-				B6063CC19A09B20395778A3FAA709E9B /* AEUserDefaultsCacheEngine.swift */,
+				FE74C94B3E8D18D8597C0877EBF78FB0 /* AENetCoreInterface.swift */,
 			);
-			name = CacheEngine;
-			path = CacheEngine;
+			name = Core;
+			path = NetCore/Core;
 			sourceTree = "<group>";
 		};
-		27090FB4DEC18B6EAC06BE75C0CFF31B /* security */ = {
+		29929A236AA3548FAD04856588853DC5 /* RightView */ = {
 			isa = PBXGroup;
 			children = (
-				D8D1960E47BBF7C6FA01E9FAABAD854E /* AENetSecurity.swift */,
-				E0F4132C39BD6A9350A80BA376C448D9 /* AETlvTests.swift */,
+				93E0CD877723E4EBD7F5874DF1659F08 /* AERightView.swift */,
 			);
-			name = security;
-			path = security;
+			name = RightView;
+			path = AEAIModule/RightView;
 			sourceTree = "<group>";
 		};
-		2C40B07B296FFF938E12DEA6B929DD50 /* Context */ = {
+		29FE422ADA1B440EC6EC157EF98BF309 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				7CA73ED34E3C7E8BEF07F8E3C865E2E3 /* AEAIContextManager.swift */,
-				9BA5D9CE05DF01B72FA01D192D23B65D /* AEAIContextManagerDelegate.swift */,
-				CB00AA3DFA8316553EDCFFB3F379FCA3 /* Context */,
-				640ADB6EA380AB431D96E9ECD9B90BAA /* Question */,
-				A32D4329D4298D43DA0826E78A14AA7F /* Service */,
-			);
-			name = Context;
-			sourceTree = "<group>";
-		};
-		36503B71F14091E4CDB6CED8252C9A90 /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				1F841C9150E4317A40A37AA19B410E19 /* AEKeyCode.swift */,
-				EE1EC010414F009FAA29EBEA18B632E5 /* Combination */,
-				541B22BE762DCB8A75AA370401A90993 /* NSTextView */,
-			);
-			name = Keyboard;
-			path = AEAIModule/Keyboard;
-			sourceTree = "<group>";
-		};
-		3F5D5716A781932937D1ED42CE62DE92 /* AEAIModule */ = {
-			isa = PBXGroup;
-			children = (
-				8F9BCB30DDC11959C7ED5C414C3CB53C /* ChatView */,
-				36503B71F14091E4CDB6CED8252C9A90 /* Keyboard */,
-				1755CE7ACAF0BF9E04E34C6A31629EDD /* LeftView */,
-				B36867CC5179F5B89D6F8106F321BDDB /* Pod */,
-				94F5282E6BAFE965AA75F783D29B0D1C /* RightView */,
-				FAB8E6D71B1217B8C35C07E884DE740C /* Support Files */,
-			);
-			name = AEAIModule;
-			path = ../../CocoaPods/AEAIModule;
-			sourceTree = "<group>";
-		};
-		46C224EB886CDED849C843A8248E67DD /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				206F1427DFF22D2CAE0220153D51B650 /* AEAIEngin.podspec */,
+				4DBB0B55D1EBB73C663578C60E6339CF /* AENetworkEngine.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		4E357992D851495C085E1AC8AEC28246 /* Development Pods */ = {
+		303BFECC847D35D86C2ED09C87EB29AA /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				9DAA31EE07B845F0F795F598522398E7 /* AEAIEngin */,
-				3F5D5716A781932937D1ED42CE62DE92 /* AEAIModule */,
-				EE1ED7722BEFBBFDDC8AD7D501CE6432 /* AEAINetworkModule */,
-				6F762C01A5D40A2965A641B37CD1312F /* AEFoundation */,
-				7EEC5276A4F12968CC0CEF2450799484 /* AEModuleCenter */,
-				864C1006FBB26AD2C0397A8C94277804 /* AENetworkEngine */,
+				7393499F8DE91AA131E16287E045E472 /* AENetworkEngine.modulemap */,
+				C74641D1CDB7E4622116C528D6543BF3 /* AENetworkEngine-dummy.m */,
+				AE4B72154F7D330F5DA612592649D009 /* AENetworkEngine-Info.plist */,
+				08382A3FEBC8B9AA8C17873F086E58EC /* AENetworkEngine-prefix.pch */,
+				61912623BC157D50FE44467ED347C172 /* AENetworkEngine-umbrella.h */,
+				75FA226521F22F918FFB43B47DEC43CC /* AENetworkEngine.debug.xcconfig */,
+				ECF82933548390B1632C177031737758 /* AENetworkEngine.release.xcconfig */,
 			);
-			name = "Development Pods";
+			name = "Support Files";
+			path = "../../AETerminal/Pods/Target Support Files/AENetworkEngine";
 			sourceTree = "<group>";
 		};
-		4F3F993ECD19C84F9EB52D762A44043C /* Directory */ = {
+		31A0C8B76834F04F4A2C6248326098DD /* Context */ = {
 			isa = PBXGroup;
 			children = (
-				C8BDC1D6C8AF59E2D36B7497B3103FFF /* AEDirectory.swift */,
+				4616A48E66926ABF0E784E9C1FAD4BE9 /* AEAIContext.swift */,
+				A32F0D1BBB4E3D209EDE06BA2756267A /* AEContextConfig.swift */,
 			);
-			name = Directory;
+			name = Context;
+			path = Context/Context;
 			sourceTree = "<group>";
 		};
-		4FCA4F801EC1BB75C4A00997C7BAF851 /* io */ = {
+		3346A7BDE31A4775A2F68AB4C464BF9A /* ResponseParser */ = {
 			isa = PBXGroup;
 			children = (
-				7DFC9FE22DB3D28CC7AF3C421AEFEDBA /* IOProtocol */,
-				AB6CA51943D4ECB7BF55B5519C3B8435 /* TCP  */,
-				F1E13F2E4EACBE7908E4100D75913E59 /* UDP */,
-			);
-			name = io;
-			path = Socket/io;
-			sourceTree = "<group>";
-		};
-		52BA3799DBA77365B15AD69813FA54FC /* ResponseParser */ = {
-			isa = PBXGroup;
-			children = (
-				78F215CEF732675B09CE6355043F2E94 /* AEAIResponseParser.swift */,
+				29396E82FBA24AA0B1E281236E749EBC /* AEAIResponseParser.swift */,
 			);
 			name = ResponseParser;
 			path = ResponseParser;
 			sourceTree = "<group>";
 		};
-		53C641E5A4EA82E7CFE619BE0248BB32 /* Pod */ = {
+		421419F1768956C8D19A069948EB0107 /* io */ = {
 			isa = PBXGroup;
 			children = (
-				08C1375D39BBE4DD1B1C0D40D2D670C0 /* AEAINetworkModule.podspec */,
-				0C639922A0A29E204AAEC00636BA5ABF /* README.md */,
+				6462EF11BBB903B396679E416FE9F7DD /* IOProtocol */,
+				4BF0D93321BB4AA505FD1CA6806F9335 /* TCP  */,
+				B817FE31FB6452123C77EF465C8D6286 /* UDP */,
 			);
-			name = Pod;
+			name = io;
+			path = io;
 			sourceTree = "<group>";
 		};
-		541B22BE762DCB8A75AA370401A90993 /* NSTextView */ = {
+		432EDD8862CA8D0F8047A19091244D05 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
-				AA4A8CF78B99D882237C9F331E73AC5D /* AETextView.swift */,
-				8736E42D26DBC3D4B9101FDE88B1BF89 /* AETextViewDelegate.swift */,
+				5D9CBF85FF9A045F55DF7198B812FA8C /* AEKeyCode.swift */,
+				99CBE29860714EE95C7C03B36D8551D1 /* Combination */,
+				801930D6F93FC099ACAEA8AF096C84E0 /* NSTextView */,
 			);
-			name = NSTextView;
-			path = NSTextView;
+			name = Keyboard;
+			path = AEAIModule/Keyboard;
 			sourceTree = "<group>";
 		};
-		5505E72CBB2C8D82263F53546FF1ADF2 /* Pod */ = {
+		43A034A16118F0AF4FFFB95F25DF55FE /* Directory */ = {
 			isa = PBXGroup;
 			children = (
-				C0755B70EA74632CED91C1DADD3B757E /* AEFoundation.podspec */,
+				04B4E734917FC43C03958CE381701FA9 /* AEDirectory.swift */,
 			);
-			name = Pod;
+			name = Directory;
 			sourceTree = "<group>";
 		};
-		61187E707A602FFB8B53267688B458D7 /* Atom */ = {
+		4530FF8FC94AC2DEB081A3C6D1C824A7 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				61BE39112294E541D404C20398DFFCDD /* AEAtom.swift */,
+				155C79C2B0777D236F338566D49FCA46 /* AEFoundation.modulemap */,
+				929D30852411C2B982A0C965BE56AF6A /* AEFoundation-dummy.m */,
+				3000106A449202902287F9A70020EA79 /* AEFoundation-Info.plist */,
+				C3F253C6A7F5FA32BBABF6BDC4A177BB /* AEFoundation-prefix.pch */,
+				C25698BBC597E9D5FCB11CAE6BFCD27B /* AEFoundation-umbrella.h */,
+				D96EEBD361BFD71052F94D96F05A96B8 /* AEFoundation.debug.xcconfig */,
+				A849CC85E56FEDA50B30E249D0814AAD /* AEFoundation.release.xcconfig */,
 			);
-			name = Atom;
-			path = Atom;
+			name = "Support Files";
+			path = "../../AETerminal/Pods/Target Support Files/AEFoundation";
 			sourceTree = "<group>";
 		};
-		640ADB6EA380AB431D96E9ECD9B90BAA /* Question */ = {
+		4BF0D93321BB4AA505FD1CA6806F9335 /* TCP  */ = {
 			isa = PBXGroup;
 			children = (
-				34522AC92E27BBC0055FB2BECD3EFA6E /* AEAIQuestion.swift */,
-				20D0CD6D41CFE56EE1F849FC3E36D6B5 /* AEAIQuestionManager.swift */,
+				F3FE2F56CE85E076BB460195177A432D /* AETCPSocketClient.swift */,
+				3FA3AB2C752F411B84A297A9A96BF09A /* AETCPSocketConfig.swift */,
+			);
+			name = "TCP ";
+			path = "TCP ";
+			sourceTree = "<group>";
+		};
+		4C113D6EA4F126AFF25F205B1280ABC6 /* Question */ = {
+			isa = PBXGroup;
+			children = (
+				4CEA96C32991631D99066E0FA82A2F32 /* AEAIQuestion.swift */,
+				1C264B8D3BD802C39F9218E9FC454741 /* AEAIQuestionManager.swift */,
 			);
 			name = Question;
 			path = Context/Question;
 			sourceTree = "<group>";
 		};
-		6604DD1A16905987306A2676E7DCAA1C /* Package */ = {
+		6462EF11BBB903B396679E416FE9F7DD /* IOProtocol */ = {
 			isa = PBXGroup;
 			children = (
-				E891D4B94296F774A15957C43D3F060A /* AEPacket.swift */,
-				D708EA42CB7B2ECE850C8323DEA750C3 /* AEPacketBuffer.swift */,
-				9CE2C99AC5ACBDFCDA99C43AF03B3444 /* AEPacketParser.swift */,
+				FDC1694BCB67EF7D203EE1F3F5C048D8 /* AEIOProtocol.swift */,
 			);
-			name = Package;
-			path = Socket/Package;
+			name = IOProtocol;
+			path = IOProtocol;
 			sourceTree = "<group>";
 		};
-		6BA731518CE4D06C3FC06AC9CB105603 /* Core */ = {
+		6534E5C5ED2AD9BF853B8FDEB65548A4 /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				72AD0EBE2AB62B450FF7C2BAA115CF7A /* AENetConfig.swift */,
-				0772A29F0504BD22106860B9D3EC3DCF /* AEReq */,
-				7162732A37DE81ECF81EF42EF0A4DA17 /* AERsp */,
+				B79E6F9B0FB6416AE471B18FE85AC186 /* AEFoundation.podspec */,
 			);
-			name = Core;
+			name = Pod;
 			sourceTree = "<group>";
 		};
-		6F762C01A5D40A2965A641B37CD1312F /* AEFoundation */ = {
+		67A586B8A9B4B59AB678B652ED47A4B7 /* AEFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				A9E1637267A0C0159F625B4FDE2125B0 /* AEFoundation.swift */,
-				61187E707A602FFB8B53267688B458D7 /* Atom */,
-				1DB54F1C401C3079ECF9C83A8A9DCC82 /* CacheEngine */,
-				5505E72CBB2C8D82263F53546FF1ADF2 /* Pod */,
-				BB13E2F1ECD83EF895E8B3CF0BAE27B2 /* Support Files */,
+				C1FA059C61D97DA8A429DCFAA61B1F61 /* AEFoundation.swift */,
+				F7F0C9B8EDE2EC1A4704E09A6871D24C /* Atom */,
+				B1D0584884CB3959083E8BCF5E138D35 /* CacheEngine */,
+				6534E5C5ED2AD9BF853B8FDEB65548A4 /* Pod */,
+				4530FF8FC94AC2DEB081A3C6D1C824A7 /* Support Files */,
 			);
 			name = AEFoundation;
 			path = ../../CocoaPods/AEFoundation;
 			sourceTree = "<group>";
 		};
-		7162732A37DE81ECF81EF42EF0A4DA17 /* AERsp */ = {
+		6B76EA81EE027483D9C9D4BAD334454B /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				885296681BE770578E98D97AD84974AA /* AENetRsp.swift */,
+				FBB5D2411555CEF86E6C08AC0B0B1DE4 /* AEAINetworkModule.podspec */,
+				87E3A82EA873952A4EC865B3EE7EBBA8 /* README.md */,
 			);
-			name = AERsp;
-			path = Core/AERsp;
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		75B1E60F48986363D84A4FF09A3A8B94 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E07FB27C1DBE3CED2EF938B423D4221 /* AEAIModule.modulemap */,
+				5E4A47175B33E98A449A51506511D76E /* AEAIModule-dummy.m */,
+				2DAF010074D7B5A3998C4786CBACD4B4 /* AEAIModule-Info.plist */,
+				A5225C7A2128C588542F198F66E9FDE3 /* AEAIModule-prefix.pch */,
+				67530D8172ECED879C8B7BE0FC88D0D3 /* AEAIModule-umbrella.h */,
+				34E04C3953C03D985CD9C6A96BF6A7A2 /* AEAIModule.debug.xcconfig */,
+				C76D9620CC6D3A1AB29D193CC1F8A1A5 /* AEAIModule.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../AETerminal/Pods/Target Support Files/AEAIModule";
 			sourceTree = "<group>";
 		};
 		764FBD7E1CD3464733A47D73A59675B2 /* Pods-AETerminal */ = {
@@ -671,25 +627,26 @@
 			path = "Target Support Files/Pods-AETerminal";
 			sourceTree = "<group>";
 		};
-		7DFC9FE22DB3D28CC7AF3C421AEFEDBA /* IOProtocol */ = {
+		7DC7A685E9F70CAE4D199B54BDA89585 /* Socket */ = {
 			isa = PBXGroup;
 			children = (
-				0057824CF410D46D42ACC01936870084 /* AEIOProtocol.swift */,
+				EA18799EEE2D29A551A840E756772407 /* AENetSocket.swift */,
+				421419F1768956C8D19A069948EB0107 /* io */,
+				DEE282C87DD87971B9BA322E21D408A4 /* Package */,
+				08B5CDCDDF3D20941A7F00DDC8EC9721 /* Transmission */,
 			);
-			name = IOProtocol;
-			path = IOProtocol;
+			name = Socket;
+			path = NetCore/Socket;
 			sourceTree = "<group>";
 		};
-		7EEC5276A4F12968CC0CEF2450799484 /* AEModuleCenter */ = {
+		801930D6F93FC099ACAEA8AF096C84E0 /* NSTextView */ = {
 			isa = PBXGroup;
 			children = (
-				66B9F11739BDDCAA2C6555AA343DA3B0 /* AEModuleCenter.swift */,
-				817995DF632498F2D97E90C8C6C17608 /* AEModuleProtocol.swift */,
-				D570712345118A0874EEC58B9C125CE5 /* Pod */,
-				960CF7C430194C35C172FB5EA90ED216 /* Support Files */,
+				C563982D04409D1B549855E3115A9797 /* AETextView.swift */,
+				54A833BA12870D863B27C35D6CFD91D0 /* AETextViewDelegate.swift */,
 			);
-			name = AEModuleCenter;
-			path = ../../CocoaPods/aemodulecenter;
+			name = NSTextView;
+			path = NSTextView;
 			sourceTree = "<group>";
 		};
 		83B56323F1097D3061AEC73C919F2D6A /* OS X */ = {
@@ -702,6 +659,15 @@
 			name = "OS X";
 			sourceTree = "<group>";
 		};
+		85FC57BC569BB7E073D4DB6DC5FB4F38 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				BAEA69EF21675EAD45BE8405A765B999 /* AENetHttpEngine.swift */,
+			);
+			name = Engine;
+			path = Engine;
+			sourceTree = "<group>";
+		};
 		8629DC10624B14779A3DB5DC18B0EA65 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -710,56 +676,38 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		864C1006FBB26AD2C0397A8C94277804 /* AENetworkEngine */ = {
+		89D97DC92364875445B95E09EF595EC3 /* Request */ = {
 			isa = PBXGroup;
 			children = (
-				6BA731518CE4D06C3FC06AC9CB105603 /* Core */,
-				01945F1E82127B5E36E96E3A6796AEAB /* HTTP */,
-				AC32742C102898C515905EA913005B93 /* Pod */,
-				9C52E95FC8F1B63BB3A8208E2958C0F9 /* Socket */,
-				08FA3CB17400EB7E8EA964EBEE65245D /* Support Files */,
+				365E68E61B37AF9B1C99E6577D1B3A91 /* AENetConfig.swift */,
+				EFB2D50BC7201F628CF5136D2E3F70E6 /* AEReq */,
+				143D82207C79F49C12AE083B737AA230 /* AERsp */,
 			);
-			name = AENetworkEngine;
-			path = ../../CocoaPods/AENetworkEngine;
+			name = Request;
 			sourceTree = "<group>";
 		};
-		8F9BCB30DDC11959C7ED5C414C3CB53C /* ChatView */ = {
+		8FFC51FCBFA11AD8B32F6BE1A0180FD6 /* Context */ = {
 			isa = PBXGroup;
 			children = (
-				8EB3A67CB2E7E6A728285E9B949CB0BC /* AEChatMessageCell.swift */,
-				A8249C80AD48442B769BDDD65CE6335E /* AEChatView.swift */,
-				9FF5EA3D9EF2AD568217EA9AF4C904D9 /* AEChatView.swift.backup */,
-				F2846A968928F92B7CF3850F93EDAB00 /* AEChatViewNew.swift */,
-				FB64BA32F0612F4FB6BEA00F85D83141 /* AEComparisonView.swift */,
-				DC7D4FA3FB134E315101BDCF296A743D /* MarkdownRenderer.swift */,
-				52BA3799DBA77365B15AD69813FA54FC /* ResponseParser */,
+				A9FF068F5333925A3645B6E78BC6380A /* AEAIContextManager.swift */,
+				D2654B4F82086EDE94CF1EBDA6B1E870 /* AEAIContextManagerDelegate.swift */,
+				31A0C8B76834F04F4A2C6248326098DD /* Context */,
+				4C113D6EA4F126AFF25F205B1280ABC6 /* Question */,
+				E3E956B4FA235B60D474555BF1B16A56 /* Service */,
 			);
-			name = ChatView;
-			path = AEAIModule/ChatView;
+			name = Context;
 			sourceTree = "<group>";
 		};
-		94F5282E6BAFE965AA75F783D29B0D1C /* RightView */ = {
+		972CBAFF621E96B27B9B22C9C2D41032 /* AEAIEngin */ = {
 			isa = PBXGroup;
 			children = (
-				F7B779A44597A518BF5CF3ADA1F29ABC /* AERightView.swift */,
+				8FFC51FCBFA11AD8B32F6BE1A0180FD6 /* Context */,
+				43A034A16118F0AF4FFFB95F25DF55FE /* Directory */,
+				FBC7A80A5CFCA2278FE7CF4D03694F72 /* Pod */,
+				ACA6D436C6E4C62D9682F22B75AAD839 /* Support Files */,
 			);
-			name = RightView;
-			path = AEAIModule/RightView;
-			sourceTree = "<group>";
-		};
-		960CF7C430194C35C172FB5EA90ED216 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F7226C3C799CF5FA7E0159EF54CC7947 /* AEModuleCenter.modulemap */,
-				51492B57255729796CF54CF1CE4046C3 /* AEModuleCenter-dummy.m */,
-				56EBC6142CD106759D46DBB2C1A3ACF4 /* AEModuleCenter-Info.plist */,
-				42D6A5473FD23A9BC1C650DE50EEA390 /* AEModuleCenter-prefix.pch */,
-				98B5316C40173CF4D153C81B3F687034 /* AEModuleCenter-umbrella.h */,
-				ED8ED1C60EA4981767D1BB14448612B7 /* AEModuleCenter.debug.xcconfig */,
-				A4AE59F034075B835140EEED9FEAF461 /* AEModuleCenter.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AEModuleCenter";
+			name = AEAIEngin;
+			path = ../../CocoaPods/AEAIEngin;
 			sourceTree = "<group>";
 		};
 		97ECDFD2883E4D3BA08B686D026CAB3A /* Products */ = {
@@ -776,48 +724,38 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9C52E95FC8F1B63BB3A8208E2958C0F9 /* Socket */ = {
+		99CBE29860714EE95C7C03B36D8551D1 /* Combination */ = {
 			isa = PBXGroup;
 			children = (
-				26A8BBD9E33765F1D9982123767F6F83 /* AEAISocketConfig.swift */,
-				7D0D6C970C592DF0AF94B7F3D514DBAA /* AENetSocket.swift */,
-				4FCA4F801EC1BB75C4A00997C7BAF851 /* io */,
-				6604DD1A16905987306A2676E7DCAA1C /* Package */,
-				E26DD2202286059D71DBAE70E3A4F790 /* Transmission */,
+				5DB9424B8328F5FE09A9FE2F8C134E55 /* AECombinationKeyHandler.swift */,
+				B28B4DDAF63380791AAAE66E3081E05A /* AECombinationKeyManager.swift */,
+				A46E6C1BCC84436EE3FC19800582B6C3 /* AECommandKey.swift */,
+				11C6F2C38F6EEEA6196270791A10A4F4 /* AEControlKey.swift */,
+				5810B2DD827D2E651D89C2E489205B10 /* AEFnKey.swift */,
+				E6C185B6AAB6566AC088ABCA445D5DFF /* AEOptionKey.swift */,
+				660C125A2ED92325E8FE64DF72F0B340 /* AEShiftKey.swift */,
 			);
-			name = Socket;
+			name = Combination;
+			path = Combination;
 			sourceTree = "<group>";
 		};
-		9DAA31EE07B845F0F795F598522398E7 /* AEAIEngin */ = {
+		9B00D5950BEBB3016C8E1EF29982DCEB /* security */ = {
 			isa = PBXGroup;
 			children = (
-				2C40B07B296FFF938E12DEA6B929DD50 /* Context */,
-				4F3F993ECD19C84F9EB52D762A44043C /* Directory */,
-				46C224EB886CDED849C843A8248E67DD /* Pod */,
-				F42FB9196068CF4825A4629F11F26691 /* Support Files */,
+				9C084DEC7E5D707C79D02A3C99D01455 /* AENetSecurity.swift */,
+				60B12CFD2539758C2199942E122B7BC3 /* AETlvTests.swift */,
 			);
-			name = AEAIEngin;
-			path = ../../CocoaPods/AEAIEngin;
+			name = security;
+			path = security;
 			sourceTree = "<group>";
 		};
-		A1A58C8476DD664D8697D7ED834B7BDD /* session */ = {
+		9D3132275F93284D99B16E477EFAC098 /* HTTP */ = {
 			isa = PBXGroup;
 			children = (
-				38F39641D94F3353DC0586D20A0BFAAF /* AEDataStream.swift */,
-				7ACC38944C5B6BD78E16898A2239A4B6 /* AESession.swift */,
+				85FC57BC569BB7E073D4DB6DC5FB4F38 /* Engine */,
 			);
-			name = session;
-			path = session;
-			sourceTree = "<group>";
-		};
-		A32D4329D4298D43DA0826E78A14AA7F /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				DF145C555F7591F64D500FB16FBC9FBB /* AEAIService.swift */,
-				1552DA72E1FFB7A2EF0510C31DA1C126 /* AEAIServicePath.swift */,
-			);
-			name = Service;
-			path = Context/Service;
+			name = HTTP;
+			path = NetCore/HTTP;
 			sourceTree = "<group>";
 		};
 		A3CDB250FFEFB42CA2C68F1FBD92997D /* Frameworks */ = {
@@ -828,186 +766,279 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		AB6CA51943D4ECB7BF55B5519C3B8435 /* TCP  */ = {
+		A9ED68E0F24BC498F99FB41230D6B1AD /* Pod */ = {
 			isa = PBXGroup;
 			children = (
-				543F2B97DF09B2F733CA0DA8F48001D9 /* AETCPSocketClient.swift */,
-				DA51B308AC1A618155624271BE3708F1 /* AETCPSocketConfig.swift */,
-			);
-			name = "TCP ";
-			path = "TCP ";
-			sourceTree = "<group>";
-		};
-		AC32742C102898C515905EA913005B93 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				93417A12784C9A06902B32742D572D9D /* AENetworkEngine.podspec */,
+				EEE5A05D8CC23836B0BDA0BC0D1FD1DD /* AEAIModule.podspec */,
+				98C3B64F0127B6DAEC35B042D24EADAE /* LICENSE */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
 		};
-		B05BA83AE7EFCC46B61C2FB0DEEB06E8 /* system */ = {
+		ACA6D436C6E4C62D9682F22B75AAD839 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				D8479E80508A09B9DE5277695CC75F1C /* AESystemInfo.swift */,
-			);
-			name = system;
-			path = system;
-			sourceTree = "<group>";
-		};
-		B36867CC5179F5B89D6F8106F321BDDB /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				1F4D4FA6971AD72675AD85885E262ECE /* AEAIModule.podspec */,
-				C5D0636CAA19CD4D560811EF4B5159D0 /* LICENSE */,
-			);
-			name = Pod;
-			sourceTree = "<group>";
-		};
-		BB13E2F1ECD83EF895E8B3CF0BAE27B2 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				5A6D5319504F4C82D0426B93713CF84B /* AEFoundation.modulemap */,
-				9BCEBED9C348DA9390351EFD9D0E6365 /* AEFoundation-dummy.m */,
-				4742EF9BCD4E641B1C839D4C0E69F1BB /* AEFoundation-Info.plist */,
-				6743A5DFE9A25C341FAA3ABBBEF372F4 /* AEFoundation-prefix.pch */,
-				554EFC6C360438B69CFF238AA5C3D2A0 /* AEFoundation-umbrella.h */,
-				2837FD7559552896840E117CAB61CAD4 /* AEFoundation.debug.xcconfig */,
-				BFA4AFCB15B10B313366BD805B78A9E6 /* AEFoundation.release.xcconfig */,
+				9A3ACD9A9DA91A462B2AD20E1A4DE936 /* AEAIEngin.modulemap */,
+				BABE9ABF27AC8F9256A5E98DA7E5B61F /* AEAIEngin-dummy.m */,
+				2413DD8A3C9F73D16C3ECF428C27094B /* AEAIEngin-Info.plist */,
+				0A9DF6EC16578361603341A5BB80A124 /* AEAIEngin-prefix.pch */,
+				F123570D1266DEA361B35B8F005B4FC6 /* AEAIEngin-umbrella.h */,
+				57C2115C09B9C527731005537E17CC00 /* AEAIEngin.debug.xcconfig */,
+				ABB1F4E5BFE38079FB8F65C019A517F3 /* AEAIEngin.release.xcconfig */,
 			);
 			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AEFoundation";
+			path = "../../AETerminal/Pods/Target Support Files/AEAIEngin";
 			sourceTree = "<group>";
 		};
-		CB00AA3DFA8316553EDCFFB3F379FCA3 /* Context */ = {
+		AD919A6E04BDC1E465DE95D4534DEF17 /* session */ = {
 			isa = PBXGroup;
 			children = (
-				B3C60BD070F546B242D8359B8C436BBD /* AEAIContext.swift */,
-				A21102B7B6C146F35AC385BBE598D0F4 /* AEContextConfig.swift */,
+				BE8CD26C4CADCE9EBE27AF65E9E1AC67 /* AEDataStream.swift */,
+				6C140D67B508F2DECC682F049BAAE1A5 /* AESession.swift */,
 			);
-			name = Context;
-			path = Context/Context;
+			name = session;
+			path = session;
+			sourceTree = "<group>";
+		};
+		B1D0584884CB3959083E8BCF5E138D35 /* CacheEngine */ = {
+			isa = PBXGroup;
+			children = (
+				A71D58FFBE9B1FCD27E73460402D779A /* AECacheEngine.swift */,
+				AC67984372A84D375D84700FE2505A78 /* AECacheEngineProtocol.swift */,
+				73CEB5FC9E361B7E0F1A4D73B68F3C48 /* AEDBCacheEngine.swift */,
+				7258DAC72D207B57121C6220472B7640 /* AEFileCacheEngine.swift */,
+				F4BBF9E67430D3A3F731189E9F643C9B /* AEUserDefaultsCacheEngine.swift */,
+			);
+			name = CacheEngine;
+			path = CacheEngine;
+			sourceTree = "<group>";
+		};
+		B496BFCCCF3F331595E992CFC81D7FD5 /* ChatView */ = {
+			isa = PBXGroup;
+			children = (
+				1899146CB798E692A24746F620B77A10 /* AEChatMessageCell.swift */,
+				1C6C0C668E0026B67481055C92CF475A /* AEChatView.swift */,
+				69408C69A59E445E8D8939EDADAC4968 /* AEChatView.swift.backup */,
+				02DB2640BAB4FE5A816C67EBC414381A /* AEChatViewNew.swift */,
+				9D77EF68CD87E4628EB5A34D9DCDCFDE /* AEComparisonView.swift */,
+				5FEDD4054D51C044E7B2F3C6100100C6 /* MarkdownRenderer.swift */,
+				3346A7BDE31A4775A2F68AB4C464BF9A /* ResponseParser */,
+			);
+			name = ChatView;
+			path = AEAIModule/ChatView;
+			sourceTree = "<group>";
+		};
+		B817FE31FB6452123C77EF465C8D6286 /* UDP */ = {
+			isa = PBXGroup;
+			children = (
+				0B207B591D50D3F181A757A076A5BE4D /* AEUDPNetworkManager.swift */,
+				7799D252AD352AE86C8F6A80A57E52EE /* AEUDPSocketClient.swift */,
+				F1E4D0F27DE7F25B05D72DB95B1B9283 /* AEUDPSocketConfig.swift */,
+			);
+			name = UDP;
+			path = UDP;
+			sourceTree = "<group>";
+		};
+		BB975CC42359E7FEC6DFA04C9FDE655B /* AEAINetworkModule */ = {
+			isa = PBXGroup;
+			children = (
+				DFE3B9CDE881382F648D218C5D1DC972 /* AEAINetworkModule.swift */,
+				50C691B852AAAD0FBCFFC6818E66DED7 /* AEAINetworkProtocol.swift */,
+				0135EEB88EA46F7CCEDE417D9D517384 /* AEAISocketManager.swift */,
+				DCA866B2F88447E09D1ECB4D59FF84DE /* AENetSocketCore.swift */,
+				DAF499A9FE7FEDE044F88C1D18F11CB6 /* AENetworkListenerManager.swift */,
+				ED02593803E5070BD3091527F200155E /* AENetworkMessageListener.swift */,
+				6B76EA81EE027483D9C9D4BAD334454B /* Pod */,
+				DB6DAE7E7318B67131F68295806D2A6E /* Support Files */,
+			);
+			name = AEAINetworkModule;
+			path = ../../CocoaPods/AEAINetworkModule;
+			sourceTree = "<group>";
+		};
+		BCC6C2A48763B3D4EE4AACB9220F7672 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				DA4986338BA9DE5BB7B682B2205F374B /* AEModuleCenter.podspec */,
+				8B49FA0953D8DAAFCB528A8389ADEF5A /* LICENSE */,
+				8F258064F852AD947AC4738FF64A7A0F /* README.md */,
+			);
+			name = Pod;
+			sourceTree = "<group>";
+		};
+		C31E22E03EF8EB1D0930675E3F40DDA0 /* AENetworkEngine */ = {
+			isa = PBXGroup;
+			children = (
+				E5B50DE0D34E52849A8F1F5CCE13D0AA /* NetCore */,
+				29FE422ADA1B440EC6EC157EF98BF309 /* Pod */,
+				89D97DC92364875445B95E09EF595EC3 /* Request */,
+				303BFECC847D35D86C2ED09C87EB29AA /* Support Files */,
+			);
+			name = AENetworkEngine;
+			path = ../../CocoaPods/AENetworkEngine;
+			sourceTree = "<group>";
+		};
+		C40F822637B33BDEF4BADBCEBBC0153E /* AEModuleCenter */ = {
+			isa = PBXGroup;
+			children = (
+				913A8B540106EDF9B7C199C7B33B6C8A /* AEModuleCenter.swift */,
+				5F5E69B247D7A1B327C4BB18A9F97788 /* AEModuleProtocol.swift */,
+				BCC6C2A48763B3D4EE4AACB9220F7672 /* Pod */,
+				F7FE5EDF11FB6BAFF8AAEC4C1ED221F8 /* Support Files */,
+			);
+			name = AEModuleCenter;
+			path = ../../CocoaPods/aemodulecenter;
 			sourceTree = "<group>";
 		};
 		CF1408CF629C7361332E53B88F7BD30C = {
 			isa = PBXGroup;
 			children = (
 				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
-				4E357992D851495C085E1AC8AEC28246 /* Development Pods */,
+				E64302154A358B48C79778D338D3530D /* Development Pods */,
 				A3CDB250FFEFB42CA2C68F1FBD92997D /* Frameworks */,
 				97ECDFD2883E4D3BA08B686D026CAB3A /* Products */,
 				8629DC10624B14779A3DB5DC18B0EA65 /* Targets Support Files */,
 			);
 			sourceTree = "<group>";
 		};
-		D570712345118A0874EEC58B9C125CE5 /* Pod */ = {
+		D08BA13F867EAE9AB161EE7EA6650C6A /* system */ = {
 			isa = PBXGroup;
 			children = (
-				2DACABC6F5ACA52746E73AEF8348EB93 /* AEModuleCenter.podspec */,
-				13ABC90C71F7E58E52C8B62CA505B4EE /* LICENSE */,
-				981DCEFE5EDB27A37BA91CD821177B66 /* README.md */,
+				282584FDA970EB7F2F3DCA23A0C6673D /* AESystemInfo.swift */,
+			);
+			name = system;
+			path = system;
+			sourceTree = "<group>";
+		};
+		DB6DAE7E7318B67131F68295806D2A6E /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				BC31D678757E97C0A1502D37768BDE18 /* AEAINetworkModule.modulemap */,
+				8FBF3DD8A6CAC9614A071F5DA7E97B50 /* AEAINetworkModule-dummy.m */,
+				791A8A99AE03F86690AB9E56961579D2 /* AEAINetworkModule-Info.plist */,
+				B6A32D41C04DF1F898D5684776A2FBA5 /* AEAINetworkModule-prefix.pch */,
+				5B3D80FCEDAE8A2359C6FC5604CD8DC9 /* AEAINetworkModule-umbrella.h */,
+				07EF3484C5216CFFDEFCE88E1DE3EA0C /* AEAINetworkModule.debug.xcconfig */,
+				5A0A16DE5D3EAEED389341EFD2AADF6A /* AEAINetworkModule.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../AETerminal/Pods/Target Support Files/AEAINetworkModule";
+			sourceTree = "<group>";
+		};
+		DEE282C87DD87971B9BA322E21D408A4 /* Package */ = {
+			isa = PBXGroup;
+			children = (
+				9E823BE1B78D21790ABC843B9AA9359E /* AEPacket.swift */,
+				CF5BCB1AC33EE5846E187E1994E89E60 /* AEPacketBuffer.swift */,
+				954C1CFB6FF43A6EC20E128B0CA78777 /* AEPacketParser.swift */,
+			);
+			name = Package;
+			path = Package;
+			sourceTree = "<group>";
+		};
+		E3E956B4FA235B60D474555BF1B16A56 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				1C7520351CA5BA92425D538BA3CADB35 /* AEAIService.swift */,
+				2C34B7D9B050A7ECA996EBD4780CC64E /* AEAIServicePath.swift */,
+			);
+			name = Service;
+			path = Context/Service;
+			sourceTree = "<group>";
+		};
+		E5B50DE0D34E52849A8F1F5CCE13D0AA /* NetCore */ = {
+			isa = PBXGroup;
+			children = (
+				1D69C2202F05956E6F03307F8B634C95 /* Core */,
+				9D3132275F93284D99B16E477EFAC098 /* HTTP */,
+				7DC7A685E9F70CAE4D199B54BDA89585 /* Socket */,
+			);
+			name = NetCore;
+			sourceTree = "<group>";
+		};
+		E64302154A358B48C79778D338D3530D /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				972CBAFF621E96B27B9B22C9C2D41032 /* AEAIEngin */,
+				F45AC082C9EA9DB20B7ACC0389F470D4 /* AEAIModule */,
+				BB975CC42359E7FEC6DFA04C9FDE655B /* AEAINetworkModule */,
+				67A586B8A9B4B59AB678B652ED47A4B7 /* AEFoundation */,
+				C40F822637B33BDEF4BADBCEBBC0153E /* AEModuleCenter */,
+				C31E22E03EF8EB1D0930675E3F40DDA0 /* AENetworkEngine */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		EFB2D50BC7201F628CF5136D2E3F70E6 /* AEReq */ = {
+			isa = PBXGroup;
+			children = (
+				201B02E2CD13BFE0BD1E8C410A9556C6 /* AENetReq.swift */,
+			);
+			name = AEReq;
+			path = Request/AEReq;
+			sourceTree = "<group>";
+		};
+		F45AC082C9EA9DB20B7ACC0389F470D4 /* AEAIModule */ = {
+			isa = PBXGroup;
+			children = (
+				B496BFCCCF3F331595E992CFC81D7FD5 /* ChatView */,
+				432EDD8862CA8D0F8047A19091244D05 /* Keyboard */,
+				16CD019240A78ABCBA39CFD86E1145A9 /* LeftView */,
+				A9ED68E0F24BC498F99FB41230D6B1AD /* Pod */,
+				29929A236AA3548FAD04856588853DC5 /* RightView */,
+				75B1E60F48986363D84A4FF09A3A8B94 /* Support Files */,
+			);
+			name = AEAIModule;
+			path = ../../CocoaPods/AEAIModule;
+			sourceTree = "<group>";
+		};
+		F7F0C9B8EDE2EC1A4704E09A6871D24C /* Atom */ = {
+			isa = PBXGroup;
+			children = (
+				3F16C527E3D5B3F4F5FFE05EA996997E /* AEAtom.swift */,
+			);
+			name = Atom;
+			path = Atom;
+			sourceTree = "<group>";
+		};
+		F7FE5EDF11FB6BAFF8AAEC4C1ED221F8 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				87D1F854367FBA49448D4CB72A6C82EF /* AEModuleCenter.modulemap */,
+				943B656F3E77F080F30516B8C20BDCE7 /* AEModuleCenter-dummy.m */,
+				B8A9B295ED63BA23D56BBA4182F92AC2 /* AEModuleCenter-Info.plist */,
+				ADB292166C06D4D2F6565C150BAB4CD4 /* AEModuleCenter-prefix.pch */,
+				C213599D3A242120B8604CBC89749484 /* AEModuleCenter-umbrella.h */,
+				3CC9814CFBA11393748CEC0631209585 /* AEModuleCenter.debug.xcconfig */,
+				34977C83F78B1864CA0BC9D9D621649F /* AEModuleCenter.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../../AETerminal/Pods/Target Support Files/AEModuleCenter";
+			sourceTree = "<group>";
+		};
+		FBC7A80A5CFCA2278FE7CF4D03694F72 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				B98CD018B76A23996C9DADA2B317293B /* AEAIEngin.podspec */,
 			);
 			name = Pod;
-			sourceTree = "<group>";
-		};
-		E26DD2202286059D71DBAE70E3A4F790 /* Transmission */ = {
-			isa = PBXGroup;
-			children = (
-				27090FB4DEC18B6EAC06BE75C0CFF31B /* security */,
-				A1A58C8476DD664D8697D7ED834B7BDD /* session */,
-				B05BA83AE7EFCC46B61C2FB0DEEB06E8 /* system */,
-			);
-			name = Transmission;
-			path = Socket/Transmission;
-			sourceTree = "<group>";
-		};
-		EE1EC010414F009FAA29EBEA18B632E5 /* Combination */ = {
-			isa = PBXGroup;
-			children = (
-				8E773E6E22E6BD90198038DE83FC696A /* AECombinationKeyHandler.swift */,
-				1624955FBD2E2DBB8416FBE6961B093A /* AECombinationKeyManager.swift */,
-				39D55F08203656D5E037C5146FFC5FB7 /* AECommandKey.swift */,
-				CF57A73D3C3ECD1B46BADEA4272853B8 /* AEControlKey.swift */,
-				ED64D8FEEE4B39CF2BE4327613C74E1E /* AEFnKey.swift */,
-				2E81FE7642A7AD201D2609A53A267552 /* AEOptionKey.swift */,
-				A30FADF513C938C68353EB28F2685F46 /* AEShiftKey.swift */,
-			);
-			name = Combination;
-			path = Combination;
-			sourceTree = "<group>";
-		};
-		EE1ED7722BEFBBFDDC8AD7D501CE6432 /* AEAINetworkModule */ = {
-			isa = PBXGroup;
-			children = (
-				94140AFA954F5C27A9A77025554E79F4 /* AEAINetworkModule.swift */,
-				2889A371EF862068AD717CEF0BAA25F0 /* AEAINetworkProtocol.swift */,
-				0C7B00791EE34BED1419DAD9123C1847 /* AEAISocketManager.swift */,
-				07DBE70EC50CDDB035E2D39D2BABF1FD /* AENetworkListenerManager.swift */,
-				2031E828CC9D0E88691AB4B304243F22 /* AENetworkMessageListener.swift */,
-				53C641E5A4EA82E7CFE619BE0248BB32 /* Pod */,
-				0FF6E92B4FA6CD4029B9126FD58B1CCC /* Support Files */,
-			);
-			name = AEAINetworkModule;
-			path = ../../CocoaPods/AEAINetworkModule;
-			sourceTree = "<group>";
-		};
-		F1E13F2E4EACBE7908E4100D75913E59 /* UDP */ = {
-			isa = PBXGroup;
-			children = (
-				FD514E0489DFC0C56DDC1D753517A0A6 /* AEUDPNetworkManager.swift */,
-				C7169EDD492C1FFB9D59A676476CEA1F /* AEUDPSocketClient.swift */,
-				443320C1ECF0B8D4F7DCA3189B472907 /* AEUDPSocketConfig.swift */,
-			);
-			name = UDP;
-			path = UDP;
-			sourceTree = "<group>";
-		};
-		F42FB9196068CF4825A4629F11F26691 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				80D88BA8AF54E842AF8C1D984BFD8EE6 /* AEAIEngin.modulemap */,
-				E798D86F053D38A7D67BE881E0543640 /* AEAIEngin-dummy.m */,
-				2F46EC23C99F9B36C6279A6492EA5938 /* AEAIEngin-Info.plist */,
-				0B00C80704808D7C609B9B25D632DE54 /* AEAIEngin-prefix.pch */,
-				57F28EF5E56E5B50E9146E9ADF89DED2 /* AEAIEngin-umbrella.h */,
-				386953F4BFD0608285C44B9313D0912C /* AEAIEngin.debug.xcconfig */,
-				875B65DAD5D8F52DDF05671EDAFB3E68 /* AEAIEngin.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AEAIEngin";
-			sourceTree = "<group>";
-		};
-		FAB8E6D71B1217B8C35C07E884DE740C /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				5074234FE53C32EB8768DCB5D92794EB /* AEAIModule.modulemap */,
-				3DB32BE9793E4050A193DE7490288546 /* AEAIModule-dummy.m */,
-				7FB4F016C55FF27DE5EB43AF7E2317D9 /* AEAIModule-Info.plist */,
-				0374A7FE202F0D49EB42D9697A231484 /* AEAIModule-prefix.pch */,
-				11A46785B8E512AB2485CABEA6C2E3E4 /* AEAIModule-umbrella.h */,
-				B5056B6B2580850299E43A2AD6C2FC42 /* AEAIModule.debug.xcconfig */,
-				8CCDEC5B32CBCFAD648A73086CA0AE44 /* AEAIModule.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "../../AETerminal/Pods/Target Support Files/AEAIModule";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		63A67844CC1FFF057A2FB224F3A414A3 /* Headers */ = {
+		083B9FFF15170E48A8DA3DC439AF93DB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52A204EF96E052F1E11BDC61004D430F /* AEModuleCenter-umbrella.h in Headers */,
+				10432A54A23B24FECE10F1EF5C90EAA8 /* AEFoundation-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6BF19B5442A104FC7B63E2A10C770A41 /* Headers */ = {
+		0B063B04EDDD6F9F507F4E204EB9444F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08E948A8D53C0F7A86981A7F8935A875 /* AEAINetworkModule-umbrella.h in Headers */,
+				00AF7FAA064230A7F947DC0C5453F2A1 /* AENetworkEngine-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,11 +1050,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9AB8EBD14336E3ECF6239B30101E3597 /* Headers */ = {
+		918628A03ACE224F3F91DEB38894C258 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AFB62A5C01B27B3A405349EBCC9556DC /* AEFoundation-umbrella.h in Headers */,
+				3B40C6211950C59EBEC310576B1A401B /* AEAINetworkModule-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,11 +1066,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D29ACFDA7A481BE7E05D952D87D401F1 /* Headers */ = {
+		C91D65C615C1CE508DB015C4E8A38234 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B8F9CCE4343053F160984CD90E0579E7 /* AENetworkEngine-umbrella.h in Headers */,
+				F2FA0D8B11E2E81DE801B93ADB633E22 /* AEModuleCenter-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1066,9 +1097,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				8722D53721DB6B63E62134126DA97871 /* PBXTargetDependency */,
-				B5F3F0420CC51B4FDB0C770F4631DDE9 /* PBXTargetDependency */,
-				B8D75891C6BA4AB818A2CA5577850836 /* PBXTargetDependency */,
+				00E3EF07137731F8002910A16190800C /* PBXTargetDependency */,
+				2ECB64CED26555417C4F9E1E83C6394B /* PBXTargetDependency */,
+				4C88E63C66E7F3377C04A4779480A482 /* PBXTargetDependency */,
 			);
 			name = AEAIModule;
 			productName = AEAIModule;
@@ -1077,18 +1108,18 @@
 		};
 		56239B192C68AEA1B3E732E3A944C6E6 /* AEAINetworkModule */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 22181B6C9150855A4C9A26BA28B2D922 /* Build configuration list for PBXNativeTarget "AEAINetworkModule" */;
+			buildConfigurationList = C6680C1983B673B811C6C665C7C42631 /* Build configuration list for PBXNativeTarget "AEAINetworkModule" */;
 			buildPhases = (
-				6BF19B5442A104FC7B63E2A10C770A41 /* Headers */,
-				1643484A40BE2A9794CA539D611DBAA3 /* Sources */,
-				206BDE842BC34FA8D6B0F7973F7D1F80 /* Frameworks */,
-				FC815DB51166FD05D02B0CCDC41C69AC /* Resources */,
+				918628A03ACE224F3F91DEB38894C258 /* Headers */,
+				D21DAC338E0F0F27A3684A20CD237BAD /* Sources */,
+				D01081C286E22DD977E363F05E568398 /* Frameworks */,
+				708EBCB489F42DFD5E048C9BBDAACA9B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				F6FCE864B71F3DF11DE35813DAE9DFF9 /* PBXTargetDependency */,
-				D609DF1DA18001F62B1656C2146C16EE /* PBXTargetDependency */,
+				7000696334F968DF19B6057BAD86A84B /* PBXTargetDependency */,
+				C6F58D6AE0BDF5263EA30C7F6D90BCE3 /* PBXTargetDependency */,
 			);
 			name = AEAINetworkModule;
 			productName = AEAINetworkModule;
@@ -1097,12 +1128,12 @@
 		};
 		5FC09F11D925031B019F7F73F1373737 /* AEModuleCenter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AD4DB9B2A22BE4293CCB30E7AC12CB32 /* Build configuration list for PBXNativeTarget "AEModuleCenter" */;
+			buildConfigurationList = C90260334F459B6A88BFC4CA352BFC29 /* Build configuration list for PBXNativeTarget "AEModuleCenter" */;
 			buildPhases = (
-				63A67844CC1FFF057A2FB224F3A414A3 /* Headers */,
-				A5A8C91344B0D7F980AE57B9E9492F14 /* Sources */,
-				24F5226FF2508A7238883335DDC9D2B9 /* Frameworks */,
-				F359D2CDD6372BEF41B7F049B7DE54B5 /* Resources */,
+				C91D65C615C1CE508DB015C4E8A38234 /* Headers */,
+				4747EB267B0721D6C8CCE0786737D26C /* Sources */,
+				947A1C8B5F6192B443DCEBB21F6608D4 /* Frameworks */,
+				4B469B349A7AA16046DC19565F7AA9EE /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1115,12 +1146,12 @@
 		};
 		9C465D2B4B8212B0C3A2802324335C7A /* AEFoundation */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 08917C0DD3B9176DE16390D6D0969167 /* Build configuration list for PBXNativeTarget "AEFoundation" */;
+			buildConfigurationList = F915D299BBC3726EE4BF4E74F4579B14 /* Build configuration list for PBXNativeTarget "AEFoundation" */;
 			buildPhases = (
-				9AB8EBD14336E3ECF6239B30101E3597 /* Headers */,
-				302E43467F3EFE8E1BE3790C9D4CB972 /* Sources */,
-				29EE05E4BFB7126E4BA724FC7ABA4982 /* Frameworks */,
-				113B6B77CB595E4B5E11DA0B86252BA4 /* Resources */,
+				083B9FFF15170E48A8DA3DC439AF93DB /* Headers */,
+				5818DEC883D06F82A82ECE3BCD138ADE /* Sources */,
+				9C48AAFB5BB0915B01032522AB0D2DC9 /* Frameworks */,
+				B8C7C1014CF275D565CFF8DCD8728055 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1143,12 +1174,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				0E2588CD47672DB69D46949B38C3BEEE /* PBXTargetDependency */,
-				1AD821781D535761B7080861A2F69683 /* PBXTargetDependency */,
-				9BC4CEA6EFFC21DE3A4FC9A8645AEFB3 /* PBXTargetDependency */,
-				6852F4589C4E55DC8403809424474809 /* PBXTargetDependency */,
-				8051C2D330E9EE906B83F7A44631DFE3 /* PBXTargetDependency */,
-				FB72E261AAF9D56E1A68747A789CFC97 /* PBXTargetDependency */,
+				8DACD67FE9CBD4DE48925F8BCBE942AB /* PBXTargetDependency */,
+				53517ADF5C701CCDFF69A54048B1C62A /* PBXTargetDependency */,
+				6666D9A7CB209887160C4A7027B6C66B /* PBXTargetDependency */,
+				B43D7A7D484F5E69FE98920AAFED3CBA /* PBXTargetDependency */,
+				F20504E2E5B8E329D0C5DA60C2AC33AE /* PBXTargetDependency */,
+				A03ACB6C039616B7F1D62D5C0E0ABB11 /* PBXTargetDependency */,
 			);
 			name = "Pods-AETerminal";
 			productName = Pods_AETerminal;
@@ -1167,9 +1198,9 @@
 			buildRules = (
 			);
 			dependencies = (
-				0D064B2713F2FBBF626DDC502454C251 /* PBXTargetDependency */,
-				2D90060EA19C7CF225A8E1D7DCEF5CDC /* PBXTargetDependency */,
-				379852633B23D357458E6F7070C1271F /* PBXTargetDependency */,
+				1A536B51F7200599F69E3209192AEACA /* PBXTargetDependency */,
+				5A2203AB84A06062EF1520F3B3D6D9AC /* PBXTargetDependency */,
+				51C00828D8530F58E99247DE18CF4708 /* PBXTargetDependency */,
 			);
 			name = AEAIEngin;
 			productName = AEAIEngin;
@@ -1178,12 +1209,12 @@
 		};
 		FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B3AC2EC9FE88F93928E21F6DC82C6803 /* Build configuration list for PBXNativeTarget "AENetworkEngine" */;
+			buildConfigurationList = D51EABA4017AA69FD857968BE14DF47D /* Build configuration list for PBXNativeTarget "AENetworkEngine" */;
 			buildPhases = (
-				D29ACFDA7A481BE7E05D952D87D401F1 /* Headers */,
-				1810D75BEE0B96EDE1838F202DC00C01 /* Sources */,
-				042E0B8F16E9AA81B6475402C48AA3F2 /* Frameworks */,
-				46B2139CF1485AF9E311170B56A058FA /* Resources */,
+				0B063B04EDDD6F9F507F4E204EB9444F /* Headers */,
+				7E855F736A11339DF22A9CC52D266FED /* Sources */,
+				D6966DBD93BC43005AA5B007E088B404 /* Frameworks */,
+				BA4435C4B926E88BCFD71048E16EC5AE /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1237,14 +1268,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		113B6B77CB595E4B5E11DA0B86252BA4 /* Resources */ = {
+		4B469B349A7AA16046DC19565F7AA9EE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		46B2139CF1485AF9E311170B56A058FA /* Resources */ = {
+		708EBCB489F42DFD5E048C9BBDAACA9B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1265,14 +1296,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		F359D2CDD6372BEF41B7F049B7DE54B5 /* Resources */ = {
+		B8C7C1014CF275D565CFF8DCD8728055 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FC815DB51166FD05D02B0CCDC41C69AC /* Resources */ = {
+		BA4435C4B926E88BCFD71048E16EC5AE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1290,59 +1321,56 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1643484A40BE2A9794CA539D611DBAA3 /* Sources */ = {
+		4747EB267B0721D6C8CCE0786737D26C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9159365A2F1C93A629CA8320839DED87 /* AEAINetworkModule.swift in Sources */,
-				FA578C9DE025A71AF499F0906E6C030A /* AEAINetworkModule-dummy.m in Sources */,
-				941C6D1FDC0B5168A47EFAEFB6B06E22 /* AEAINetworkProtocol.swift in Sources */,
-				A8E14F54A1D1ED098AFCAEE95DB91C00 /* AEAISocketManager.swift in Sources */,
-				AE3A5256BD85E86BD27E380232A4BFB9 /* AENetworkListenerManager.swift in Sources */,
-				1EB29165C78968C5C23AC21AAC2727EF /* AENetworkMessageListener.swift in Sources */,
+				3EFF7CD8F8E0BB0E889F582CB3970CE5 /* AEModuleCenter.swift in Sources */,
+				99D132760AC2B6AED2404AADCA0A5B3C /* AEModuleCenter-dummy.m in Sources */,
+				FFED984469D7C6155F64F4F328768B20 /* AEModuleProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1810D75BEE0B96EDE1838F202DC00C01 /* Sources */ = {
+		5818DEC883D06F82A82ECE3BCD138ADE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48A11AFDAF850BF085A3C94EE2F0A83A /* AEAISocketConfig.swift in Sources */,
-				BF95B89B13C96E81DEB81EF7DDB746CA /* AEDataStream.swift in Sources */,
-				65DC1584B2EC736E9A75E0EA4BAD3775 /* AEIOProtocol.swift in Sources */,
-				FAE22CDFDE7C8D0CF9455CEA9BA5C9E0 /* AENetConfig.swift in Sources */,
-				4B20AA2FA238F5818726879FA2057AA7 /* AENetHttpEngine.swift in Sources */,
-				05874C32BAADB058C10A8BBE4A252408 /* AENetReq.swift in Sources */,
-				CA5829E732A930C40FE3595901A7A20C /* AENetRsp.swift in Sources */,
-				EB41E1AA0DB77995C5ED903D888EAD08 /* AENetSecurity.swift in Sources */,
-				EF28C4745950CE70AEAF4A9C9E8D5981 /* AENetSocket.swift in Sources */,
-				43AC17F0EA347DE13BFFC6BB964E6A30 /* AENetworkEngine-dummy.m in Sources */,
-				969B87B2253F5DA2A6B34702E125CC43 /* AEPacket.swift in Sources */,
-				0BD72625BC3C83805BA3EE1EAF84328A /* AEPacketBuffer.swift in Sources */,
-				34135AE16D4EA2051722B8AAB8615BC4 /* AEPacketParser.swift in Sources */,
-				36A6B74B5434B14F3498A37ADCFEB913 /* AESession.swift in Sources */,
-				B2C888088E459EE043AA2FEA18629A47 /* AESystemInfo.swift in Sources */,
-				EBAE81FAFC575EE88BED13BB2A294A4A /* AETCPSocketClient.swift in Sources */,
-				EB162BFAFC9E3FDF9D3A4DD4BC6C7EEF /* AETCPSocketConfig.swift in Sources */,
-				B9E992F1CC0B061200FFB19C703E1451 /* AETlvTests.swift in Sources */,
-				EB8B961D0229FD260E5E7B733F442E3C /* AEUDPNetworkManager.swift in Sources */,
-				6346C403A085A217656216ADEF575DE1 /* AEUDPSocketClient.swift in Sources */,
-				385E8F385467EAC77FF887D12FA708E1 /* AEUDPSocketConfig.swift in Sources */,
+				102CC2CBF36191BE8B00D054067BED47 /* AEAtom.swift in Sources */,
+				69CA66A4A815ED9571DB37676C76709E /* AECacheEngine.swift in Sources */,
+				F43D7AF8EDA7460B90D6514D9EA6AF78 /* AECacheEngineProtocol.swift in Sources */,
+				A9153861D56F50AFAF9FD8A6EC1291EE /* AEDBCacheEngine.swift in Sources */,
+				602B8C6639203537E5F320652D17EBDE /* AEFileCacheEngine.swift in Sources */,
+				05D01E43D0AE12675CD5726C0F9BB242 /* AEFoundation.swift in Sources */,
+				326BB904ECE131426092D9209CD3C7CD /* AEFoundation-dummy.m in Sources */,
+				FB2869EB73B76477A512DD7AA42177BC /* AEUserDefaultsCacheEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		302E43467F3EFE8E1BE3790C9D4CB972 /* Sources */ = {
+		7E855F736A11339DF22A9CC52D266FED /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C3D8B01A0D87F1C91F9369DC79DE7C2 /* AEAtom.swift in Sources */,
-				695B7A53801B8170E1A4BE4D17EA4A24 /* AECacheEngine.swift in Sources */,
-				F6986F092099095DF1A74183D430DDD9 /* AECacheEngineProtocol.swift in Sources */,
-				37EE98E3BC703B82C33F81248FE9994F /* AEDBCacheEngine.swift in Sources */,
-				1B747D8BCCCD566F144D4A10AAE03904 /* AEFileCacheEngine.swift in Sources */,
-				FCB90077074216DC05C8F7AF04FE4A15 /* AEFoundation.swift in Sources */,
-				4BF21F6B4B94C609AC1401797BB6E13C /* AEFoundation-dummy.m in Sources */,
-				B0C2FEEC94625EE97247BF9CF3F6BEBB /* AEUserDefaultsCacheEngine.swift in Sources */,
+				DD1CE9914C8A88B6B19D34D2B3EBC31F /* AEDataStream.swift in Sources */,
+				56DA45AE37692058EA9E01A69966FC63 /* AEIOProtocol.swift in Sources */,
+				D254813AB4EEADF5072FB15A0B026153 /* AENetConfig.swift in Sources */,
+				FDE8D20E2B3B71A5C61A91CF3FAE5FD9 /* AENetCoreInterface.swift in Sources */,
+				A7857C57D4940E2BA35905ECCE01A8A4 /* AENetHttpEngine.swift in Sources */,
+				C738B5146392DBCB2A2377C0EF7BABD9 /* AENetReq.swift in Sources */,
+				ACF0F02752DCF870D8E6291E106A749E /* AENetRsp.swift in Sources */,
+				F5B407E1843DD609E640F2984E530598 /* AENetSecurity.swift in Sources */,
+				98A4D4EEF7ED24E8AECA86B2609E9A70 /* AENetSocket.swift in Sources */,
+				C4E6C514588D4065FE156D39EE7F732F /* AENetworkEngine-dummy.m in Sources */,
+				5AC1B69A92983CA12539600545D9A0ED /* AEPacket.swift in Sources */,
+				A34CA8BAD9579F69B8C102712848E897 /* AEPacketBuffer.swift in Sources */,
+				C1D808ED4B4736DE4E861903F4519131 /* AEPacketParser.swift in Sources */,
+				50065996BEE025B23698B476FF562B9D /* AESession.swift in Sources */,
+				6F84162B78CF5BDE20D34FC889165EED /* AESystemInfo.swift in Sources */,
+				6288C43AA2D0991F616D76412B129D8E /* AETCPSocketClient.swift in Sources */,
+				60C0770633BC69812A3FBD02922CDAA5 /* AETCPSocketConfig.swift in Sources */,
+				E4E2CE003D7FF00F21C4689250AEDBF1 /* AETlvTests.swift in Sources */,
+				BE826D8BE531B584C22D1FA79B3DD3C3 /* AEUDPNetworkManager.swift in Sources */,
+				3B3BD814B49DA4C24B1D92412C255F82 /* AEUDPSocketClient.swift in Sources */,
+				58904AD14961F58CD53A6FB8C0790D43 /* AEUDPSocketConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1360,16 +1388,6 @@
 				A732E110B6D525694B9D715C2796CB3B /* AEAIServicePath.swift in Sources */,
 				37D5428ACCBF7E69D949F36CF2674B49 /* AEContextConfig.swift in Sources */,
 				D85C78045DDEFE10A38BAA991D1C33AB /* AEDirectory.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A5A8C91344B0D7F980AE57B9E9492F14 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B37C1885BA2BAA855CF94079D1717782 /* AEModuleCenter.swift in Sources */,
-				4DDA8CFF139E39AFB1CBF022F4F2F727 /* AEModuleCenter-dummy.m in Sources */,
-				B4AA0CC3954B2D902F5F811DB531065C /* AEModuleProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1400,92 +1418,106 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D21DAC338E0F0F27A3684A20CD237BAD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB0EFAD640E710A6773AF5259F452B20 /* AEAINetworkModule.swift in Sources */,
+				D8D4E78E624985C7B045E4A176D96521 /* AEAINetworkModule-dummy.m in Sources */,
+				594BA4FD084EBD73D3BFB1524AA14917 /* AEAINetworkProtocol.swift in Sources */,
+				CDC6414458CDC553CBAA136114FB2D2F /* AEAISocketManager.swift in Sources */,
+				1134A3F210F8817DB6A317A64FB6496B /* AENetSocketCore.swift in Sources */,
+				36A35D6CD7DDDA7A09A43F61C5195197 /* AENetworkListenerManager.swift in Sources */,
+				C6A834D9EE9850DB15CD6FB5B2CD5691 /* AENetworkMessageListener.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0D064B2713F2FBBF626DDC502454C251 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AEAINetworkModule;
-			target = 56239B192C68AEA1B3E732E3A944C6E6 /* AEAINetworkModule */;
-			targetProxy = DB964D50A24236514E6C1F0D0ECA2BAF /* PBXContainerItemProxy */;
-		};
-		0E2588CD47672DB69D46949B38C3BEEE /* PBXTargetDependency */ = {
+		00E3EF07137731F8002910A16190800C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AEAIEngin;
 			target = DEC1AEAD2EC1037F19A6F9C040E599F0 /* AEAIEngin */;
-			targetProxy = 7DBF6A035FCD23470C7EC41478835C42 /* PBXContainerItemProxy */;
+			targetProxy = 3A1282682DD60A69B7C96B860D55D723 /* PBXContainerItemProxy */;
 		};
-		1AD821781D535761B7080861A2F69683 /* PBXTargetDependency */ = {
+		1A536B51F7200599F69E3209192AEACA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AEAINetworkModule;
+			target = 56239B192C68AEA1B3E732E3A944C6E6 /* AEAINetworkModule */;
+			targetProxy = A1C640044CA74A3F5F2D70DDE6756826 /* PBXContainerItemProxy */;
+		};
+		2ECB64CED26555417C4F9E1E83C6394B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AEFoundation;
+			target = 9C465D2B4B8212B0C3A2802324335C7A /* AEFoundation */;
+			targetProxy = 1CF0966231723171A672FE6FD3C1263C /* PBXContainerItemProxy */;
+		};
+		4C88E63C66E7F3377C04A4779480A482 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AENetworkEngine;
+			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
+			targetProxy = EF29C70622E7381B79FC76CA0A0175CC /* PBXContainerItemProxy */;
+		};
+		51C00828D8530F58E99247DE18CF4708 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AENetworkEngine;
+			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
+			targetProxy = 99D77DDB88E8BD21E7FB3225A94CE05A /* PBXContainerItemProxy */;
+		};
+		53517ADF5C701CCDFF69A54048B1C62A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AEAIModule;
 			target = 1A771A6075990D89B83ECF57902FA5BD /* AEAIModule */;
-			targetProxy = DFDA682C64423BFCFB11531598129988 /* PBXContainerItemProxy */;
+			targetProxy = 047BE695EEE011B4CEAC41390DAA6238 /* PBXContainerItemProxy */;
 		};
-		2D90060EA19C7CF225A8E1D7DCEF5CDC /* PBXTargetDependency */ = {
+		5A2203AB84A06062EF1520F3B3D6D9AC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AEModuleCenter;
 			target = 5FC09F11D925031B019F7F73F1373737 /* AEModuleCenter */;
-			targetProxy = 70AC1977336285966360BF66DFFBF2FF /* PBXContainerItemProxy */;
+			targetProxy = 0438FD6B0F2DCBC2AC355B26ACE7483A /* PBXContainerItemProxy */;
 		};
-		379852633B23D357458E6F7070C1271F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AENetworkEngine;
-			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
-			targetProxy = 49E6CB7F96190C262B4E174A03BFB2A4 /* PBXContainerItemProxy */;
-		};
-		6852F4589C4E55DC8403809424474809 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AEFoundation;
-			target = 9C465D2B4B8212B0C3A2802324335C7A /* AEFoundation */;
-			targetProxy = BCDF35E59390000A510398243EB4B1A3 /* PBXContainerItemProxy */;
-		};
-		8051C2D330E9EE906B83F7A44631DFE3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AEModuleCenter;
-			target = 5FC09F11D925031B019F7F73F1373737 /* AEModuleCenter */;
-			targetProxy = 78E1553A9EE1C68A75BE2F13CFE811CC /* PBXContainerItemProxy */;
-		};
-		8722D53721DB6B63E62134126DA97871 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AEAIEngin;
-			target = DEC1AEAD2EC1037F19A6F9C040E599F0 /* AEAIEngin */;
-			targetProxy = 3985D77917A026D4FB18C8D9708927F8 /* PBXContainerItemProxy */;
-		};
-		9BC4CEA6EFFC21DE3A4FC9A8645AEFB3 /* PBXTargetDependency */ = {
+		6666D9A7CB209887160C4A7027B6C66B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AEAINetworkModule;
 			target = 56239B192C68AEA1B3E732E3A944C6E6 /* AEAINetworkModule */;
-			targetProxy = 79BBE9DC9D2357AED66628E9CC42FE24 /* PBXContainerItemProxy */;
+			targetProxy = 55153E5FB3AE42DBD8CE38458178DAE5 /* PBXContainerItemProxy */;
 		};
-		B5F3F0420CC51B4FDB0C770F4631DDE9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AEFoundation;
-			target = 9C465D2B4B8212B0C3A2802324335C7A /* AEFoundation */;
-			targetProxy = 2445C782215CFD9B8EAFF7B30B523EFB /* PBXContainerItemProxy */;
-		};
-		B8D75891C6BA4AB818A2CA5577850836 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AENetworkEngine;
-			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
-			targetProxy = 19BB72FD70B737904F59CE76A50C4F3D /* PBXContainerItemProxy */;
-		};
-		D609DF1DA18001F62B1656C2146C16EE /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AENetworkEngine;
-			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
-			targetProxy = 26A6B70FFBC6547CFAB28DAE71593CE6 /* PBXContainerItemProxy */;
-		};
-		F6FCE864B71F3DF11DE35813DAE9DFF9 /* PBXTargetDependency */ = {
+		7000696334F968DF19B6057BAD86A84B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AEModuleCenter;
 			target = 5FC09F11D925031B019F7F73F1373737 /* AEModuleCenter */;
-			targetProxy = 046F371B940A9D36AB12718E1FBE3783 /* PBXContainerItemProxy */;
+			targetProxy = B1DA14F43211A33E99DE795F3D7EBDC0 /* PBXContainerItemProxy */;
 		};
-		FB72E261AAF9D56E1A68747A789CFC97 /* PBXTargetDependency */ = {
+		8DACD67FE9CBD4DE48925F8BCBE942AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AEAIEngin;
+			target = DEC1AEAD2EC1037F19A6F9C040E599F0 /* AEAIEngin */;
+			targetProxy = 057057FDDEE6345C70EABD7A234191FA /* PBXContainerItemProxy */;
+		};
+		A03ACB6C039616B7F1D62D5C0E0ABB11 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AENetworkEngine;
 			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
-			targetProxy = 9911BA43E930CD91BFF06A127564F42E /* PBXContainerItemProxy */;
+			targetProxy = 56C2B154A5224A90C3FFE991F187E98B /* PBXContainerItemProxy */;
+		};
+		B43D7A7D484F5E69FE98920AAFED3CBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AEFoundation;
+			target = 9C465D2B4B8212B0C3A2802324335C7A /* AEFoundation */;
+			targetProxy = 5C69CB6B4B75859F76E1B7D5002BA625 /* PBXContainerItemProxy */;
+		};
+		C6F58D6AE0BDF5263EA30C7F6D90BCE3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AENetworkEngine;
+			target = FD2A2EAECFA8A11DA898C93718B0EFB2 /* AENetworkEngine */;
+			targetProxy = 76440A19BBBE36DA7524D9DC2B26E876 /* PBXContainerItemProxy */;
+		};
+		F20504E2E5B8E329D0C5DA60C2AC33AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AEModuleCenter;
+			target = 5FC09F11D925031B019F7F73F1373737 /* AEModuleCenter */;
+			targetProxy = D7BCB650FFBAE66421F6F4C62927019A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1554,7 +1586,7 @@
 		};
 		0A0A073ABB1618BFB59D31B03C0FF68C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 875B65DAD5D8F52DDF05671EDAFB3E68 /* AEAIEngin.release.xcconfig */;
+			baseConfigurationReference = ABB1F4E5BFE38079FB8F65C019A517F3 /* AEAIEngin.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1587,9 +1619,115 @@
 			};
 			name = Release;
 		};
+		1881365E5CAF3D6FB8338E2716CB9B16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 34977C83F78B1864CA0BC9D9D621649F /* AEModuleCenter.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AEModuleCenter/AEModuleCenter-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AEModuleCenter/AEModuleCenter-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MODULEMAP_FILE = "Target Support Files/AEModuleCenter/AEModuleCenter.modulemap";
+				PRODUCT_MODULE_NAME = AEModuleCenter;
+				PRODUCT_NAME = AEModuleCenter;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		238E1A42C6105C3F7B11369BD5F02046 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ECF82933548390B1632C177031737758 /* AENetworkEngine.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
+				PRODUCT_MODULE_NAME = AENetworkEngine;
+				PRODUCT_NAME = AENetworkEngine;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		34FCB6FD971A5A4CDEBBAFEDB1F6452A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D96EEBD361BFD71052F94D96F05A96B8 /* AEFoundation.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AEFoundation/AEFoundation-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AEFoundation/AEFoundation-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/AEFoundation/AEFoundation.modulemap";
+				PRODUCT_MODULE_NAME = AEFoundation;
+				PRODUCT_NAME = AEFoundation;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		514FB149DFC91F2A6A987B886BBC0D30 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8CCDEC5B32CBCFAD648A73086CA0AE44 /* AEAIModule.release.xcconfig */;
+			baseConfigurationReference = C76D9620CC6D3A1AB29D193CC1F8A1A5 /* AEAIModule.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1614,41 +1752,6 @@
 				MODULEMAP_FILE = "Target Support Files/AEAIModule/AEAIModule.modulemap";
 				PRODUCT_MODULE_NAME = AEAIModule;
 				PRODUCT_NAME = AEAIModule;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		52E4E3679EBE0FC4C31359225FA39CAD /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BFA4AFCB15B10B313366BD805B78A9E6 /* AEFoundation.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AEFoundation/AEFoundation-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AEFoundation/AEFoundation-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AEFoundation/AEFoundation.modulemap";
-				PRODUCT_MODULE_NAME = AEFoundation;
-				PRODUCT_NAME = AEFoundation;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -1761,9 +1864,9 @@
 			};
 			name = Debug;
 		};
-		80FF2480D1F98DA2B70BFC70582943AC /* Debug */ = {
+		94D7302DCD90550050E8696B8311BE72 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A29C0DFCBCA9D74A6A0E7E8CCDF91569 /* AEAINetworkModule.debug.xcconfig */;
+			baseConfigurationReference = 07EF3484C5216CFFDEFCE88E1DE3EA0C /* AEAINetworkModule.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1796,79 +1899,9 @@
 			};
 			name = Debug;
 		};
-		A1AB0B7B151E4457D74E8DE77518AC13 /* Release */ = {
+		B248A9DAF5CC5A551A2EE731FF1BE9D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19028A046B14629D539F60DF9FB2670B /* AEAINetworkModule.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AEAINetworkModule/AEAINetworkModule-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AEAINetworkModule/AEAINetworkModule-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AEAINetworkModule/AEAINetworkModule.modulemap";
-				PRODUCT_MODULE_NAME = AEAINetworkModule;
-				PRODUCT_NAME = AEAINetworkModule;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		B24C4AECC0F0A0793D78907850B241D3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ED8ED1C60EA4981767D1BB14448612B7 /* AEModuleCenter.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AEModuleCenter/AEModuleCenter-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AEModuleCenter/AEModuleCenter-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				MODULEMAP_FILE = "Target Support Files/AEModuleCenter/AEModuleCenter.modulemap";
-				PRODUCT_MODULE_NAME = AEModuleCenter;
-				PRODUCT_NAME = AEModuleCenter;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		B6281C5384BBDE6544A60B36CFB6DD4A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7DB2DA58D90D521797B724010E489D4 /* AENetworkEngine.release.xcconfig */;
+			baseConfigurationReference = 75FA226521F22F918FFB43B47DEC43CC /* AENetworkEngine.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1900,11 +1933,11 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 		BC8B8E8B3C0DF8C73BD9CE53917D5135 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 386953F4BFD0608285C44B9313D0912C /* AEAIEngin.debug.xcconfig */;
+			baseConfigurationReference = 57C2115C09B9C527731005537E17CC00 /* AEAIEngin.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1974,9 +2007,44 @@
 			};
 			name = Release;
 		};
-		C5F6EAC923FD726832504D2FA9208E36 /* Debug */ = {
+		D05E43649395AAA1AB0CFBB84BF3CF9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90B4260A0883710F8F6CBFCAE4C9B0A4 /* AENetworkEngine.debug.xcconfig */;
+			baseConfigurationReference = A849CC85E56FEDA50B30E249D0814AAD /* AEFoundation.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AEFoundation/AEFoundation-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AEFoundation/AEFoundation-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MODULEMAP_FILE = "Target Support Files/AEFoundation/AEFoundation.modulemap";
+				PRODUCT_MODULE_NAME = AEFoundation;
+				PRODUCT_NAME = AEFoundation;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D0E13045EFF4D6CC529AE39036442914 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A0A16DE5D3EAEED389341EFD2AADF6A /* AEAINetworkModule.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -1989,8 +2057,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AENetworkEngine/AENetworkEngine-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine-Info.plist";
+				GCC_PREFIX_HEADER = "Target Support Files/AEAINetworkModule/AEAINetworkModule-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AEAINetworkModule/AEAINetworkModule-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1998,21 +2066,20 @@
 					"@loader_path/Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AENetworkEngine/AENetworkEngine.modulemap";
-				PRODUCT_MODULE_NAME = AENetworkEngine;
-				PRODUCT_NAME = AENetworkEngine;
+				MODULEMAP_FILE = "Target Support Files/AEAINetworkModule/AEAINetworkModule.modulemap";
+				PRODUCT_MODULE_NAME = AEAINetworkModule;
+				PRODUCT_NAME = AEAINetworkModule;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		E92491B52D3C50B9AEF5F5CDDC349FDE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B5056B6B2580850299E43A2AD6C2FC42 /* AEAIModule.debug.xcconfig */;
+			baseConfigurationReference = 34E04C3953C03D985CD9C6A96BF6A7A2 /* AEAIModule.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -2046,44 +2113,9 @@
 			};
 			name = Debug;
 		};
-		EA9EC74F07C5F1A2EC1D202C2410F70F /* Debug */ = {
+		F2EC3EEEAD2BBD222A66AA49161E31E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2837FD7559552896840E117CAB61CAD4 /* AEFoundation.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AEFoundation/AEFoundation-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AEFoundation/AEFoundation-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				MODULEMAP_FILE = "Target Support Files/AEFoundation/AEFoundation.modulemap";
-				PRODUCT_MODULE_NAME = AEFoundation;
-				PRODUCT_NAME = AEFoundation;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		F7636592E626B3D43F4F37DE613AFF68 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A4AE59F034075B835140EEED9FEAF461 /* AEModuleCenter.release.xcconfig */;
+			baseConfigurationReference = 3CC9814CFBA11393748CEC0631209585 /* AEModuleCenter.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_WEAK = NO;
@@ -2114,34 +2146,16 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		08917C0DD3B9176DE16390D6D0969167 /* Build configuration list for PBXNativeTarget "AEFoundation" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				EA9EC74F07C5F1A2EC1D202C2410F70F /* Debug */,
-				52E4E3679EBE0FC4C31359225FA39CAD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		11D519F2B0260C8E08F07FE8DEE5E51D /* Build configuration list for PBXNativeTarget "AEAIEngin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BC8B8E8B3C0DF8C73BD9CE53917D5135 /* Debug */,
 				0A0A073ABB1618BFB59D31B03C0FF68C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		22181B6C9150855A4C9A26BA28B2D922 /* Build configuration list for PBXNativeTarget "AEAINetworkModule" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				80FF2480D1F98DA2B70BFC70582943AC /* Debug */,
-				A1AB0B7B151E4457D74E8DE77518AC13 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2164,15 +2178,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AD4DB9B2A22BE4293CCB30E7AC12CB32 /* Build configuration list for PBXNativeTarget "AEModuleCenter" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				B24C4AECC0F0A0793D78907850B241D3 /* Debug */,
-				F7636592E626B3D43F4F37DE613AFF68 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		AEF2B6E0E996A8E3E09F962FC0145190 /* Build configuration list for PBXNativeTarget "AEAIModule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2182,11 +2187,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B3AC2EC9FE88F93928E21F6DC82C6803 /* Build configuration list for PBXNativeTarget "AENetworkEngine" */ = {
+		C6680C1983B673B811C6C665C7C42631 /* Build configuration list for PBXNativeTarget "AEAINetworkModule" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C5F6EAC923FD726832504D2FA9208E36 /* Debug */,
-				B6281C5384BBDE6544A60B36CFB6DD4A /* Release */,
+				94D7302DCD90550050E8696B8311BE72 /* Debug */,
+				D0E13045EFF4D6CC529AE39036442914 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C90260334F459B6A88BFC4CA352BFC29 /* Build configuration list for PBXNativeTarget "AEModuleCenter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F2EC3EEEAD2BBD222A66AA49161E31E0 /* Debug */,
+				1881365E5CAF3D6FB8338E2716CB9B16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D51EABA4017AA69FD857968BE14DF47D /* Build configuration list for PBXNativeTarget "AENetworkEngine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B248A9DAF5CC5A551A2EE731FF1BE9D3 /* Debug */,
+				238E1A42C6105C3F7B11369BD5F02046 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F915D299BBC3726EE4BF4E74F4579B14 /* Build configuration list for PBXNativeTarget "AEFoundation" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				34FCB6FD971A5A4CDEBBAFEDB1F6452A /* Debug */,
+				D05E43649395AAA1AB0CFBB84BF3CF9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

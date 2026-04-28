@@ -20,28 +20,19 @@
     "tag": "0.0.1"
   },
   "default_subspecs": [
-    "HTTP",
-    "Socket"
+    "Request",
+    "NetCore"
   ],
   "subspecs": [
     {
-      "name": "Core",
-      "source_files": "Core/**/*.swift"
+      "name": "Request",
+      "source_files": "Request/**/*.swift"
     },
     {
-      "name": "HTTP",
-      "source_files": "HTTP/**/*.swift",
+      "name": "NetCore",
+      "source_files": "NetCore/**/*.swift",
       "dependencies": {
-        "AENetworkEngine/Core": [
-
-        ]
-      }
-    },
-    {
-      "name": "Socket",
-      "source_files": "Socket/**/*.swift",
-      "dependencies": {
-        "AENetworkEngine/Core": [
+        "AENetworkEngine/Request": [
 
         ]
       }

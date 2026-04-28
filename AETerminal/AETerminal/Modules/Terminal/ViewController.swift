@@ -44,12 +44,8 @@ class ViewController: NSViewController {
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
 
-        // 配置 AENetHttpEngine
-        let httpConfig = AENetConfig(
-            host: "localhost",
-            port: 8000
-        )
-        AENetHttpEngine.configure(config: httpConfig, timeout: 30)
+        // AENetHttpEngine 不再需要单独配置
+        // HTTP 引擎实例由 AEAINetworkModule 管理
 
         // 设置 AETextView 的 delegate
         inputTextView.delegate = self

@@ -32,20 +32,15 @@ Pod::Spec.new do |spec|
 
   spec.source       = { :git => "git.", :tag => "#{spec.version}" }
  
-  spec.default_subspecs = 'HTTP', 'Socket'
+  spec.default_subspecs = 'Request', 'NetCore'
 
-  spec.subspec 'Core' do |ss|
-    ss.source_files = 'Core/**/*.swift'
+  spec.subspec 'Request' do |ss|
+    ss.source_files = 'Request/**/*.swift'
   end
 
-  spec.subspec 'HTTP' do |ss|
-    ss.source_files = 'HTTP/**/*.swift'
-    ss.dependency 'AENetworkEngine/Core'
-  end
-
-  spec.subspec 'Socket' do |ss|
-    ss.source_files = 'Socket/**/*.swift'
-    ss.dependency 'AENetworkEngine/Core'
+  spec.subspec 'NetCore' do |ss|
+    ss.source_files = 'NetCore/**/*.swift'
+    ss.dependency 'AENetworkEngine/Request'
   end
 
 end

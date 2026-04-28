@@ -8,12 +8,6 @@
 import Foundation
 import Network
 
-/// Socket 协议类型
-public enum AESocketProtocol {
-    case tcp
-    case udp
-}
-
 /// Socket 连接状态
 public enum AESocketState {
     case disconnected
@@ -46,7 +40,7 @@ public class AENetSocket {
     public let path: String
 
     /// 协议类型
-    public let protocolType: AESocketProtocol
+    public let protocolType: AENetSocketType
 
     /// 连接状态
     public private(set) var state: AESocketState = .disconnected
@@ -74,7 +68,7 @@ public class AENetSocket {
     ///   - port: 端口号
     ///   - path: 请求路径
     ///   - protocolType: 协议类型（TCP/UDP）
-    public init(ip: String, port: UInt16, path: String, protocolType: AESocketProtocol = .tcp) {
+    public init(ip: String, port: UInt16, path: String, protocolType: AENetSocketType = .tcp) {
         self.ip = ip
         self.port = port
         self.path = path
@@ -277,10 +271,8 @@ public class AENetSocket {
 
         // 处理参数和 body（与 HTTP 层逻辑一致）
         if let body = request.body {
-            // 如果有明确的 body，使用 base64 编码
-            dataMap["body"] = body.base64EncodedString()
+            dataMap["body"] = body
         } else if let parameters = request.parameters {
-            // POST 等请求：将 parameters 序列化为 JSON 放到 body
             dataMap["body"] = parameters
         }
             
