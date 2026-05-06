@@ -27,10 +27,10 @@
     "AEModuleCenter": [
 
     ],
-    "AEAIModule": [
+    "AEAINetworkModule": [
 
     ],
-    "AEAINetworkModule": [
+    "AEFoundation": [
 
     ]
   }

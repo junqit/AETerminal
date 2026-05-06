@@ -1,9 +1,10 @@
 PODS:
   - AEAIEnginModule (0.0.1):
-    - AEAIModule
     - AEAINetworkModule
+    - AEFoundation
     - AEModuleCenter
   - AEAIModule (0.1.0):
+    - AEAIEnginModule
     - AEFoundation
     - AENetworkEngine
   - AEAINetworkModule (1.0.0):
@@ -41,8 +42,8 @@ EXTERNAL SOURCES:
     :path: "../CocoaPods/AENetworkEngine"
 
 SPEC CHECKSUMS:
-  AEAIEnginModule: 27fd37099c4f2574c6b6a79a1dc5ad9394c23c73
-  AEAIModule: d005fe3b8b479458294126ea4acef42b519e72ba
+  AEAIEnginModule: 05b3557879768e58c0ab13872da761f4b270a1e6
+  AEAIModule: 6d7605e5a69bb133b002dd3d75fa93119fa0eebe
   AEAINetworkModule: e9cefc14136863f24dbd557fa954549ff852b4ad
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
