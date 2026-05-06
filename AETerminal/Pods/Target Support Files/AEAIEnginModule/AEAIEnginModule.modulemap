@@ -1,0 +1,6 @@
+framework module AEAIEnginModule {
+  umbrella header "AEAIEnginModule-umbrella.h"
+
+  export *
+  module * { export * }
+}

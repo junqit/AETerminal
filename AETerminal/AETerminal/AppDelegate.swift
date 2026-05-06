@@ -9,6 +9,7 @@ import Cocoa
 import AEModuleCenter
 import AEAINetworkModule
 import AENetworkEngine
+import AEAIEnginModule
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -62,6 +63,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func registerModules() {
         // 注册网络模块（由 AEModuleCenter 持有）
         AEModuleCenter.register(module: AEAINetworkModule())
+
+        // 注册 AI Engine 模块
+        AEModuleCenter.register(module: AEAIEnginModule())
 
         // 可以在这里注册其他模块
         // AEModuleCenter.register(module: OtherModule())

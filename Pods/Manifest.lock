@@ -1,14 +1,9 @@
 PODS:
-  - AEAIEngin (0.0.1):
-    - AEAIEngin/Context (= 0.0.1)
-    - AEAIEngin/Directory (= 0.0.1)
-    - AENetworkEngine
-  - AEAIEngin/Context (0.0.1):
-    - AENetworkEngine
-  - AEAIEngin/Directory (0.0.1):
-    - AENetworkEngine
+  - AEAIEnginModule (0.0.1):
+    - AEAIModule
+    - AEAINetworkModule
+    - AEModuleCenter
   - AEAIModule (0.1.0):
-    - AEAIEngin
     - AEFoundation
     - AENetworkEngine
   - AEAINetworkModule (1.0.0):
@@ -17,13 +12,14 @@ PODS:
   - AEFoundation (0.0.1)
   - AEModuleCenter (1.0.0)
   - AENetworkEngine (0.0.1):
-    - AENetworkEngine/HTTP (= 0.0.1)
-    - AENetworkEngine/Socket (= 0.0.1)
-  - AENetworkEngine/HTTP (0.0.1)
-  - AENetworkEngine/Socket (0.0.1)
+    - AENetworkEngine/NetCore (= 0.0.1)
+    - AENetworkEngine/Request (= 0.0.1)
+  - AENetworkEngine/NetCore (0.0.1):
+    - AENetworkEngine/Request
+  - AENetworkEngine/Request (0.0.1)
 
 DEPENDENCIES:
-  - AEAIEngin (from `../CocoaPods/AEAIEngin`)
+  - AEAIEnginModule (from `../CocoaPods/AEAIEnginModule`)
   - AEAIModule (from `../CocoaPods/AEAIModule`)
   - AEAINetworkModule (from `../CocoaPods/AEAINetworkModule`)
   - AEFoundation (from `../CocoaPods/AEFoundation`)
@@ -31,8 +27,8 @@ DEPENDENCIES:
   - AENetworkEngine (from `../CocoaPods/AENetworkEngine`)
 
 EXTERNAL SOURCES:
-  AEAIEngin:
-    :path: "../CocoaPods/AEAIEngin"
+  AEAIEnginModule:
+    :path: "../CocoaPods/AEAIEnginModule"
   AEAIModule:
     :path: "../CocoaPods/AEAIModule"
   AEAINetworkModule:
@@ -45,13 +41,13 @@ EXTERNAL SOURCES:
     :path: "../CocoaPods/AENetworkEngine"
 
 SPEC CHECKSUMS:
-  AEAIEngin: 93409d9e061827f94e94922101ffd88238c894b3
-  AEAIModule: 0a4a6276894c83c8aa6377588e28440cb1617d75
+  AEAIEnginModule: 27fd37099c4f2574c6b6a79a1dc5ad9394c23c73
+  AEAIModule: d005fe3b8b479458294126ea4acef42b519e72ba
   AEAINetworkModule: e9cefc14136863f24dbd557fa954549ff852b4ad
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
-  AENetworkEngine: d737a39eca05e2d7c5fc95b44c36ad79268a8952
+  AENetworkEngine: cb84e393d3bdfc601704d9bf8ddf650f2c39f688
 
-PODFILE CHECKSUM: c4805bdbe1407a4b07bf8091355ebf93b0500e8d
+PODFILE CHECKSUM: 7142fa9ee67d9a0f18feb439ccd9b2cb3373c5c7
 
 COCOAPODS: 1.14.1

@@ -6,7 +6,7 @@
 //
 
 import Cocoa
-import AEAIEngin
+import AEAIEnginModule
 import AEAIModule
 import AENetworkEngine
 import AEModuleCenter
@@ -29,12 +29,17 @@ class ViewController: NSViewController {
         return AEModuleCenter.module(for: AEAINetworkProtocol.self)
     }
 
+    // AI Engine 模块（计算属性，实时获取）
+    private var engineModule: AEAIEnginModuleProtocol? {
+        return AEModuleCenter.module(for: AEAIEnginModuleProtocol.self)
+    }
+
     // 当前活动的 AI Context（用于发送问题）
-    private var currentContext: AEAIContext? {
+    private var currentContext: AEAIContextInterface? {
         didSet {
             // 当 currentContext 变化时，通知 rightView 更新选中状态
             if let context = currentContext {
-                rightView?.setSelectedContext(context)
+//                rightView?.setSelectedContext(context)
             }
         }
     }
@@ -84,7 +89,7 @@ class ViewController: NSViewController {
     private func setupRightView() {
         guard let rightView = rightView else { return }
 
-        rightView.delegate = self
+//        rightView.delegate = self
     }
 
     override func viewDidAppear() {
@@ -163,14 +168,14 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
                 return
             }
 
-            let config = AEContextConfig(content: path)
-            let newContext = AEAIContextManager.createContext(config, withId: contextId)
+            // 直接创建 WorkSpaceContext
+            let newContext = AEWorkSpaceContext(ident: contextId, space: path)
 
             // 设置 Context 的 delegate
             newContext.delegate = self
 
-            // 注册网络监听
-            newContext.registerNetworkListener()
+            // 添加到 ContextManager
+            AEAIContextManager.addContext(newContext)
 
             // 设置为当前 Context
             self.currentContext = newContext
@@ -211,26 +216,18 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
 
 // MARK: - AERightViewDelegate
 
-extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
+extension ViewController: AERightViewFocusDelegate {
 
     /// 用户选中某个 Context
-    func rightView(_ rightView: AERightView, didSelectContext context: AEAIContext) {
-        print("✅ 切换 Context: \(context.dir)")
-        print("   Context ID: \(context.id)")
-
-        // 移除旧 Context 的网络监听
-        if let oldContext = currentContext, oldContext.id != context.id {
-            oldContext.unregisterNetworkListener()
-        }
+    func rightView(_ rightView: AERightView, didSelectContext context: AEAIContextInterface) {
+        print("✅ 切换 Context: \(context.space)")
+        print("   Context ID: \(context.ident)")
 
         // 切换当前活动的 Context
         currentContext = context
 
         // 设置 Context 的 delegate 为当前控制器
         context.delegate = self
-
-        // 注册新 Context 的网络监听
-        context.registerNetworkListener()
 
         // 在 statusView 中显示当前 Context 的目录信息
         updateStatusView(with: context)
@@ -242,7 +239,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
     // MARK: - Context Switching
 
     /// 切换到指定的 Context
-    private func switchToContext(_ context: AEAIContext) {
+    private func switchToContext(_ context: AEAIContextInterface) {
         // 1. 清空当前输入
         inputTextView.text = ""
 
@@ -250,7 +247,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
         chatView?.clearMessages()
 
         // 3. 显示系统消息：切换到新的 Context
-        chatView?.addSystemMessage("切换到新的 Context: \(context.dir)")
+        chatView?.addSystemMessage("切换到新的 Context: \(context.space)")
 
 
         // 6. 让输入框获得焦点
@@ -267,13 +264,13 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
     // MARK: - Status View Update
 
     /// 更新 statusView 显示 Context 信息
-    private func updateStatusView(with context: AEAIContext) {
+    private func updateStatusView(with context: AEAIContextInterface) {
         // 清除 statusView 中的所有子视图
         statusView.subviews.forEach { $0.removeFromSuperview() }
 
         // 创建显示 Context 目录的标签
         let label = NSTextField()
-        label.stringValue = "📁 \(context.dir)"
+        label.stringValue = "📁 \(context.space)"
         label.isBezeled = false
         label.drawsBackground = false
         label.isEditable = false
@@ -291,7 +288,7 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
             label.centerYAnchor.constraint(equalTo: statusView.centerYAnchor)
         ])
 
-        print("✅ 更新 statusView 显示: \(context.dir)")
+        print("✅ 更新 statusView 显示: \(context.space)")
     }
 }
 
@@ -299,11 +296,35 @@ extension ViewController: AERightViewDelegate, AERightViewFocusDelegate {
 
 extension ViewController: AETextViewDelegate {
 
+    /// 用户实时输入文本时调用
+    func aeTextView(_ textView: AETextView, didChangeInput package: AETextPackage) {
+        print("⌨️ 实时输入: \(package.rawText)")
+
+        // 获取 AI Engine 模块并传入用户实时输入的文本包
+        if let engineModule = engineModule {
+            engineModule.handleRealtimeInput(package)
+        } else {
+            print("⚠️ AI Engine 模块未初始化")
+        }
+    }
+
     /// 用户输入文本时调用（回车提交）
-    func aeTextView(_ textView: AETextView, didInputText text: String) {
+    func aeTextView(_ textView: AETextView, didInputText package: AETextPackage) {
         // 这是回车提交的完整内容
-        print("✅ 提交内容: \(text)")
-        handleSubmittedText(text)
+        print("✅ 提交内容: \(package.rawText)")
+        print("📦 包类型: \(package.type), 内容: \(package.content)")
+
+        // 获取 AI Engine 模块并传入用户输入完成的文本包
+        if let engineModule = engineModule {
+            engineModule.handleInputCompleted(package)
+        } else {
+            print("⚠️ AI Engine 模块未初始化")
+        }
+
+        // 对于文本类型，继续原有的处理逻辑（显示在 UI 中）
+        if package.type == .text {
+            handleSubmittedText(package.content)
+        }
     }
 
     /// 文本高度变化时调用（AETextView 已计算好高度）
@@ -365,23 +386,12 @@ extension ViewController: AETextViewDelegate {
 
 extension ViewController: AEAIContextDelegate {
 
-    /// 接收 Context 转发的网络消息
-    func context(_ context: AEAIContext, didReceiveResponse response: AENetRsp) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-
-            if context.id == self.currentContext?.id {
-                if let error = response.error {
-                    print("❌ AI 响应失败: \(error.localizedDescription)")
-                    self.chatView?.addErrorMessage(error.localizedDescription)
-                } else if let message = response.response {
-                    print("✅ AI 响应成功")
-                    self.chatView?.addAIResponse(message as AnyObject)
-                    print("✅ 已显示网络消息到 chatView")
-                }
-            } else {
-                print("⚠️ 收到的消息不属于当前活动的 Context")
-            }
-        }
+    /// 发送问题请求
+    /// - Parameters:
+    ///   - question: AI 问题对象
+    ///   - context: 发送请求的 Context
+    func sendRequest(_ question: AEAIQuestion, from context: any AEAIContextInterface) {
+        print("📤 [ViewController] 收到问题请求: \(question.content)")
+        // TODO: 实现发送逻辑
     }
 }
