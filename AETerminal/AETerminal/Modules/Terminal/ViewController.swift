@@ -367,7 +367,7 @@ extension ViewController: AETextViewDelegate {
         }
 
         // 创建 AI 问题
-        let question = AEAIQuestion.text(text)
+        let question = AEAIQuestion(content: text, type: .text)
 
         print("📤 发送问题到 Context [\(context.id)]")
         print("   问题内容: \(text)")

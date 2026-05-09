@@ -35,10 +35,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         print("✅ 生命周期事件已转发")
 
         // 4. 验证模块是否可用
-        if let networkService = AEModuleCenter.module(for: AEAINetworkProtocol.self) {
+        if let _ = AEModuleCenter.module(for: AEAINetworkProtocol.self) {
             print("✅ AppDelegate 中可以获取到网络服务")
         } else {
             print("❌ AppDelegate 中获取不到网络服务")
+        }
+
+        // 5. 延时 0.5s 通知各模块用户已登录
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            AEModuleCenter.userDidLogin()
         }
     }
 
