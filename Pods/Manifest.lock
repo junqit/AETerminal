@@ -10,6 +10,7 @@ PODS:
   - AEAINetworkModule (1.0.0):
     - AEModuleCenter
     - AENetworkEngine
+    - AEUserAccountModule
   - AEFoundation (0.0.1)
   - AEModuleCenter (1.0.0)
   - AENetworkEngine (0.0.1):
@@ -18,6 +19,9 @@ PODS:
   - AENetworkEngine/NetCore (0.0.1):
     - AENetworkEngine/Request
   - AENetworkEngine/Request (0.0.1)
+  - AEUserAccountModule (0.0.1):
+    - AEFoundation
+    - AEModuleCenter
 
 DEPENDENCIES:
   - AEAIEnginModule (from `../CocoaPods/AEAIEnginModule`)
@@ -26,6 +30,7 @@ DEPENDENCIES:
   - AEFoundation (from `../CocoaPods/AEFoundation`)
   - AEModuleCenter (from `../CocoaPods/aemodulecenter`)
   - AENetworkEngine (from `../CocoaPods/AENetworkEngine`)
+  - AEUserAccountModule (from `../CocoaPods/AEUserAccountModule`)
 
 EXTERNAL SOURCES:
   AEAIEnginModule:
@@ -40,15 +45,18 @@ EXTERNAL SOURCES:
     :path: "../CocoaPods/aemodulecenter"
   AENetworkEngine:
     :path: "../CocoaPods/AENetworkEngine"
+  AEUserAccountModule:
+    :path: "../CocoaPods/AEUserAccountModule"
 
 SPEC CHECKSUMS:
   AEAIEnginModule: 05b3557879768e58c0ab13872da761f4b270a1e6
   AEAIModule: 6d7605e5a69bb133b002dd3d75fa93119fa0eebe
-  AEAINetworkModule: e9cefc14136863f24dbd557fa954549ff852b4ad
+  AEAINetworkModule: 8101f8c7811504181824b67b41952a9abef28a16
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
   AENetworkEngine: cb84e393d3bdfc601704d9bf8ddf650f2c39f688
+  AEUserAccountModule: 6d08bbe833664f46eef05bcc74bb85df6dbefed5
 
-PODFILE CHECKSUM: 7142fa9ee67d9a0f18feb439ccd9b2cb3373c5c7
+PODFILE CHECKSUM: 3db6a02ec9e664df9091afd31fab0f8f295f8e78
 
 COCOAPODS: 1.14.1

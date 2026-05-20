@@ -12,6 +12,7 @@ target 'AETerminal' do
   pod "AEModuleCenter",       :path => "../CocoaPods/aemodulecenter"
   pod "AEAINetworkModule",    :path => "../CocoaPods/AEAINetworkModule"
   pod "AENetworkEngine",      :path => "../CocoaPods/AENetworkEngine"
+  pod "AEUserAccountModule",  :path => "../CocoaPods/AEUserAccountModule"
 
 end
 

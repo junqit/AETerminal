@@ -8,7 +8,9 @@
 import Cocoa
 import AEModuleCenter
 import AEAINetworkModule
+import AEAIEnginModule
 import AENetworkEngine
+import AEUserAccountModule
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -17,6 +19,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     /// 网络模块实例（保持强引用）
     private let networkModule = AEAINetworkModule()
+
+    /// 用户账号模块实例（保持强引用）
+    private let userAccountModule = AEUserAccountModule()
 
     func applicationWillFinishLaunching(_ notification: Notification) {
         // 1. 先配置网络模块
@@ -41,9 +46,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             print("❌ AppDelegate 中获取不到网络服务")
         }
 
-        // 5. 延时 0.5s 通知各模块用户已登录
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            AEModuleCenter.userDidLogin()
+        // 5. 延时 2s 模拟用户登录
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            if let accountModule = AEModuleCenter.module(for: AEUserAccountModuleProtocol.self) {
+                accountModule.login(uid: "10001", ident: "user@example.com")
+                print("✅ 用户已登录: uid=\(accountModule.uid ?? ""), ident=\(accountModule.ident ?? "")")
+            }
         }
     }
 
@@ -75,17 +83,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         networkModule.configure(with: httpConfig)
 
         // 配置 Socket (TCP)
-        let socketConfig = AENetConfig(type: .socket, host: "127.0.0.1", port: 8888, socketType: .tcp)
+        let socketConfig = AENetConfig(type: .socket, host: "127.0.0.1", port: 8888, socketType: .udp)
         networkModule.configure(with: socketConfig)
     }
 
+    /// AI Engine 模块实例（保持强引用）
+    private let aiEnginModule = AEAIEnginModule()
+
     /// 注册模块
     private func registerModules() {
-        // 注册网络模块
         AEModuleCenter.register(module: networkModule)
-
-        // 可以在这里注册其他模块
-        // AEModuleCenter.register(module: OtherModule())
+        AEModuleCenter.register(module: aiEnginModule)
+        AEModuleCenter.register(module: userAccountModule)
     }
 }
 

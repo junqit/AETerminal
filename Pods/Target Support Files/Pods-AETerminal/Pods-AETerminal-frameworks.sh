@@ -182,6 +182,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEUserAccountModule/AEUserAccountModule.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIEnginModule/AEAIEnginModule.framework"
@@ -190,6 +191,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEUserAccountModule/AEUserAccountModule.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

@@ -52,8 +52,6 @@ class ViewController: NSViewController {
 extension ViewController: AETextViewDelegate {
 
     func aeTextView(_ textView: AETextView, didChangeInput package: AETextPackage) {
-        let question = convertToAIQuestion(package)
-        aiEnginModule?.handleRealtimeInput(question)
     }
 
     func aeTextView(_ textView: AETextView, didInputText package: AETextPackage) {

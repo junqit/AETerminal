@@ -1,0 +1,34 @@
+{
+  "name": "AEUserAccountModule",
+  "version": "0.0.1",
+  "summary": "User account module providing uid and ident information",
+  "description": "AEUserAccountModule - User account management module for iOS and macOS.\nProvides user uid, ident and related account information via protocol.",
+  "homepage": "https://github.com/yourusername/AEUserAccountModule",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "tianjunqi": "tianjunqi@xiaomi.com"
+  },
+  "platforms": {
+    "ios": "12.0",
+    "osx": "10.15"
+  },
+  "source": {
+    "git": "git.",
+    "tag": "0.0.1"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES"
+  },
+  "source_files": "AEUserAccountModule/Classes/**/*.swift",
+  "dependencies": {
+    "AEModuleCenter": [
+
+    ],
+    "AEFoundation": [
+
+    ]
+  }
+}

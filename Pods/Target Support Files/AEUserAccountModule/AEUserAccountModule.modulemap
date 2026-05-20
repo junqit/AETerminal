@@ -1,0 +1,6 @@
+framework module AEUserAccountModule {
+  umbrella header "AEUserAccountModule-umbrella.h"
+
+  export *
+  module * { export * }
+}
