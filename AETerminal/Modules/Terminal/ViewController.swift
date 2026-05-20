@@ -76,6 +76,10 @@ extension ViewController: AETextViewDelegate {
 // MARK: - AEAIEnginModuleDelegate
 
 extension ViewController: AEAIEnginModuleDelegate {
+    func contextDidFinishInitialization(_ context: any AEAIContextInterface) {
+        
+    }
+    
 
     // MARK: - AEAIContextDelegate
 

@@ -3,6 +3,7 @@ PODS:
     - AEAINetworkModule
     - AEFoundation
     - AEModuleCenter
+    - AEUserAccountModule
   - AEAIModule (0.1.0):
     - AEAIEnginModule
     - AEFoundation
@@ -49,7 +50,7 @@ EXTERNAL SOURCES:
     :path: "../CocoaPods/AEUserAccountModule"
 
 SPEC CHECKSUMS:
-  AEAIEnginModule: 05b3557879768e58c0ab13872da761f4b270a1e6
+  AEAIEnginModule: 2fd00016974ec44f5e218692d7d74a307e33bea0
   AEAIModule: 6d7605e5a69bb133b002dd3d75fa93119fa0eebe
   AEAINetworkModule: 8101f8c7811504181824b67b41952a9abef28a16
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
