@@ -18,6 +18,7 @@ PODS:
     - AENetworkEngine/NetCore (= 0.0.1)
     - AENetworkEngine/Request (= 0.0.1)
   - AENetworkEngine/NetCore (0.0.1):
+    - AEFoundation
     - AENetworkEngine/Request
   - AENetworkEngine/Request (0.0.1)
   - AEUserAccountModule (0.0.1):
@@ -55,7 +56,7 @@ SPEC CHECKSUMS:
   AEAINetworkModule: 8101f8c7811504181824b67b41952a9abef28a16
   AEFoundation: 3d43af7f0469fcb8d33bf1e2cae5f828c662ac7a
   AEModuleCenter: 70c538229dc12698e2b596929a48881ffb4b0e93
-  AENetworkEngine: cb84e393d3bdfc601704d9bf8ddf650f2c39f688
+  AENetworkEngine: 364f5cce8ee901b79aeffa7541081626017d6696
   AEUserAccountModule: 6d08bbe833664f46eef05bcc74bb85df6dbefed5
 
 PODFILE CHECKSUM: 3db6a02ec9e664df9091afd31fab0f8f295f8e78
