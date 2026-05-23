@@ -201,16 +201,15 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
             protocolType: .http
         )
 
-        networkService.sendRequest(request) { response in
+        request.onCompleted = { response in
             if response.isSuccess, let contextId = response.response?["contextid"] as? String {
                 completion(contextId)
             } else {
-                if let error = response.error {
-                    print("❌ 网络请求失败: \(error.localizedDescription)")
-                }
+                print("❌ 网络请求失败: code=\(response.code)")
                 completion(nil)
             }
         }
+        networkService.sendRequest(request)
     }
 }
 
@@ -386,12 +385,6 @@ extension ViewController: AETextViewDelegate {
 
 extension ViewController: AEAIContextDelegate {
 
-    /// 发送问题请求
-    /// - Parameters:
-    ///   - question: AI 问题对象
-    ///   - context: 发送请求的 Context
-    func sendRequest(_ question: AEAIQuestion, from context: any AEAIContextInterface) {
-        print("📤 [ViewController] 收到问题请求: \(question.content)")
-        // TODO: 实现发送逻辑
+    func sendRequest(_ request: AENetReq, from context: any AEAIContextInterface) {
     }
 }
