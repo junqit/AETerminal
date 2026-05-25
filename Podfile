@@ -6,6 +6,7 @@ target 'AETerminal' do
   use_frameworks!
 
 
+  pod "AELogProxy",            :path => "../CocoaPods/AELogProxy"
   pod "AEFoundation",         :path => "../CocoaPods/AEFoundation"
   pod "AEAIEnginModule", 	    :path => "../CocoaPods/AEAIEnginModule"
   pod "AEAIModule",           :path => "../CocoaPods/AEAIModule"

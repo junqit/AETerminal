@@ -90,23 +90,6 @@ extension ViewController: AEAIEnginModuleDelegate {
 
     // MARK: - AEAIContextManagerDelegate
 
-    func contextManager(_ manager: AEAIContextManager, didUpdateContexts contexts: [AEAIContextInterface]) {
-        // 同步聊天视图：移除不存在的，添加新增的
-        let currentIds = Set(multiChatView?.getAllContextIds() ?? [])
-        let newIds = Set(contexts.map { $0.ident })
-
-        // 移除已不存在的 Context 视图
-        for id in currentIds.subtracting(newIds) {
-            multiChatView?.removeChatView(for: id)
-        }
-
-        // 添加新增的 Context 视图
-        for context in contexts where !currentIds.contains(context.ident) {
-            let config = context.config
-            multiChatView?.addChatView(for: config.ident, contextName: "\(config.type.rawValue) - \(config.space)")
-        }
-    }
-
     func contextManager(_ manager: AEAIContextManager, didAddContext context: AEAIContextInterface) {
         let config = context.config
         multiChatView?.addChatView(for: config.ident, contextName: "\(config.type.rawValue) - \(config.space)")

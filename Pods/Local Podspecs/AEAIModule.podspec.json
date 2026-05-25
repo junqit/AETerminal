@@ -21,6 +21,9 @@
   "swift_versions": "5.0",
   "source_files": "AEAIModule/**/*",
   "dependencies": {
+    "AELogProxy": [
+
+    ],
     "AEFoundation": [
 
     ],

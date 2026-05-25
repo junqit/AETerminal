@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AELogProxy
 
 /// 命令历史记录管理器
 class CommandHistoryManager {
@@ -126,7 +127,7 @@ class CommandHistoryManager {
         do {
             items = try storage.load()
         } catch {
-            print("Failed to load command history: \(error)")
+            AELog("Failed to load command history: \(error)")
             items = []
         }
     }
@@ -136,7 +137,7 @@ class CommandHistoryManager {
         do {
             try storage.save(items)
         } catch {
-            print("Failed to save command history: \(error)")
+            AELog("Failed to save command history: \(error)")
         }
     }
 }

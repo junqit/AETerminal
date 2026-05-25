@@ -23,6 +23,9 @@
   "source_files": "AEAINetworkModule/Classes/**/*.swift",
   "frameworks": "Foundation",
   "dependencies": {
+    "AELogProxy": [
+
+    ],
     "AEModuleCenter": [
 
     ],

@@ -11,6 +11,7 @@ import AEAIModule
 import AENetworkEngine
 import AEModuleCenter
 import AEAINetworkModule
+import AELogProxy
 
 class ViewController: NSViewController {
 
@@ -146,7 +147,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
     /// 处理目录确认选择
     func leftView(_ leftView: AELeftView, didConfirmDirectory path: String) {
         guard AEDirectory.isDirectory(atPath: path) else {
-            print("❌ 不是有效的目录: \(path)")
+            AELog("❌ 不是有效的目录: \(path)")
             return
         }
 
@@ -164,7 +165,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
     private func createFirstContext(withDirectory path: String) {
         sendCreateContextRequest(aedir: path) { [weak self] contextId in
             guard let self = self, let contextId = contextId else {
-                print("❌ Context 创建失败")
+                AELog("❌ Context 创建失败")
                 return
             }
 
@@ -181,7 +182,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
             self.currentContext = newContext
 
             self.rightView?.reloadData()
-            print("✅ Context 创建成功: \(contextId)")
+            AELog("✅ Context 创建成功: \(contextId)")
         }
     }
 
@@ -190,7 +191,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
     /// 发送创建 Context 请求到云端
     private func sendCreateContextRequest(aedir: String, completion: @escaping (String?) -> Void) {
         guard let networkService = networkService else {
-            print("❌ 网络服务未初始化")
+            AELog("❌ 网络服务未初始化")
             completion(nil)
             return
         }
@@ -205,7 +206,7 @@ extension ViewController: AELeftViewDelegate, AELeftViewFocusDelegate {
             if response.isSuccess, let contextId = response.response?["contextid"] as? String {
                 completion(contextId)
             } else {
-                print("❌ 网络请求失败: code=\(response.code)")
+                AELog("❌ 网络请求失败: code=\(response.code)")
                 completion(nil)
             }
         }
@@ -219,8 +220,8 @@ extension ViewController: AERightViewFocusDelegate {
 
     /// 用户选中某个 Context
     func rightView(_ rightView: AERightView, didSelectContext context: AEAIContextInterface) {
-        print("✅ 切换 Context: \(context.space)")
-        print("   Context ID: \(context.ident)")
+        AELog("✅ 切换 Context: \(context.space)")
+        AELog("   Context ID: \(context.ident)")
 
         // 切换当前活动的 Context
         currentContext = context
@@ -257,7 +258,7 @@ extension ViewController: AERightViewFocusDelegate {
     func rightViewDidBecomeFocused(_ rightView: AERightView) {
         // 清除 leftView 的选中状态
         leftView?.clearSelection()
-        print("⚠️ rightView 获得焦点，清除 leftView 选中状态")
+        AELog("⚠️ rightView 获得焦点，清除 leftView 选中状态")
     }
 
     // MARK: - Status View Update
@@ -287,7 +288,7 @@ extension ViewController: AERightViewFocusDelegate {
             label.centerYAnchor.constraint(equalTo: statusView.centerYAnchor)
         ])
 
-        print("✅ 更新 statusView 显示: \(context.space)")
+        AELog("✅ 更新 statusView 显示: \(context.space)")
     }
 }
 
@@ -297,27 +298,27 @@ extension ViewController: AETextViewDelegate {
 
     /// 用户实时输入文本时调用
     func aeTextView(_ textView: AETextView, didChangeInput package: AETextPackage) {
-        print("⌨️ 实时输入: \(package.rawText)")
+        AELog("⌨️ 实时输入: \(package.rawText)")
 
         // 获取 AI Engine 模块并传入用户实时输入的文本包
         if let engineModule = engineModule {
             engineModule.handleRealtimeInput(package)
         } else {
-            print("⚠️ AI Engine 模块未初始化")
+            AELog("⚠️ AI Engine 模块未初始化")
         }
     }
 
     /// 用户输入文本时调用（回车提交）
     func aeTextView(_ textView: AETextView, didInputText package: AETextPackage) {
         // 这是回车提交的完整内容
-        print("✅ 提交内容: \(package.rawText)")
-        print("📦 包类型: \(package.type), 内容: \(package.content)")
+        AELog("✅ 提交内容: \(package.rawText)")
+        AELog("📦 包类型: \(package.type), 内容: \(package.content)")
 
         // 获取 AI Engine 模块并传入用户输入完成的文本包
         if let engineModule = engineModule {
             engineModule.handleInputCompleted(package)
         } else {
-            print("⚠️ AI Engine 模块未初始化")
+            AELog("⚠️ AI Engine 模块未初始化")
         }
 
         // 对于文本类型，继续原有的处理逻辑（显示在 UI 中）
@@ -345,7 +346,7 @@ extension ViewController: AETextViewDelegate {
 
     /// 处理提交的文本（回车提交）
     private func handleSubmittedText(_ text: String) {
-        print("📤 处理提交: \(text)")
+        AELog("📤 处理提交: \(text)")
 
         // 在 chatView 中显示用户消息
         chatView?.addUserMessage(text)
@@ -361,15 +362,15 @@ extension ViewController: AETextViewDelegate {
     private func handleInputText(_ text: String) {
         // 检查是否有当前的 Context
         guard let context = currentContext else {
-            print("⚠️ 没有活动的 Context，请先加载目录")
+            AELog("⚠️ 没有活动的 Context，请先加载目录")
             return
         }
 
         // 创建 AI 问题
         let question = AEAIQuestion(content: text, type: .text)
 
-        print("📤 发送问题到 Context [\(context.id)]")
-        print("   问题内容: \(text)")
+        AELog("📤 发送问题到 Context [\(context.id)]")
+        AELog("   问题内容: \(text)")
 
         // 通过 Context 发送问题
         context.sendQuestion(question)

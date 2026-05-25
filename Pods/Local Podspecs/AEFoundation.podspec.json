@@ -22,5 +22,10 @@
   "source_files": "**/*.swift",
   "pod_target_xcconfig": {
     "DEFINES_MODULE": "YES"
+  },
+  "dependencies": {
+    "AELogProxy": [
+
+    ]
   }
 }

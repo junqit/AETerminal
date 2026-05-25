@@ -19,6 +19,11 @@
     "git": "git.",
     "tag": "0.0.1"
   },
+  "dependencies": {
+    "AELogProxy": [
+
+    ]
+  },
   "default_subspecs": [
     "Request",
     "NetCore"

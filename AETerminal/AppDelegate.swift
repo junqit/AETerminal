@@ -11,6 +11,7 @@ import AEAINetworkModule
 import AEAIEnginModule
 import AENetworkEngine
 import AEUserAccountModule
+import AELogProxy
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -30,27 +31,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // 2. 再注册模块到 AEModuleCenter
         registerModules()
 
-        print("✅ 模块配置和注册完成")
+        AELog("✅ 模块配置和注册完成")
     }
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // 3. 转发生命周期事件到 AEModuleCenter，触发模块初始化
         AEModuleCenter.applicationDidFinishLaunching(aNotification)
 
-        print("✅ 生命周期事件已转发")
+        AELog("✅ 生命周期事件已转发")
 
         // 4. 验证模块是否可用
         if let _ = AEModuleCenter.module(for: AEAINetworkProtocol.self) {
-            print("✅ AppDelegate 中可以获取到网络服务")
+            AELog("✅ AppDelegate 中可以获取到网络服务")
         } else {
-            print("❌ AppDelegate 中获取不到网络服务")
+            AELog("❌ AppDelegate 中获取不到网络服务")
         }
 
         // 5. 延时 2s 模拟用户登录
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             if let accountModule = AEModuleCenter.module(for: AEUserAccountModuleProtocol.self) {
                 accountModule.login(uid: "10001", ident: "user@example.com")
-                print("✅ 用户已登录: uid=\(accountModule.uid ?? ""), ident=\(accountModule.ident ?? "")")
+                AELog("✅ 用户已登录: uid=\(accountModule.uid ?? ""), ident=\(accountModule.ident ?? "")")
             }
         }
     }

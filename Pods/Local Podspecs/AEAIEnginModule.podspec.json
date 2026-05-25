@@ -24,6 +24,9 @@
   },
   "source_files": "**/*.swift",
   "dependencies": {
+    "AELogProxy": [
+
+    ],
     "AEModuleCenter": [
 
     ],

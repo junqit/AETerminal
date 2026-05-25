@@ -24,6 +24,9 @@
   },
   "source_files": "AEUserAccountModule/Classes/**/*.swift",
   "dependencies": {
+    "AELogProxy": [
+
+    ],
     "AEModuleCenter": [
 
     ],

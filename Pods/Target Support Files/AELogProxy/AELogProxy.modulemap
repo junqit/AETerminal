@@ -1,0 +1,6 @@
+framework module AELogProxy {
+  umbrella header "AELogProxy-umbrella.h"
+
+  export *
+  module * { export * }
+}

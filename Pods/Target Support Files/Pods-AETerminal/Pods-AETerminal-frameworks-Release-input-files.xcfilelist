@@ -3,6 +3,7 @@ ${BUILT_PRODUCTS_DIR}/AEAIEnginModule/AEAIEnginModule.framework
 ${BUILT_PRODUCTS_DIR}/AEAIModule/AEAIModule.framework
 ${BUILT_PRODUCTS_DIR}/AEAINetworkModule/AEAINetworkModule.framework
 ${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework
+${BUILT_PRODUCTS_DIR}/AELogProxy/AELogProxy.framework
 ${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework
 ${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework
 ${BUILT_PRODUCTS_DIR}/AEUserAccountModule/AEUserAccountModule.framework

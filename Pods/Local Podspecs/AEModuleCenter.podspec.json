@@ -21,6 +21,11 @@
   },
   "swift_versions": "5.0",
   "source_files": "AEModuleCenter/Classes/**/*.swift",
+  "dependencies": {
+    "AELogProxy": [
+
+    ]
+  },
   "frameworks": "Foundation",
   "ios": {
     "frameworks": "UIKit"
