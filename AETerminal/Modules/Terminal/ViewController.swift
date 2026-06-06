@@ -76,10 +76,7 @@ extension ViewController: AETextViewDelegate {
 // MARK: - AEAIEnginModuleDelegate
 
 extension ViewController: AEAIEnginModuleDelegate {
-    func contextDidFinishInitialization(_ context: any AEAIContextInterface) {
-        
-    }
-    
+
     private func sendRequest(_ question: AEAIQuestion, from context: AEAIContextInterface) {
         multiChatView?.showUserQuestion(question, for: context.config)
     }
