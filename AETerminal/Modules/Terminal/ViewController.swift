@@ -17,32 +17,35 @@ class ViewController: NSViewController {
     @IBOutlet weak var inputTextView: AETextView!
     @IBOutlet weak var multiChatView: AEMultiChatView!
 
-    private var aiEnginModule: AEAIEnginModuleProtocol?
+    private var aiEnginModule: AEAIEnginModuleProtocol? {
+        return AEModuleCenter.module(for: AEAIEnginModuleProtocol.self)
+    }
+
+    private var isRegistered = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.view.layer?.backgroundColor = NSColor.systemBlue.cgColor
-        setupAIEnginModule()
+        inputTextView.isEditable = false
         inputTextView.delegate = self
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(onAppDidFinishLaunching),
+            name: NSApplication.didFinishLaunchingNotification,
+            object: nil
+        )
     }
 
-    override func viewWillAppear() {
-        super.viewWillAppear()
-
-        DispatchQueue.main.async { [weak self] in
-            self?.inputTextView.focus()
-        }
+    @objc private func onAppDidFinishLaunching() {
+        registerDelegate()
     }
 
-    override func viewDidAppear() {
-        super.viewDidAppear()
-        inputTextView.focus()
-    }
-
-    private func setupAIEnginModule() {
-        aiEnginModule = AEModuleCenter.module(for: AEAIEnginModuleProtocol.self)
-        aiEnginModule?.delegate = self
+    private func registerDelegate() {
+        guard !isRegistered, let module = aiEnginModule else { return }
+        module.addDelegate(self)
+        isRegistered = true
     }
 }
 
@@ -77,22 +80,20 @@ extension ViewController: AETextViewDelegate {
 
 extension ViewController: AEAIEnginModuleDelegate {
 
-    private func sendRequest(_ question: AEAIQuestion, from context: AEAIContextInterface) {
-        multiChatView?.showUserQuestion(question, for: context.config)
+    func enginModuleDidFinishInitialization(_ module: AEAIEnginModuleProtocol) {
+        inputTextView.isEditable = true
+        inputTextView.focus()
     }
 
-    func didReceiveAnswer(_ answer: AEAIAnswer, from context: AEAIContextInterface) {
-        multiChatView?.showAIResponse(answer.content, for: context.config)
+    func enginModule(_ module: AEAIEnginModuleProtocol, didReceiveRsp response: AENetRsp, from context: AEAIContextInterface) {
     }
 
-    // MARK: - AEAIContextManagerDelegate
-
-    func contextManager(_ manager: AEAIContextManager, didAddContext context: AEAIContextInterface) {
+    func enginModule(_ module: AEAIEnginModuleProtocol, didAddContext context: AEAIContextInterface) {
         let config = context.config
         multiChatView?.addChatView(for: config.ident, contextName: "\(config.type.rawValue) - \(config.space)")
     }
 
-    func contextManager(_ manager: AEAIContextManager, didRemoveContext context: AEAIContextInterface) {
+    func enginModule(_ module: AEAIEnginModuleProtocol, didRemoveContext context: AEAIContextInterface) {
         multiChatView?.removeChatView(for: context.ident)
     }
 
