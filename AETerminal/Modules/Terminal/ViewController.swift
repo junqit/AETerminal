@@ -21,6 +21,7 @@ class ViewController: NSViewController {
         return AEModuleCenter.module(for: AEAIEnginModuleProtocol.self)
     }
 
+    private var currentContext: AEAIContextInterface?
     private var isRegistered = false
 
     override func viewDidLoad() {
@@ -66,13 +67,11 @@ extension ViewController: AETextViewDelegate {
     }
 
     func aeTextViewRequestPreviousHistory(_ textView: AETextView) -> String? {
-        guard let context = aiEnginModule?.getCurrentContext() else { return nil }
-        return context.navigateQuestionUp()?.content
+        return currentContext?.navigateQuestionUp()?.content
     }
 
     func aeTextViewRequestNextHistory(_ textView: AETextView) -> String? {
-        guard let context = aiEnginModule?.getCurrentContext() else { return nil }
-        return context.navigateQuestionDown()?.content
+        return currentContext?.navigateQuestionDown()?.content
     }
 }
 
@@ -80,21 +79,19 @@ extension ViewController: AETextViewDelegate {
 
 extension ViewController: AEAIEnginModuleDelegate {
 
-    func enginModuleDidFinishInitialization(_ module: AEAIEnginModuleProtocol) {
-        inputTextView.isEditable = true
-        inputTextView.focus()
-    }
-
     func enginModule(_ module: AEAIEnginModuleProtocol, didReceiveRsp response: AENetRsp, from context: AEAIContextInterface) {
+        guard context.ident == currentContext?.ident else { return }
+        guard let rsp = response.response?["rsp"] as? [String: Any],
+              let reply = rsp["reply"] as? String else { return }
+        multiChatView?.showAIResponse(reply, for: context.config)
     }
 
-    func enginModule(_ module: AEAIEnginModuleProtocol, didAddContext context: AEAIContextInterface) {
-        let config = context.config
-        multiChatView?.addChatView(for: config.ident, contextName: "\(config.type.rawValue) - \(config.space)")
-    }
-
-    func enginModule(_ module: AEAIEnginModuleProtocol, didRemoveContext context: AEAIContextInterface) {
-        multiChatView?.removeChatView(for: context.ident)
+    func enginModule(_ module: AEAIEnginModuleProtocol, didChangeCurrentContext context: AEAIContextInterface) {
+        currentContext = context
+        if !inputTextView.isEditable {
+            inputTextView.isEditable = true
+            inputTextView.focus()
+        }
     }
 
     // MARK: - Private
