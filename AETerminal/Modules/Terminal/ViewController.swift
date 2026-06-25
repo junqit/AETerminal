@@ -79,6 +79,14 @@ extension ViewController: AETextViewDelegate {
 
 extension ViewController: AEAIEnginModuleDelegate {
 
+    func enginModule(_ module: AEAIEnginModuleProtocol, willSendRequest request: AENetReq, from context: AEAIContextInterface) {
+        guard context.ident == currentContext?.ident else { return }
+        guard let questionMap = request.parameters?["question"] as? [String: Any],
+              let content = questionMap["content"] as? String else { return }
+        let question = AEAIQuestion(content: content, type: .text)
+        multiChatView?.showUserQuestion(question, for: context.config)
+    }
+
     func enginModule(_ module: AEAIEnginModuleProtocol, didReceiveRsp response: AENetRsp, from context: AEAIContextInterface) {
         guard context.ident == currentContext?.ident else { return }
         guard let rsp = response.response?["rsp"] as? [String: Any],
