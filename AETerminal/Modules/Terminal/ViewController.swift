@@ -96,6 +96,7 @@ extension ViewController: AEAIEnginModuleDelegate {
 
     func enginModule(_ module: AEAIEnginModuleProtocol, didChangeCurrentContext context: AEAIContextInterface) {
         currentContext = context
+        multiChatView?.confirmCurrentContext(context.config)
         if !inputTextView.isEditable {
             inputTextView.isEditable = true
             inputTextView.focus()
