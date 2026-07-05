@@ -81,8 +81,10 @@ extension ViewController: AEAIEnginModuleDelegate {
 
     func enginModule(_ module: AEAIEnginModuleProtocol, willSendRequest request: AENetReq, from context: AEAIContextInterface) {
         guard context.ident == currentContext?.ident else { return }
-        guard let questionMap = request.parameters?["question"] as? [String: Any],
-              let content = questionMap["content"] as? String else { return }
+        // ques 嵌套在 cont 内解析
+        guard let cont = request.parameters?["cont"] as? [String: Any],
+              let quesMap = cont["ques"] as? [String: Any],
+              let content = quesMap["content"] as? String else { return }
         let question = AEAIQuestion(content: content, type: .text)
         multiChatView?.showUserQuestion(question, for: context.config)
     }
