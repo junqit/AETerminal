@@ -20,10 +20,7 @@ public let MAX_UINT16: UInt16 = 0xFFFF
 
 /// 单包 Data 最大长度：2 字节上限 0xFFFF 扣除 UDP 头(8) + AEPacket 包头(10)
 /// 该值 0xFFED 的二进制第 4 位（0x10）为 0
-public let MAX_PACKET_DATA_LENGTH: Int = Int(MAX_UINT16) - 8 - 10
-
-/// 末包掩码：MAX_PACKET_DATA_LENGTH 第 4 位置 1（0xFFED | 0x10 = 0xFFFD）
-public let LAST_PACKET_MASK: UInt16 = 0xFFFD
+public let MAX_PACKET_DATA_LENGTH: Int = 1024 * 4//Int(MAX_UINT16) - 8 - 10
 
 /// UniqueID 哨兵值：0 表示非分片单包（无唯一标识需求）
 public let UNIQUE_ID_SENTINEL: UInt16 = MIN_UINT16

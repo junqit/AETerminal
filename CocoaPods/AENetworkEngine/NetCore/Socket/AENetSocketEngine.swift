@@ -178,17 +178,19 @@ public class AENetSocketEngine {
             throw AESocketError.notConnected
         }
 
-        // 使用 AEPacket 封装数据
-        let packet = AEPacket.create(dataType: .request, data: data)
-        let packetData = packet.toBytes()
+        // 将 data 转换为 packet 列表（<= MAX_PACKET_DATA_LENGTH 为单包，否则分片），
+        // 逐个发送；NWConnection 内部保序，分片按顺序到达对端
+        let packets = AEPacket.packets(dataType: .request, data: data)
+        for packet in packets {
+            let packetData = packet.toBytes()
 
-
-        connection?.send(content: packetData, completion: .contentProcessed { [weak self] error in
-            if let error = error {
-                AELog("❌ [Socket] 发送数据失败: \(error)")
-                self?.updateState(.failed(AESocketError.sendFailed))
-            }
-        })
+            connection?.send(content: packetData, completion: .contentProcessed { [weak self] error in
+                if let error = error {
+                    AELog("❌ [Socket] 发送数据失败: \(error)")
+                    self?.updateState(.failed(AESocketError.sendFailed))
+                }
+            })
+        }
     }
 
     // MARK: - Private Methods
