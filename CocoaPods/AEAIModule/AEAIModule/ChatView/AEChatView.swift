@@ -259,7 +259,7 @@ extension AEChatView: NSTableViewDelegate {
         }
 
         // 计算可用宽度
-        let containerPadding: CGFloat = 8  // containerView 的内边距
+        let containerPadding: CGFloat = 24  // containerView 的左右内边距 12 + 12
         let availableWidth = tableWidth - leadingMargin - trailingMargin - containerPadding
 
         guard availableWidth > 100 else { return 60 }
@@ -305,8 +305,8 @@ extension AEChatView: NSTableViewDelegate {
             contentHeight = textField.frame.height
         }
 
-        // 总高度 = 上边距(4) + 标题(20) + 间距(2) + 内容 + 下边距(4) + 额外间距(8)
-        let totalHeight = 4 + titleHeight + 2 + contentHeight + 4 + 8
+        // 总高度 = 容器顶(4) + 标题顶(8) + 标题(20) + 间距(4) + 内容 + 内容底(8) + 容器底(4)
+        let totalHeight = 4 + 8 + titleHeight + 4 + contentHeight + 8 + 4
 
         return max(totalHeight, 60)
     }

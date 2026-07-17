@@ -72,9 +72,10 @@ public class AEChatMessageCell: NSTableCellView {
     }
 
     private func setupView() {
-        // 容器视图
+        // 容器视图（消息气泡）
         containerView = NSView()
         containerView.wantsLayer = true
+        containerView.layer?.cornerRadius = 12
         containerView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(containerView)
 
@@ -131,18 +132,18 @@ public class AEChatMessageCell: NSTableCellView {
 
         // 保存 contentLabel 的约束（不立即激活）
         labelConstraints = [
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-            contentLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
-            contentLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4),
-            contentLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            contentLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            contentLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            contentLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
         ]
 
         // 保存 contentTextView 的约束（不立即激活）
         textViewConstraints = [
-            contentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
-            contentTextView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
-            contentTextView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4),
-            contentTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
+            contentTextView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
+            contentTextView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            contentTextView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
+            contentTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8)
         ]
 
         // 激活基础约束
@@ -152,9 +153,9 @@ public class AEChatMessageCell: NSTableCellView {
             containerLeadingConstraint!,
             containerTrailingConstraint!,
 
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 4),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -4)
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 12),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12)
         ])
 
         // 默认激活 label 约束
@@ -177,39 +178,31 @@ public class AEChatMessageCell: NSTableCellView {
         formatter.dateFormat = "HH:mm:ss"
         let timestamp = formatter.string(from: message.timestamp)
 
-        // 根据消息类型设置样式
-        let isDarkMode: Bool
-        if #available(macOS 10.14, *) {
-            isDarkMode = NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-        } else {
-            isDarkMode = false
-        }
-
         switch message.type {
         case .user:
-            // 用户消息：靠左显示
+            // 用户消息：柔蓝标题 + 暖白正文 + 柔蓝气泡
             titleLabel.stringValue = "You  \(timestamp)"
-            titleLabel.textColor = isDarkMode ? NSColor(red: 0.4, green: 0.7, blue: 1.0, alpha: 1.0) : NSColor.systemBlue
+            titleLabel.textColor = AEChatPalette.userTitle
             titleLabel.alignment = .left
 
             switchToLabel()
             contentLabel.stringValue = message.content
-            contentLabel.textColor = .labelColor
+            contentLabel.textColor = AEChatPalette.bodyText
             contentLabel.alignment = .left
 
-            containerView.layer?.backgroundColor = NSColor.clear.cgColor
+            containerView.layer?.backgroundColor = AEChatPalette.userBubble.cgColor
 
             containerLeadingConstraint?.constant = 20
             containerTrailingConstraint?.constant = -80
 
         case .assistant:
-            // AI消息：靠左显示
+            // AI消息：柔青标题 + 暖白正文 + 柔中性气泡
             let name = message.assistantName ?? "AI"
             titleLabel.stringValue = "\(name)  \(timestamp)"
-            titleLabel.textColor = isDarkMode ? NSColor(red: 0.4, green: 0.9, blue: 0.6, alpha: 1.0) : NSColor.systemGreen
+            titleLabel.textColor = AEChatPalette.aiTitle
             titleLabel.alignment = .left
 
-            containerView.layer?.backgroundColor = NSColor.clear.cgColor
+            containerView.layer?.backgroundColor = AEChatPalette.aiBubble.cgColor
 
             containerLeadingConstraint?.constant = 20
             containerTrailingConstraint?.constant = -80
@@ -219,7 +212,7 @@ public class AEChatMessageCell: NSTableCellView {
 
                 let rendered = markdownRenderer.render(
                     markdown: message.content,
-                    textColor: .labelColor,
+                    textColor: AEChatPalette.bodyText,
                     alignment: .left
                 )
 
@@ -229,18 +222,18 @@ public class AEChatMessageCell: NSTableCellView {
             } else {
                 switchToLabel()
                 contentLabel.stringValue = message.content
-                contentLabel.textColor = .labelColor
+                contentLabel.textColor = AEChatPalette.bodyText
                 contentLabel.alignment = .left
             }
 
         case .system:
             titleLabel.stringValue = "System  \(timestamp)"
-            titleLabel.textColor = .secondaryLabelColor
+            titleLabel.textColor = AEChatPalette.secondaryText
             titleLabel.alignment = .center
 
             switchToLabel()
             contentLabel.stringValue = message.content
-            contentLabel.textColor = .secondaryLabelColor
+            contentLabel.textColor = AEChatPalette.secondaryText
             contentLabel.alignment = .center
 
             containerView.layer?.backgroundColor = NSColor.clear.cgColor
@@ -265,7 +258,7 @@ public class AEChatMessageCell: NSTableCellView {
 
         case .comparison:
             titleLabel.stringValue = "AI 对比  \(timestamp)"
-            titleLabel.textColor = .secondaryLabelColor
+            titleLabel.textColor = AEChatPalette.secondaryText
             titleLabel.alignment = .center
 
             // 隐藏两个文本控件
@@ -345,7 +338,7 @@ public class AEChatMessageCell: NSTableCellView {
         // 根据当前的约束常量计算可用宽度
         let leadingConstant = containerLeadingConstraint?.constant ?? 20
         let trailingConstant = abs(containerTrailingConstraint?.constant ?? -20)
-        let padding: CGFloat = 8  // 内边距
+        let padding: CGFloat = 24  // 气泡左右内边距 12 + 12
 
         let maxWidth = tableWidth - leadingConstant - trailingConstant - padding
 

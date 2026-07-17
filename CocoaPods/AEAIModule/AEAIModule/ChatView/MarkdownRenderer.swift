@@ -7,6 +7,88 @@
 
 import AppKit
 
+/// 聊天配色方案（暗色/亮色自适应）
+///
+/// 设计原则：避免纯白文本——纯白(0xFFFFFF)对深色背景对比度过高(~21:1)，
+/// 长时间阅读易致视觉疲劳。正文改用暖白(约 0.90 明度、轻微降蓝)，
+/// 对比度降至 ~11:1，依旧清晰但明显柔和。
+enum AEChatPalette {
+
+    /// 正文文本：暗色暖白（非纯白），亮色柔近黑
+    static var bodyText: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.90, green: 0.90, blue: 0.86, alpha: 1.0),
+            light: NSColor(red: 0.13, green: 0.13, blue: 0.14, alpha: 1.0)
+        )
+    }
+
+    /// 次要文本（引用、时间戳、系统消息）
+    static var secondaryText: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.64, green: 0.64, blue: 0.62, alpha: 1.0),
+            light: NSColor(red: 0.45, green: 0.45, blue: 0.48, alpha: 1.0)
+        )
+    }
+
+    /// 用户标题色（柔蓝，降饱和）
+    static var userTitle: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.62, green: 0.80, blue: 1.0, alpha: 1.0),
+            light: NSColor(red: 0.22, green: 0.47, blue: 0.88, alpha: 1.0)
+        )
+    }
+
+    /// AI 标题色（柔青绿，降饱和）
+    static var aiTitle: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.62, green: 0.88, blue: 0.74, alpha: 1.0),
+            light: NSColor(red: 0.22, green: 0.62, blue: 0.42, alpha: 1.0)
+        )
+    }
+
+    /// 用户气泡背景（柔蓝调）
+    static var userBubble: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.18, green: 0.21, blue: 0.28, alpha: 1.0),
+            light: NSColor(red: 0.93, green: 0.95, blue: 1.0, alpha: 1.0)
+        )
+    }
+
+    /// AI 气泡背景（柔中性，略高于底色）
+    static var aiBubble: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.15, green: 0.15, blue: 0.17, alpha: 1.0),
+            light: NSColor(red: 0.97, green: 0.97, blue: 0.98, alpha: 1.0)
+        )
+    }
+
+    /// 代码块文本
+    static var codeText: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.88, green: 0.88, blue: 0.84, alpha: 1.0),
+            light: NSColor(red: 0.20, green: 0.20, blue: 0.22, alpha: 1.0)
+        )
+    }
+
+    /// 代码块背景
+    static var codeBackground: NSColor {
+        dynamicColor(
+            dark: NSColor(red: 0.13, green: 0.13, blue: 0.14, alpha: 1.0),
+            light: NSColor(red: 0.95, green: 0.95, blue: 0.96, alpha: 1.0)
+        )
+    }
+
+    private static func dynamicColor(dark: NSColor, light: NSColor) -> NSColor {
+        if #available(macOS 10.15, *) {
+            return NSColor(name: nil) { appearance in
+                appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? dark : light
+            }
+        } else {
+            return NSApp.effectiveAppearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua ? dark : light
+        }
+    }
+}
+
 /// Markdown 渲染器 - 将 Markdown 文本转换为 NSAttributedString
 public class MarkdownRenderer {
 
@@ -37,8 +119,8 @@ public class MarkdownRenderer {
         // 创建段落样式
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = alignment
-        paragraphStyle.lineSpacing = 5
-        paragraphStyle.paragraphSpacing = 8
+        paragraphStyle.lineSpacing = 6
+        paragraphStyle.paragraphSpacing = 10
 
         // 按行处理
         let lines = markdown.components(separatedBy: .newlines)
@@ -178,7 +260,7 @@ public class MarkdownRenderer {
 
         let attrs: [NSAttributedString.Key: Any] = [
             .font: baseFont,
-            .foregroundColor: NSColor.secondaryLabelColor,
+            .foregroundColor: AEChatPalette.secondaryText,
             .paragraphStyle: {
                 let style = NSMutableParagraphStyle()
                 style.headIndent = 20
@@ -205,8 +287,8 @@ public class MarkdownRenderer {
 
         let style = NSMutableParagraphStyle()
         style.alignment = currentAlignment
-        style.lineSpacing = 5
-        style.paragraphSpacing = 8
+        style.lineSpacing = 6
+        style.paragraphSpacing = 10
 
         result.append(NSAttributedString(string: text, attributes: [
             .font: baseFont,
@@ -224,7 +306,7 @@ public class MarkdownRenderer {
         // 代码块背景和边框效果
         let codeAttrs: [NSAttributedString.Key: Any] = [
             .font: NSFont.monospacedSystemFont(ofSize: 14, weight: .regular),  // 更大字体
-            .foregroundColor: currentTextColor,
+            .foregroundColor: codeTextColor(),
             .backgroundColor: codeBackgroundColor(),
             .paragraphStyle: {
                 let style = NSMutableParagraphStyle()
@@ -239,7 +321,7 @@ public class MarkdownRenderer {
         if !language.isEmpty {
             let langAttrs: [NSAttributedString.Key: Any] = [
                 .font: NSFont.systemFont(ofSize: 12),
-                .foregroundColor: NSColor.secondaryLabelColor,
+                .foregroundColor: AEChatPalette.secondaryText,
                 .backgroundColor: codeBackgroundColor()
             ]
             result.append(NSAttributedString(string: "[\(language)]\n", attributes: langAttrs))
@@ -256,46 +338,16 @@ public class MarkdownRenderer {
 
     /// 动态文本颜色
     private func dynamicTextColor() -> NSColor {
-        if #available(macOS 10.14, *) {
-            return NSColor(name: nil) { appearance in
-                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
-                    return .white
-                } else {
-                    return .black
-                }
-            }
-        } else {
-            return .labelColor
-        }
+        return AEChatPalette.bodyText
     }
 
     /// 代码文本颜色
     private func codeTextColor() -> NSColor {
-        if #available(macOS 10.14, *) {
-            return NSColor(name: nil) { appearance in
-                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
-                    return NSColor(red: 0.9, green: 0.9, blue: 0.9, alpha: 1.0)
-                } else {
-                    return NSColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 1.0)
-                }
-            }
-        } else {
-            return .labelColor
-        }
+        return AEChatPalette.codeText
     }
 
     /// 代码背景颜色
     private func codeBackgroundColor() -> NSColor {
-        if #available(macOS 10.14, *) {
-            return NSColor(name: nil) { appearance in
-                if appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua {
-                    return NSColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0)
-                } else {
-                    return NSColor(red: 0.95, green: 0.95, blue: 0.95, alpha: 1.0)
-                }
-            }
-        } else {
-            return .controlBackgroundColor
-        }
+        return AEChatPalette.codeBackground
     }
 }
