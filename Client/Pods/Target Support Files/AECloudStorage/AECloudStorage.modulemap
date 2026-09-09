@@ -1,0 +1,6 @@
+framework module AECloudStorage {
+  umbrella header "AECloudStorage-umbrella.h"
+
+  export *
+  module * { export * }
+}

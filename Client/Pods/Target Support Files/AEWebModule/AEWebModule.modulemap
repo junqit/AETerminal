@@ -1,0 +1,6 @@
+framework module AEWebModule {
+  umbrella header "AEWebModule-umbrella.h"
+
+  export *
+  module * { export * }
+}

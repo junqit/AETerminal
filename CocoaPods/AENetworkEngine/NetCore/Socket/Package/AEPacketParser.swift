@@ -215,37 +215,54 @@ public class AEPacketParser {
 
     /// 按数据类型分发完整数据
     private func dispatch(data: Data, dataType: AEDataType?) {
+
+        // 传输层信号包（心跳 / ping / pong）：无业务 JSON 载荷，直接跳过
+        switch dataType {
+        case .heartbeat, .ping, .pong:
+            AELog("⏭️ [Parser] 传输层控制信号包，跳过业务分发")
+            return
+
+        case .data:
+            break
+
+        case .none:
+            AELog("⚠️ [Parser] 未知数据类型")
+            return
+        }
+
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
             AELog("⚠️ [Parser] 无法解析数据包为 JSON")
             return
         }
 
-        switch dataType {
-        case .request:
-            guard let request = AENetReq.fromMap(json) else {
-                AELog("⚠️ [Parser] AENetReq.fromMap 解析失败")
-                return
-            }
-            DispatchQueue.global().async { [weak self] in
-                guard let self = self else { return }
-                self.delegate?.parser(self, didReceiveRequest: request)
-            }
+        // 按 header.type 区分请求 / 响应
+        let header = json["header"] as? [String: Any]
+        let typeRaw = (header?["type"] as? Int) ?? -1
 
-        case .response:
+        if typeRaw == AENetMessageType.response.rawValue {
             guard let response = AENetRsp.fromMap(json) else {
                 AELog("⚠️ [Parser] AENetRsp.fromMap 解析失败")
                 return
             }
+
             DispatchQueue.global().async { [weak self] in
                 guard let self = self else { return }
+
                 self.delegate?.parser(self, didReceiveResponse: response)
             }
+        } else if typeRaw == AENetMessageType.request.rawValue {
+            guard let request = AENetReq.fromMap(json) else {
+                AELog("⚠️ [Parser] AENetReq.fromMap 解析失败")
+                return
+            }
 
-        case .heartbeat, .ping, .pong, .custom:
-            break
+            DispatchQueue.global().async { [weak self] in
+                guard let self = self else { return }
 
-        case .none:
-            AELog("⚠️ [Parser] 未知数据类型")
+                self.delegate?.parser(self, didReceiveRequest: request)
+            }
+        } else {
+            AELog("⚠️ [Parser] 未知消息类型 type:\(typeRaw)")
         }
     }
 

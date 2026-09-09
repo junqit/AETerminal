@@ -66,11 +66,11 @@ public class AENetRsp {
     }
 
     /// 从字典创建实例
-    /// 数据结构: {"code":200, "cont":{...}, "req":{"requestId":"...", "path":"..."}, "user":{...}}
+    /// 数据结构: {"code":200, "con":{...}, "req":{"headers":{"type":"response","requestId":"...","path":"..."}}, ...}
     public static func fromMap(_ map: [String: Any], protocolType: AENetProtocolType = .socket) -> AENetRsp? {
-        guard let req = map["req"] as? [String: Any],
-              let requestId = req["requestId"] as? String else {
-            AELog("⚠️ [AENetRsp] fromMap: 缺少 req.requestId")
+        guard let header = map["header"] as? [String: Any],
+              let requestId = header["requestId"] as? String else {
+            AELog("⚠️ [AENetRsp] fromMap: 缺少 header.requestId")
             return nil
         }
 
@@ -85,6 +85,32 @@ public class AENetRsp {
             code: code,
             data: data
         )
+    }
+
+    /// 将响应编码为字典
+    public func toMap() -> [String: Any] {
+        var dataMap: [String: Any] = [:]
+
+        var header: [String: Any] = [:]
+        header["type"] = AENetMessageType.response.rawValue
+        header["requestId"] = requestId
+        dataMap["header"] = header
+
+        dataMap["code"] = code.rawValue
+
+        return dataMap
+    }
+
+    /// 将响应编码为 JSON Data
+    public func encode() throws -> Data {
+        let dataMap = toMap()
+
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: dataMap, options: []) else {
+            AELog("⚠️ [AENetRsp] 响应编码失败 requestId:\(requestId)")
+            throw NSError(domain: "AENetRsp", code: -1, userInfo: [NSLocalizedDescriptionKey: "JSON 编码失败"])
+        }
+
+        return jsonData
     }
 
     static func dataToDictionary(data: Data?) -> [String: Any]? {

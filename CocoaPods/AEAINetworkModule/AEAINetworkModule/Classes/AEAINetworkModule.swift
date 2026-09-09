@@ -212,16 +212,7 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol,
                 request.onCompleted?(response)
                 return
             }
-            do {
-                try engine.send(request)
-            } catch {
-                let response = AENetRsp(
-                    requestId: request.requestId,
-                    protocolType: request.protocolType,
-                    code: .serverError
-                )
-                request.onCompleted?(response)
-            }
+            engine.send(request: request)
 
         case .http:
             guard let core = findCore(for: .http) else {
@@ -234,6 +225,15 @@ public class AEAINetworkModule: NSObject, AEModuleProtocol, AEAINetworkProtocol,
                 return
             }
             core.send(request: request)
+
+        case .cloudstorage:
+            AELog("⚠️ cloudstorage 请求暂无可用引擎，path:\(request.path)")
+            let response = AENetRsp(
+                requestId: request.requestId,
+                protocolType: request.protocolType,
+                code: .serviceUnavailable
+            )
+            request.onCompleted?(response)
         }
     }
 

@@ -17,6 +17,10 @@ public protocol AENetCoreProtocol: AnyObject {
     /// - Parameter request: 网络请求对象
     func send(request: AENetReq)
 
+    /// 发送网络响应
+    /// - Parameter response: 网络响应对象
+    func send(response: AENetRsp)
+
     /// 网络核心类型
     var coreType: AENetworkType { get }
 }
@@ -27,4 +31,11 @@ public protocol AENetCoreDelegate: AnyObject {
     /// 接收到主动推送的响应
     /// - Parameter response: 响应对象
     func netCore(didReceive response: AENetRsp)
+}
+
+public extension AENetCoreProtocol {
+
+    /// 默认不实现 send(response:)；由支持的 core（如 socket）覆盖
+    func send(response: AENetRsp) {
+    }
 }

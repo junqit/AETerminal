@@ -7,6 +7,7 @@
 
 import Foundation
 import AENetworkEngine
+import AELogProxy
 
 /// Context 信息模型
 public struct AEContextInfo {
@@ -51,6 +52,7 @@ public class AEContext: AEAIContextInterface {
     /// 子类重写此方法实现自定义初始化逻辑
     /// 默认先请求 contextInfo，子类可 super 调用后追加逻辑
     open func onInitialize() {
+        AELog("[Context] onInitialize 发送 contextInfo 请求: ident=\(config.ident), type=\(config.type.rawValue)")
         let request = AENetReq(
             post: AEAIServicePath.contextInfo.rawValue
         )
@@ -72,8 +74,8 @@ public class AEContext: AEAIContextInterface {
 
     public func receiveRsp(_ response: AENetRsp) {
         guard let message = response.response,
-              let req = message["req"] as? [String: Any],
-              let path = req["path"] as? String else { return }
+              let header = message["header"] as? [String: Any],
+              let path = header["path"] as? String else { return }
 
         switch path {
         case AEAIServicePath.chat.rawValue:

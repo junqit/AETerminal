@@ -1,0 +1,39 @@
+{
+  "name": "AECloudStorage",
+  "version": "1.0.0",
+  "summary": "AECloudStorage - 云存储抽象（provider + file CRUD）+ 百度网盘实现。",
+  "description": "AECloudStorage 提供云存储抽象层（AECloudStorage 协议 + AECloudFile 值对象/CRUD）\n与百度网盘 provider（AEBaiduStorage）：OAuth、list/upload/download/mkdir。",
+  "homepage": "https://github.com/junqit/aecloudstorage",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": {
+    "junqit": "junqit@github"
+  },
+  "source": {
+    "git": "git@github.com:junqit/aecloudstorage.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "13.0",
+    "osx": "10.15"
+  },
+  "swift_versions": "5.0",
+  "source_files": [
+    "AECloudStorage/Classes/**/*.swift",
+    "Storages/**/*.swift"
+  ],
+  "frameworks": "Foundation",
+  "dependencies": {
+    "AELogProxy": [
+
+    ],
+    "AEModuleCenter": [
+
+    ]
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "5.0"
+  },
+  "swift_version": "5.0"
+}

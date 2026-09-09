@@ -10,6 +10,7 @@ import AELogProxy
 public class AEAIContextManager {
     
     internal let contexts = AEAtom<[String: AEAIContextInterface]>([:])
+    internal let pendingRequests = AEAtom<[String: String]>([:])
     internal var currentContext: AEAIContextInterface?
 
     public weak var delegate: AEAIContextManagerDelegate?
@@ -134,6 +135,7 @@ public class AEAIContextManager {
         }
 
         request.parameters = parameters
+        pendingRequests.write { $0[request.requestId] = request.path }
         networkService.sendRequest(request)
     }
 
@@ -157,6 +159,7 @@ extension AEAIContextManager: AEAIContextDelegate {
     }
 
     public func contextDidFinishInitialization(_ context: AEAIContextInterface) {
+        AELog("[AEAIContextManager] context 初始化完成: ident=\(context.ident), isDirectory=\(context is AEDirectoryContext)")
         if context is AEDirectoryContext {
             let request = AENetReq(
                 post: AEAIServicePath.contextList.rawValue

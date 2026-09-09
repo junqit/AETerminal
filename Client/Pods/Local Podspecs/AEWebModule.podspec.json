@@ -1,0 +1,39 @@
+{
+  "name": "AEWebModule",
+  "version": "1.0.0",
+  "summary": "AEWebModule - 用 WKWebView 加载网页的浏览器能力模块。",
+  "description": "AEWebModule 提供基于 WKWebView 的应用内网页加载能力：\n- 加载并展示网页 URL\n- 返回 / 前进 / 刷新导航\n- 加载进度 + 页面标题\n- native <-> JS 桥（AEWebScriptHandler）",
+  "homepage": "https://github.com/junqit/aewebmodule",
+  "license": {
+    "type": "MIT"
+  },
+  "authors": {
+    "junqit": "junqit@github"
+  },
+  "source": {
+    "git": "git@github.com:junqit/aewebmodule.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "13.0",
+    "osx": "10.15"
+  },
+  "swift_versions": "5.0",
+  "source_files": "AEWebModule/Classes/**/*.swift",
+  "frameworks": [
+    "Foundation",
+    "WebKit"
+  ],
+  "dependencies": {
+    "AELogProxy": [
+
+    ],
+    "AEModuleCenter": [
+
+    ]
+  },
+  "pod_target_xcconfig": {
+    "SWIFT_VERSION": "5.0"
+  },
+  "swift_version": "5.0"
+}

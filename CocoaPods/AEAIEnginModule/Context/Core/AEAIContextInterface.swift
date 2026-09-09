@@ -50,14 +50,10 @@ public struct AEAIContextConfig: AEInfoProtocol {
 
         if !ident.isEmpty {
             map["ident"] = ident
-        } else {
-            AELog("⚠️ [AEAIContextConfig] toInfoMap: ident 为空")
         }
 
         if !space.isEmpty {
             map["space"] = space
-        } else {
-            AELog("⚠️ [AEAIContextConfig] toInfoMap: space 为空")
         }
 
         map["type"] = type.rawValue

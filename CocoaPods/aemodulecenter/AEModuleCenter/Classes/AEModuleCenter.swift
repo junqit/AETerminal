@@ -137,7 +137,8 @@ import AppKit
         defer { lock.unlock() }
 
         let result = modules.allObjects.compactMap { $0 as? T }.first
-        debugPrint("[AEModuleCenter] Getting module for \(protocolType), found: \(result != nil), total modules: \(modules.allObjects)")
+        let types = modules.allObjects.map { String(describing: type(of: $0)) }
+        debugPrint("[AEModuleCenter] 获取模块: \(T.self), found: \(result != nil), 已注册 \(types.count) 个: \(types)")
         return result
     }
 

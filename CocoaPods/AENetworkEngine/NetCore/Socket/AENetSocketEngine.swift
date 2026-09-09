@@ -28,7 +28,7 @@ public enum AESocketError: Error {
 }
 
 /// 网络 Socket 类，支持 TCP/UDP 连接
-public class AENetSocketEngine {
+public class AENetSocketEngine: AENetCoreProtocol {
 
     // MARK: - Properties
 
@@ -40,6 +40,9 @@ public class AENetSocketEngine {
 
     /// 协议类型
     public let protocolType: AENetSocketType
+
+    /// 数据类型（默认 .data；发送业务数据时使用，由引擎保存）
+    public var dataType: AEDataType = .data
 
     /// 连接状态（原子包装）
     private let _state = AEAtom<AESocketState>(.disconnected)
@@ -65,12 +68,38 @@ public class AENetSocketEngine {
     /// 接收响应回调（解析后的 AENetRsp）
     public var onResponseReceived: ((AENetRsp) -> Void)?
 
+    /// 网络核心代理（AENetCoreProtocol；接收主动推送的响应）
+    public weak var delegate: AENetCoreDelegate?
+
+    /// 网络核心类型
+    public var coreType: AENetworkType {
+        return .socket
+    }
+
     /// 待处理的请求 [requestId: AENetReq]
     private var pendingRequests: [String: AENetReq] = [:]
     private let pendingLock = NSLock()
 
     /// 数据包解析器
     private let packetParser = AEPacketParser()
+
+    /// 待发送数据队列（AEPackageData）；子线程串行处理，上一个完成才发下一个
+    private var pendingPackages: [AEPackageData] = []
+
+    /// 发送队列锁
+    private let sendLock = NSLock()
+
+    /// 是否正在处理发送队列
+    private var isSending = false
+
+    /// 发送子线程（串行）
+    private let sendDispatchQueue = DispatchQueue(label: "com.aenetwork.socket.send", qos: .userInitiated)
+
+    /// UDP 心跳间隔（秒），定时发送空心跳包保活链路，避免 NAT 表项超时
+    private let heartbeatInterval: Int = 15
+
+    /// 心跳定时器（仅 UDP，保活链路）
+    private var heartbeatTimer: DispatchSourceTimer?
 
     // MARK: - Initialization
 
@@ -135,6 +164,7 @@ public class AENetSocketEngine {
     /// 断开连接
     public func disconnect() {
         AELog("🔌 [Socket] 断开连接: \(ip):\(port)")
+        stopHeartbeat()
         connection?.cancel()
         connection = nil
 
@@ -146,6 +176,12 @@ public class AENetSocketEngine {
         pendingRequests.removeAll()
         pendingLock.unlock()
 
+        // 清空发送队列
+        sendLock.lock()
+        pendingPackages.removeAll()
+        isSending = false
+        sendLock.unlock()
+
         updateState(.disconnected)
     }
 
@@ -153,18 +189,22 @@ public class AENetSocketEngine {
 
     /// 发送 AENetReq 消息
     /// - Parameter request: 请求对象，响应通过 request.onStreamReceived / request.onCompleted 回调
-    /// - Throws: 未连接时抛出错误
-    public func send(_ request: AENetReq) throws {
+    public func send(request: AENetReq) {
         guard case .connected = state else {
-            throw AESocketError.notConnected
+            AELog("⚠️ [Socket] 未连接，发送请求失败")
+            return
         }
 
         pendingLock.lock()
         pendingRequests[request.requestId] = request
         pendingLock.unlock()
 
-        let data = try encodeRequest(request)
-        try send(data)
+        do {
+            let data = try encodeRequest(request)
+            try send(data)
+        } catch {
+            AELog("⚠️ [Socket] 请求发送失效 requestId:\(request.requestId)")
+        }
     }
 
     /// 发送原始数据（封装为数据包）
@@ -178,22 +218,94 @@ public class AENetSocketEngine {
             throw AESocketError.notConnected
         }
 
-        // 将 data 转换为 packet 列表（<= MAX_PACKET_DATA_LENGTH 为单包，否则分片），
-        // 逐个发送；NWConnection 内部保序，分片按顺序到达对端
-        let packets = AEPacket.packets(dataType: .request, data: data)
-        for packet in packets {
-            let packetData = packet.toBytes()
+        // 构造 AEPackageData 入发送队列；子线程串行处理（上一个完成才发下一个）
+        enqueue(AEPackageData(data: data, dataType: dataType))
+    }
 
-            connection?.send(content: packetData, completion: .contentProcessed { [weak self] error in
-                if let error = error {
-                    AELog("❌ [Socket] 发送数据失败: \(error)")
-                    self?.updateState(.failed(AESocketError.sendFailed))
-                }
-            })
+    /// 发送网络响应（AENetCoreProtocol）
+    /// - Parameter response: 网络响应对象
+    public func send(response: AENetRsp) {
+        do {
+            let data = try response.encode()
+            try send(data)
+        } catch {
+            AELog("⚠️ [Socket] 响应发送失败 requestId:\(response.requestId)")
         }
     }
 
+    /// 逐包下发整个 packet 列表（不组装合并，避免内存碎片），DispatchGroup 等所有包完成回调
+    private func sendPackets(_ packets: [AEPacket], completion: @escaping (Error?) -> Void) {
+        guard !packets.isEmpty else {
+            completion(nil)
+            return
+        }
+        guard let connection = connection else {
+            completion(AESocketError.notConnected)
+            return
+        }
+
+        let group = DispatchGroup()
+        let errorLock = NSLock()
+        var firstError: Error?
+
+        for packet in packets {
+            group.enter()
+            connection.send(content: packet.toBytes(), completion: .contentProcessed { error in
+                if let error = error {
+                    errorLock.lock()
+                    if firstError == nil { firstError = error }
+                    errorLock.unlock()
+                }
+                group.leave()
+            })
+        }
+
+        group.notify(queue: sendDispatchQueue) { completion(firstError) }
+    }
+
     // MARK: - Private Methods
+
+    /// 入队 AEPackageData；空闲则启动子线程串行处理
+    private func enqueue(_ package: AEPackageData) {
+        sendLock.lock()
+        pendingPackages.append(package)
+        let start = !isSending
+        if start { isSending = true }
+        sendLock.unlock()
+
+        if start {
+            sendDispatchQueue.async { [weak self] in self?.processSendQueue() }
+        }
+    }
+
+    /// 串行处理发送队列：出队一个 AEPackageData 下发，完成后处理下一个
+    private func processSendQueue() {
+        sendLock.lock()
+        guard !pendingPackages.isEmpty else {
+            isSending = false
+            sendLock.unlock()
+            return
+        }
+        let package = pendingPackages.removeFirst()
+        sendLock.unlock()
+
+        sendPackets(package.packets) { [weak self] error in
+            guard let self = self else { return }
+
+            if let error = error {
+                AELog("❌ [Socket] 数据包发送失败")
+                self.updateState(.failed(AESocketError.sendFailed))
+                self.sendLock.lock()
+                self.pendingPackages.removeAll()
+                self.isSending = false
+                self.sendLock.unlock()
+                return
+            }
+
+            // 本 AEPackageData 完成，处理下一个
+            self.sendDispatchQueue.async { [weak self] in self?.processSendQueue() }
+        }
+    }
 
     private func handleResponse(_ response: AENetRsp) {
 
@@ -215,6 +327,7 @@ public class AENetSocketEngine {
             }
         }
 
+        delegate?.netCore(didReceive: response)
         onResponseReceived?(response)
     }
 
@@ -224,16 +337,23 @@ public class AENetSocketEngine {
             AELog("✅ [Socket] 连接成功: \(ip):\(port)")
             updateState(.connected)
 
+            // UDP 无连接态，定时发心跳保活链路，避免 NAT 表项超时导致链路失败
+            if protocolType == .udp {
+                startHeartbeat()
+            }
+
         case .waiting(let error):
             AELog("⏳ [Socket] 连接等待: \(error)")
             updateState(.failed(error))
 
         case .failed(let error):
             AELog("❌ [Socket] 连接失败: \(error)")
+            stopHeartbeat()
             updateState(.failed(error))
 
         case .cancelled:
             AELog("🔌 [Socket] 连接已取消")
+            stopHeartbeat()
             updateState(.disconnected)
 
         case .setup:
@@ -293,6 +413,52 @@ public class AENetSocketEngine {
                 self.queue.async { [weak self] in
                     self?.receiveData()
                 }
+            }
+        }
+    }
+
+    // MARK: - Heartbeat
+
+    /// 启动 UDP 心跳保活（仅 UDP，连接成功后调用）
+    private func startHeartbeat() {
+
+        // 先清理已有定时器，避免重复启动
+        stopHeartbeat()
+
+        let timer = DispatchSource.makeTimerSource(queue: queue)
+        timer.scheduleRepeating(
+            deadline: .now() + .seconds(heartbeatInterval),
+            interval: .seconds(heartbeatInterval)
+        )
+        timer.setEventHandler { [weak self] in
+            self?.sendHeartbeat()
+        }
+        timer.resume()
+        heartbeatTimer = timer
+
+        AELog("💓 [Socket] UDP 心跳保活已启动，间隔:\(heartbeatInterval)s")
+    }
+
+    /// 停止 UDP 心跳保活
+    private func stopHeartbeat() {
+
+        heartbeatTimer?.cancel()
+        heartbeatTimer = nil
+    }
+
+    /// 发送心跳包，保活 UDP 链路
+    private func sendHeartbeat() {
+
+        // heartbeat 走同一列表机制（AEPackageData）；载荷用空 JSON 兼容对端解析器
+        let packets = AEPackageData(data: Data("{}".utf8), dataType: .heartbeat).packets
+
+        sendPackets(packets) { [weak self] error in
+            guard let self = self else { return }
+
+            if error != nil {
+                AELog("❌ [Socket] UDP 心跳保活发送失败")
+                self.stopHeartbeat()
+                self.updateState(.failed(AESocketError.sendFailed))
             }
         }
     }

@@ -11,6 +11,8 @@ import AEAINetworkModule
 import AEAIEnginModule
 import AENetworkEngine
 import AEUserAccountModule
+import AECloudStorage
+import AEWebModule
 import AELogProxy
 
 @main
@@ -24,11 +26,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     /// 用户账号模块实例（保持强引用）
     private let userAccountModule = AEUserAccountModule()
 
+    /// 云存储模块实例（保持强引用）
+    private let cloudStorageModule = AECloudStorageModule()
+
+    /// Web 模块实例（保持强引用；嵌入 controller.view 到目标视图后调用 open(url:)）
+    private let webModule = AEWebModule()
+
     func applicationWillFinishLaunching(_ notification: Notification) {
         // 1. 先配置网络模块
         configureNetworkModule()
 
-        // 2. 再注册模块到 AEModuleCenter
+        // 2. 配置云存储模块
+        configureCloudStorageModule()
+
+        // 3. 再注册模块到 AEModuleCenter
         registerModules()
 
         AELog("✅ 模块配置和注册完成")
@@ -88,6 +99,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         networkModule.configure(with: socketConfig)
     }
 
+    /// 配置云存储模块（在此注册 provider；启动时由模块自启鉴权）
+    private func configureCloudStorageModule() {
+        // TODO: 注册百度网盘 provider（cloudStorageModule.register(...)）
+    }
+
     /// AI Engine 模块实例（保持强引用）
     private let aiEnginModule = AEAIEnginModule()
 
@@ -96,6 +112,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         AEModuleCenter.register(module: networkModule)
         AEModuleCenter.register(module: aiEnginModule)
         AEModuleCenter.register(module: userAccountModule)
+        AEModuleCenter.register(module: cloudStorageModule)
+        AEModuleCenter.register(module: webModule)
     }
 }
 

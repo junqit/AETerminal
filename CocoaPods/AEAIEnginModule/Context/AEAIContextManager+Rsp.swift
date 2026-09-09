@@ -11,8 +11,11 @@ extension AEAIContextManager {
         
         guard let message = response.response else { return }
 
-        let req = message["req"] as? [String: Any]
-        let path = req?["path"] as? String
+        let header = message["header"] as? [String: Any]
+        let responsePath = header?["path"] as? String
+        var pendingPath: String?
+        pendingRequests.write { pendingPath = $0.removeValue(forKey: response.requestId) }
+        let path = responsePath ?? pendingPath
 
         switch path {
         case AEAIServicePath.createContext.rawValue:
@@ -50,6 +53,7 @@ extension AEAIContextManager {
     }
 
     private func handleContextListRsp(_ response: AENetRsp, message: [String: Any]) {
+        AELog("[AEAIContextManager] 收到 contextList 响应: requestId=\(response.requestId)")
         guard response.code == .success,
               let rsp = message["rsp"] as? [String: Any],
               let list = rsp["contexts"] as? [[String: Any]] else {

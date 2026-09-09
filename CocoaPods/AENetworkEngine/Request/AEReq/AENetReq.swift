@@ -13,6 +13,14 @@ public enum AENetProtocolType {
     
     case socket   // Socket/UDP 请求
     case http     // HTTP 请求
+    case cloudstorage // 云存储请求
+}
+
+/// 消息类型标识（request / response），序列化到 req.headers.type
+public enum AENetMessageType: Int {
+
+    case request
+    case response
 }
 
 /// HTTP 请求方式枚举
@@ -124,26 +132,33 @@ public class AENetReq {
     }
 
     /// 从字典创建实例
-    /// 数据结构: {"req":{"requestId":"...", "path":"...", "method":"POST", ...}, "cont":{...}, ...}
+    /// 数据结构: {"req":{"headers":{"type":"request","requestId":"...","path":"..."}, "body":{...}}, "con":{...}, ...}
     public static func fromMap(_ map: [String: Any]) -> AENetReq? {
-        guard let req = map["req"] as? [String: Any],
-              let requestId = req["requestId"] as? String,
-              let path = req["path"] as? String else {
-            AELog("⚠️ [AENetReq] fromMap: 缺少 req.requestId 或 req.path")
+        guard let header = map["header"] as? [String: Any],
+              let requestId = header["requestId"] as? String,
+              let path = header["path"] as? String else {
+            AELog("⚠️ [AENetReq] fromMap: 缺少 header.requestId 或 header.path")
             return nil
         }
 
-        let methodRaw = req["method"] as? String ?? "POST"
-        let method = AEHttpMethod(rawValue: methodRaw) ?? .POST
-        let headers = req["headers"] as? [String: String]
+        let method: AEHttpMethod = .POST
 
-        var parameters: [String: Any] = [:]
-        for (key, value) in map where key != "req" {
-            let mappedKey = (key == "con") ? "context" : key
-            parameters[mappedKey] = value
+        // 用户 HTTP headers = header 内除 type/requestId/path 外的键
+        let transportKeys: Set<String> = ["type", "requestId", "path"]
+        var userHeaders: [String: String] = [:]
+        for (key, value) in header where !transportKeys.contains(key) {
+            if let strValue = value as? String {
+                userHeaders[key] = strValue
+            }
         }
 
-        let instance = AENetReq(method: method, path: path, parameters: parameters.isEmpty ? nil : parameters, headers: headers)
+        // parameters: 除 header 外的字段扁平合并（con、body 由外部添加）
+        var parameters: [String: Any] = [:]
+        for (key, value) in map where key != "header" {
+            parameters[key] = value
+        }
+
+        let instance = AENetReq(method: method, path: path, parameters: parameters.isEmpty ? nil : parameters, headers: userHeaders.isEmpty ? nil : userHeaders)
         instance.requestId = requestId
         return instance
     }
@@ -152,25 +167,22 @@ public class AENetReq {
     public func toMap() -> [String: Any] {
         var dataMap: [String: Any] = [:]
 
-        var reqMap: [String: Any] = [:]
-        reqMap["requestId"] = requestId
-        reqMap["path"] = path
-
-        if let headers = headers {
-            reqMap["headers"] = headers
+        // header: type + requestId + path（+ 用户 HTTP headers 合并）
+        var header: [String: Any] = [:]
+        header["type"] = AENetMessageType.request.rawValue
+        header["requestId"] = requestId
+        header["path"] = path
+        if let userHeaders = self.headers {
+            for (key, value) in userHeaders {
+                header[key] = value
+            }
         }
+        dataMap["header"] = header
 
-        if let body = body {
-            reqMap["body"] = body
-        }
-
-        dataMap["req"] = reqMap
-
+        // parameters 扁平合并（cont、user、ques … 由外部添加）
         if let parameters = parameters {
-            // context -> con 缩写
             for (key, value) in parameters {
-                let mappedKey = (key == "context") ? "con" : key
-                dataMap[mappedKey] = value
+                dataMap[key] = value
             }
         }
 

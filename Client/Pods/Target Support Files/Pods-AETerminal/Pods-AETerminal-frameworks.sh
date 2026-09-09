@@ -179,21 +179,25 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIEnginModule/AEAIEnginModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIModule/AEAIModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAINetworkModule/AEAINetworkModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AECloudStorage/AECloudStorage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AELogProxy/AELogProxy.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEUserAccountModule/AEUserAccountModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEWebModule/AEWebModule.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIEnginModule/AEAIEnginModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAIModule/AEAIModule.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEAINetworkModule/AEAINetworkModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AECloudStorage/AECloudStorage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEFoundation/AEFoundation.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AELogProxy/AELogProxy.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEModuleCenter/AEModuleCenter.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AENetworkEngine/AENetworkEngine.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AEUserAccountModule/AEUserAccountModule.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/AEWebModule/AEWebModule.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait
